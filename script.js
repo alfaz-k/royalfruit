@@ -32,11 +32,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const navUserAvatar = document.getElementById('navUserAvatar');
   const cartItemCount = document.getElementById('cartItemCount');
 
-  // Customer Form Elements
+  // Customer Form Elements (Detailed Address Breakdown)
   const custNameInput = document.getElementById('custName');
   const custPhoneInput = document.getElementById('custPhone');
+  const custAltPhoneInput = document.getElementById('custAltPhone');
   const custEmailInput = document.getElementById('custEmail');
-  const custAddressInput = document.getElementById('custAddress');
+  const custStreetInput = document.getElementById('custStreet');
+  const custLandmarkInput = document.getElementById('custLandmark');
+  const custPinInput = document.getElementById('custPin');
+  const custCityInput = document.getElementById('custCity');
+  const custStateInput = document.getElementById('custState');
+
   const formProductName = document.getElementById('formProductName');
   const formProductPrice = document.getElementById('formProductPrice');
   const formOriginalPrice = document.getElementById('formOriginalPrice');
@@ -70,7 +76,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const rcptWeight = document.getElementById('rcptWeight');
   const rcptCustName = document.getElementById('rcptCustName');
   const rcptCustPhone = document.getElementById('rcptCustPhone');
+  const rcptCustAltPhoneRow = document.getElementById('rcptCustAltPhoneRow');
+  const rcptCustAltPhone = document.getElementById('rcptCustAltPhone');
   const rcptCustAddress = document.getElementById('rcptCustAddress');
+  const rcptCustLandmarkPin = document.getElementById('rcptCustLandmarkPin');
   const rcptSubtotal = document.getElementById('rcptSubtotal');
   const rcptDiscountRow = document.getElementById('rcptDiscountRow');
   const rcptCouponLabel = document.getElementById('rcptCouponLabel');
@@ -93,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentSelectedRating = 5;
   let activeQuickViewCard = null;
 
-  // Valid Coupons Configuration (Includes WELCOME50 for 1st-time users)
+  // Valid Coupons Configuration (WELCOME50 Spotlight Enforced)
   const COUPONS = {
     'WELCOME50': { type: 'percent', value: 50, desc: '50% OFF (1st Order Special)', firstOrderOnly: true },
     'ROYAL25': { type: 'percent', value: 25, desc: '25% OFF' },
@@ -411,7 +420,12 @@ document.addEventListener('DOMContentLoaded', () => {
     custNameInput.value = user.name || '';
     custEmailInput.value = user.email || '';
     custPhoneInput.value = user.phone || '';
-    custAddressInput.value = user.address || '';
+    custAltPhoneInput.value = user.altPhone || '';
+    custStreetInput.value = user.street || '';
+    custLandmarkInput.value = user.landmark || '';
+    custPinInput.value = user.pincode || '';
+    custCityInput.value = user.city || '';
+    custStateInput.value = user.state || '';
 
     appliedDiscount = 0;
     appliedCouponCode = '';
@@ -494,7 +508,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const user = JSON.parse(localStorage.getItem('royal_user') || '{}');
     document.getElementById('profNameInput').value = user.name || '';
     document.getElementById('profPhoneInput').value = user.phone || '';
-    document.getElementById('profAddressInput').value = user.address || '';
+    document.getElementById('profAltPhoneInput').value = user.altPhone || '';
+    document.getElementById('profStreetInput').value = user.street || '';
+    document.getElementById('profLandmarkInput').value = user.landmark || '';
+    document.getElementById('profPinInput').value = user.pincode || '';
+    document.getElementById('profCityInput').value = user.city || '';
+    document.getElementById('profStateInput').value = user.state || '';
     document.getElementById('profileImagePreview').src = user.avatar || user.picture || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80';
     profileModal.classList.add('active');
   };
@@ -519,13 +538,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const user = JSON.parse(localStorage.getItem('royal_user') || '{}');
     user.name = document.getElementById('profNameInput').value.trim();
     user.phone = document.getElementById('profPhoneInput').value.trim();
-    user.address = document.getElementById('profAddressInput').value.trim();
+    user.altPhone = document.getElementById('profAltPhoneInput').value.trim();
+    user.street = document.getElementById('profStreetInput').value.trim();
+    user.landmark = document.getElementById('profLandmarkInput').value.trim();
+    user.pincode = document.getElementById('profPinInput').value.trim();
+    user.city = document.getElementById('profCityInput').value.trim();
+    user.state = document.getElementById('profStateInput').value.trim();
     user.avatar = document.getElementById('profileImagePreview').src;
 
     localStorage.setItem('royal_user', JSON.stringify(user));
     updateAuthNavbar();
     closeProfileModal();
-    showToast('Profile Updated', 'Your profile details and avatar have been saved.', '✅');
+    showToast('Address Saved', 'Your address details have been updated.', '✅');
   };
 
   window.confirmLogout = function() {
@@ -757,11 +781,17 @@ document.addEventListener('DOMContentLoaded', () => {
       icon
     };
 
+    // Auto-fill logged-in user credentials
     const user = JSON.parse(localStorage.getItem('royal_user') || '{}');
     custNameInput.value = user.name || '';
     custEmailInput.value = user.email || '';
     custPhoneInput.value = user.phone || '';
-    custAddressInput.value = user.address || '';
+    custAltPhoneInput.value = user.altPhone || '';
+    custStreetInput.value = user.street || '';
+    custLandmarkInput.value = user.landmark || '';
+    custPinInput.value = user.pincode || '';
+    custCityInput.value = user.city || '';
+    custStateInput.value = user.state || '';
 
     appliedDiscount = 0;
     appliedCouponCode = '';
@@ -865,16 +895,33 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // UPI Step
+  // UPI Step - Packages all granular address details
   window.handleCustomerSubmit = function(e) {
     e.preventDefault();
 
     activeCustomer = {
       name: custNameInput.value.trim(),
       phone: custPhoneInput.value.trim(),
+      altPhone: custAltPhoneInput.value.trim() || 'N/A',
       email: custEmailInput.value.trim(),
-      address: custAddressInput.value.trim()
+      street: custStreetInput.value.trim(),
+      landmark: custLandmarkInput.value.trim(),
+      pincode: custPinInput.value.trim(),
+      city: custCityInput.value.trim(),
+      state: custStateInput.value.trim()
     };
+
+    // Save to user profile silently
+    const user = JSON.parse(localStorage.getItem('royal_user') || '{}');
+    user.name = activeCustomer.name;
+    user.phone = activeCustomer.phone;
+    user.altPhone = activeCustomer.altPhone;
+    user.street = activeCustomer.street;
+    user.landmark = activeCustomer.landmark;
+    user.pincode = activeCustomer.pincode;
+    user.city = activeCustomer.city;
+    user.state = activeCustomer.state;
+    localStorage.setItem('royal_user', JSON.stringify(user));
 
     const finalAmountStr = activeProduct.finalPrice.toFixed(2);
     qrAmountDisplay.textContent = `₹${finalAmountStr}`;
@@ -910,6 +957,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentOrders = parseInt(localStorage.getItem('royal_orders_placed') || '0');
     localStorage.setItem('royal_orders_placed', (currentOrders + 1).toString());
 
+    const fullFormattedAddress = `${activeCustomer.street}, Landmark: ${activeCustomer.landmark}, ${activeCustomer.city}, ${activeCustomer.state} - PIN: ${activeCustomer.pincode}`;
+
+    // Web3Forms payload containing all customer and shipping data
     const emailPayload = {
       access_key: WEB3FORMS_ACCESS_KEY,
       subject: `🛒 New Order: ${currentOrderId} - ₹${activeProduct.finalPrice.toFixed(2)}`,
@@ -924,9 +974,15 @@ document.addEventListener('DOMContentLoaded', () => {
       discount_applied: `₹${appliedDiscount.toFixed(2)}`,
       final_amount_paid: `₹${activeProduct.finalPrice.toFixed(2)}`,
       customer_name: activeCustomer.name,
-      customer_phone: activeCustomer.phone,
+      customer_primary_phone: activeCustomer.phone,
+      customer_alt_phone: activeCustomer.altPhone,
       customer_email: activeCustomer.email,
-      delivery_address: activeCustomer.address,
+      street_address: activeCustomer.street,
+      landmark: activeCustomer.landmark,
+      pincode: activeCustomer.pincode,
+      city: activeCustomer.city,
+      state: activeCustomer.state,
+      full_delivery_address: fullFormattedAddress,
       upi_vpa: 'alsa8181@ibl',
       upi_reference_id: upiRef
     };
@@ -952,7 +1008,16 @@ document.addEventListener('DOMContentLoaded', () => {
     rcptWeight.textContent = `Pack: ${activeProduct.weight} | Qty: ${activeProduct.quantity} Unit${activeProduct.quantity > 1 ? 's' : ''}`;
     rcptCustName.textContent = activeCustomer.name;
     rcptCustPhone.textContent = `+91 ${activeCustomer.phone}`;
-    rcptCustAddress.textContent = activeCustomer.address.length > 25 ? activeCustomer.address.substring(0, 25) + '...' : activeCustomer.address;
+    
+    if (activeCustomer.altPhone && activeCustomer.altPhone !== 'N/A') {
+      rcptCustAltPhone.textContent = `+91 ${activeCustomer.altPhone}`;
+      rcptCustAltPhoneRow.style.display = 'flex';
+    } else {
+      rcptCustAltPhoneRow.style.display = 'none';
+    }
+
+    rcptCustAddress.textContent = `${activeCustomer.street}, ${activeCustomer.city}`;
+    rcptCustLandmarkPin.textContent = `Landmark: ${activeCustomer.landmark} - ${activeCustomer.pincode}`;
     rcptSubtotal.textContent = `₹${(activeProduct.originalPrice / 1.05).toFixed(2)}`;
     
     if (appliedDiscount > 0) {
@@ -1005,7 +1070,7 @@ document.addEventListener('DOMContentLoaded', () => {
     receipt.classList.remove('print-out');
   };
 
-  // PDF Export
+  // PDF Export with Granular Address Details
   downloadBtn.addEventListener('click', async () => {
     downloadBtn.textContent = 'Generating PDF...';
     downloadBtn.disabled = true;
@@ -1028,6 +1093,13 @@ document.addEventListener('DOMContentLoaded', () => {
       <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:4px; font-weight:bold; color:#047857;">
         <span>Coupon (${appliedCouponCode}):</span>
         <span>-₹${appliedDiscount.toFixed(2)}</span>
+      </div>
+    ` : '';
+
+    const altPhoneLine = activeCustomer.altPhone && activeCustomer.altPhone !== 'N/A' ? `
+      <div style="display:flex; justify-content:space-between; margin-bottom:2px;">
+        <span>Alt Phone:</span>
+        <span>+91 ${activeCustomer.altPhone}</span>
       </div>
     ` : '';
 
@@ -1055,12 +1127,21 @@ document.addEventListener('DOMContentLoaded', () => {
           <span style="font-weight:bold;">${activeCustomer.name}</span>
         </div>
         <div style="display:flex; justify-content:space-between; margin-bottom:2px;">
-          <span>Phone:</span>
+          <span>Primary Phone:</span>
           <span>+91 ${activeCustomer.phone}</span>
         </div>
+        ${altPhoneLine}
         <div style="display:flex; justify-content:space-between; margin-bottom:2px;">
-          <span>Delivery:</span>
-          <span>${activeCustomer.address}</span>
+          <span>Address:</span>
+          <span>${activeCustomer.street}</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:2px;">
+          <span>Landmark & City:</span>
+          <span>${activeCustomer.landmark}, ${activeCustomer.city}</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:2px;">
+          <span>State & PIN:</span>
+          <span>${activeCustomer.state} - ${activeCustomer.pincode}</span>
         </div>
       </div>
 
