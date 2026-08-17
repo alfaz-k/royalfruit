@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Account Portal — ROYAL NUTS & DRY FRUITS</title>
+  <link rel="stylesheet" href="auth.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Cloudflare Turnstile Live API -->
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <!-- Google Identity Services -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+
+  <!-- Ambient Glows -->
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <a href="index.html" class="nav-brand">
+      <div class="brand-badge">🌰</div>
+      <span>ROYAL DRY FRUITS</span>
+    </a>
+    <a href="index.html" class="back-store-btn">← Back to Store</a>
+  </nav>
+
+  <!-- Centered Auth Modal -->
+  <div class="auth-wrapper">
+    <div class="auth-card">
+      
+      <!-- Brand Header -->
+      <div class="auth-header">
+        <div class="auth-logo-badge">🛡️</div>
+        <h2>Royal Membership</h2>
+        <p>Access fast UPI checkouts, track orders, and redeem member discounts.</p>
+      </div>
+
+      <!-- Segmented Tabs -->
+      <div class="auth-tabs">
+        <button class="tab-btn active" id="tabLogin" onclick="switchAuthTab('login')">Sign In</button>
+        <button class="tab-btn" id="tabSignup" onclick="switchAuthTab('signup')">Create Account</button>
+        <div class="tab-indicator" id="tabIndicator"></div>
+      </div>
+
+      <!-- Status / Alert Box -->
+      <div class="auth-alert" id="authAlert" style="display: none;"></div>
+
+      <!-- LOGIN FORM -->
+      <form class="auth-form" id="loginForm" onsubmit="handleAuthSubmit(event, 'login')">
+        <div class="input-group">
+          <label>Email Address</label>
+          <div class="input-field-wrap">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+              <polyline points="22,6 12,13 2,6"></polyline>
+            </svg>
+            <input type="email" id="loginEmail" placeholder="e.g. rahul@example.com" required autocomplete="email" />
+          </div>
+        </div>
+
+        <div class="input-group">
+          <div class="label-row">
+            <label>Password</label>
+            <a href="#" class="forgot-link" onclick="handleForgotClick(event)">Forgot?</a>
+          </div>
+          <div class="input-field-wrap">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+            <input type="password" id="loginPassword" placeholder="••••••••" required autocomplete="current-password" />
+          </div>
+        </div>
+
+        <!-- Cloudflare Turnstile Live Key -->
+        <div class="captcha-box">
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAAETBrIfeDbpBxte0" data-theme="dark" data-callback="onTurnstileSuccess"></div>
+        </div>
+
+        <button type="submit" class="auth-submit-btn" id="loginBtn">
+          <span class="btn-text">Sign In Securely →</span>
+          <span class="btn-spinner" id="loginSpinner" style="display: none;"></span>
+        </button>
+      </form>
+
+      <!-- SIGNUP FORM -->
+      <form class="auth-form" id="signupForm" style="display: none;" onsubmit="handleAuthSubmit(event, 'signup')">
+        <div class="input-group">
+          <label>Full Name</label>
+          <div class="input-field-wrap">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <input type="text" id="signupName" placeholder="e.g. Rahul Sharma" required autocomplete="name" />
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Email Address</label>
+          <div class="input-field-wrap">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+              <polyline points="22,6 12,13 2,6"></polyline>
+            </svg>
+            <input type="email" id="signupEmail" placeholder="e.g. rahul@example.com" required autocomplete="email" />
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Mobile Number</label>
+          <div class="input-field-wrap">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+              <line x1="12" y1="18" x2="12.01" y2="18"></line>
+            </svg>
+            <input type="tel" id="signupPhone" placeholder="9876543210" pattern="[0-9]{10}" required autocomplete="tel" />
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Create Password</label>
+          <div class="input-field-wrap">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+            <input type="password" id="signupPassword" placeholder="Minimum 6 characters" minlength="6" required autocomplete="new-password" />
+          </div>
+        </div>
+
+        <!-- Cloudflare Turnstile Live Key -->
+        <div class="captcha-box">
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAAETBrIfeDbpBxte0" data-theme="dark" data-callback="onTurnstileSuccess"></div>
+        </div>
+
+        <button type="submit" class="auth-submit-btn" id="signupBtn">
+          <span class="btn-text">Create Account →</span>
+          <span class="btn-spinner" id="signupSpinner" style="display: none;"></span>
+        </button>
+      </form>
+
+      <!-- Bottom Divider -->
+      <div class="auth-divider">
+        <span>or sign in with</span>
+      </div>
+
+      <!-- Google Sign-In Placed at the Bottom -->
+      <div class="google-auth-section">
+        <div id="g_id_onload"
+             data-client_id="722324100300-3dfs7ofg08ue1igkbejq68qavh1otddo.apps.googleusercontent.com"
+             data-context="signin"
+             data-ux_mode="popup"
+             data-callback="handleGoogleCredentialResponse"
+             data-auto_prompt="false">
+        </div>
+        <div class="g_id_signin"
+             data-type="standard"
+             data-shape="rectangular"
+             data-theme="outline"
+             data-text="continue_with"
+             data-size="large"
+             data-logo_alignment="center"
+             data-width="100%">
+        </div>
+      </div>
+
+      <!-- Trust Footer -->
+      <div class="auth-footer-note">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+        </svg>
+        <span>Secured by Cloudflare KV & 256-bit Encryption</span>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="auth.js"></script>
+</body>
+</html>

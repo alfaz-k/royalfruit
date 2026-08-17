@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ROYAL NUTS & DRY FRUITS — Premium Gourmet Store</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- jsPDF & html2canvas for PDF Generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+  <!-- Ambient Glows -->
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+
+  <!-- Confetti Canvas Container -->
+  <canvas id="confettiCanvas"></canvas>
+
+  <!-- Global Floating Toast Notification Container -->
+  <div class="floating-toast" id="floatingToast">
+    <div class="toast-icon" id="toastIcon">✨</div>
+    <div class="toast-content">
+      <h4 id="toastTitle">Notification</h4>
+      <p id="toastMessage">Action completed successfully.</p>
+    </div>
+  </div>
+
+  <!-- Global Custom Glassmorphism Prompt Modal -->
+  <div class="modal-backdrop" id="customAlertModal">
+    <div class="alert-popup-card">
+      <div class="alert-icon-ring" id="alertModalIconRing">
+        <span id="alertModalIcon">🔒</span>
+      </div>
+      <h3 id="alertModalTitle">Sign In Required</h3>
+      <p id="alertModalMessage">Please sign in or create an account to proceed with your dry fruit order.</p>
+      <div class="alert-actions-row">
+        <button class="alert-secondary-btn" id="alertModalCancelBtn" onclick="closeCustomAlert()">Cancel</button>
+        <button class="alert-primary-btn" id="alertModalConfirmBtn">Sign In Now →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Responsive Mobile-Adaptive Navigation Bar -->
+  <nav class="navbar">
+    <a href="#home" class="nav-brand">
+      <div class="brand-badge">🌰</div>
+      <div class="brand-text-wrap">
+        <span class="brand-title">ROYAL</span>
+        <span class="brand-sub">DRY FRUITS</span>
+      </div>
+    </a>
+
+    <!-- Desktop Nav Links -->
+    <div class="nav-links">
+      <a href="#home" class="nav-link active">Home</a>
+      <a href="#products" class="nav-link">Products</a>
+      <a href="#about" class="nav-link">About</a>
+      <a href="#contact" class="nav-link">Contact</a>
+    </div>
+
+    <!-- Responsive Action Controls Wrapper -->
+    <div class="nav-controls-right">
+      <!-- Unauthenticated Account Button -->
+      <a href="auth.html" class="nav-link auth-nav-link" id="navAccountBtn">
+        <span class="auth-icon">👤</span>
+        <span class="auth-btn-label">Account</span>
+      </a>
+
+      <!-- Authenticated User Profile & Logout -->
+      <div class="user-profile-menu" id="navUserMenu" style="display: none;">
+        <button class="profile-trigger-btn" onclick="openProfileModal()" title="View & Edit Profile">
+          <img id="navUserAvatar" src="" alt="Profile" class="nav-avatar-img" />
+          <span id="navUserName" class="nav-user-name-text">Profile</span>
+        </button>
+        <button class="logout-nav-btn" onclick="confirmLogout()" title="Log out">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+          <span class="logout-btn-label">Logout</span>
+        </button>
+      </div>
+
+      <!-- Compact Clickable Cart Pill -->
+      <div class="cart-pill clickable-cart" id="navbarCartPill" onclick="openCartDrawer()" title="View Cart">
+        <span class="cart-icon-symbol">🛒</span>
+        <span class="cart-count-badge" id="cartItemCount">0</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Slide-out Shopping Cart Drawer -->
+  <div class="cart-drawer-backdrop" id="cartDrawerBackdrop" onclick="closeCartDrawer()"></div>
+  <div class="cart-drawer" id="cartDrawer">
+    <div class="cart-drawer-header">
+      <h3>Your Fresh Cart 🛒</h3>
+      <button class="drawer-close-btn" onclick="closeCartDrawer()">&times;</button>
+    </div>
+    <div class="cart-items-container" id="cartItemsContainer">
+      <!-- Injected Cart Items via script.js -->
+    </div>
+    <div class="cart-drawer-footer" id="cartDrawerFooter">
+      <div class="cart-summary-line">
+        <span>Subtotal:</span>
+        <strong id="cartSubtotalVal">₹0.00</strong>
+      </div>
+      <button class="cart-checkout-btn" onclick="checkoutFromCart()">Proceed to Direct UPI Checkout →</button>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main>
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+      <div class="hero-text">
+        <span class="hero-tag">🌟 Farm Fresh Quality Guaranteed</span>
+        <h2>Handpicked Premium Dry Fruits</h2>
+        <p>Gourmet quality nuts, exotic dried fruits, and authentic Kashmiri saffron delivered straight to your door.</p>
+      </div>
+
+      <!-- Pinned 50% OFF Banner for 1st Order New Users -->
+      <div class="pinned-welcome-banner">
+        <div class="pinned-welcome-content">
+          <div class="pinned-tag">🔥 EXCLUSIVE NEW USER OFFER</div>
+          <h3>Flat 50% OFF On Your 1st Order!</h3>
+          <p>Sign up and unlock 50% instant savings across all 20 premium dry fruits & hampers.</p>
+        </div>
+        <div class="pinned-welcome-action">
+          <span class="pinned-coupon-code" onclick="copyOfferCode('WELCOME50')" title="Click to copy">
+            Use Code: <strong>WELCOME50</strong>
+          </span>
+          <span class="pinned-subtext">✨ Valid only once per new user account</span>
+        </div>
+      </div>
+
+      <!-- Offers Carousel -->
+      <div class="offers-carousel-wrapper">
+        <div class="offers-track" id="offersTrack">
+          <!-- Slide 1: Welcome50 Pinned Spotlight -->
+          <div class="offer-card offer-pinned-hero">
+            <div class="offer-badge pulse-badge">⭐ FIRST ORDER SPECIAL</div>
+            <div class="offer-content">
+              <h3>Flat 50% OFF</h3>
+              <p>Exclusive for new users on their very first order across all products</p>
+              <span class="offer-code" onclick="copyOfferCode('WELCOME50')">Code: <strong>WELCOME50</strong></span>
+            </div>
+            <div class="offer-icon">🏷️</div>
+          </div>
+
+          <!-- Slide 2 -->
+          <div class="offer-card offer-gold">
+            <div class="offer-badge">FESTIVE DEAL</div>
+            <div class="offer-content">
+              <h3>Flat 25% OFF</h3>
+              <p>On all Royal Dry Fruit orders across the store</p>
+              <span class="offer-code" onclick="copyOfferCode('ROYAL25')">Code: <strong>ROYAL25</strong></span>
+            </div>
+            <div class="offer-icon">🎁</div>
+          </div>
+
+          <!-- Slide 3 -->
+          <div class="offer-card offer-emerald">
+            <div class="offer-badge">ORGANIC SPECIAL</div>
+            <div class="offer-content">
+              <h3>Flat ₹100 OFF</h3>
+              <p>Instant savings on high-grade nuts & saffron packs</p>
+              <span class="offer-code" onclick="copyOfferCode('ORGANIC100')">Code: <strong>ORGANIC100</strong></span>
+            </div>
+            <div class="offer-icon">🌸</div>
+          </div>
+
+          <!-- Slide 4 -->
+          <div class="offer-card offer-purple">
+            <div class="offer-badge">HEALTH SAVINGS</div>
+            <div class="offer-content">
+              <h3>Flat 10% OFF</h3>
+              <p>Extra discount on whole almonds, walnuts & seed mixes</p>
+              <span class="offer-code" onclick="copyOfferCode('HEALTH10')">Code: <strong>HEALTH10</strong></span>
+            </div>
+            <div class="offer-icon">🥜</div>
+          </div>
+        </div>
+
+        <div class="carousel-dots">
+          <button class="dot active" onclick="goToSlide(0)"></button>
+          <button class="dot" onclick="goToSlide(1)"></button>
+          <button class="dot" onclick="goToSlide(2)"></button>
+          <button class="dot" onclick="goToSlide(3)"></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="store-container">
+      <div class="section-header">
+        <div>
+          <h2>Explore Collection</h2>
+          <p>Click any product to check verified reviews, return guarantee & quick order</p>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="search-bar-wrapper">
+          <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="productSearch" placeholder="Search almonds, cashews, berries..." oninput="handleSearch()">
+          <button class="clear-search-btn" id="clearSearchBtn" onclick="clearSearch()">&times;</button>
+        </div>
+      </div>
+
+      <!-- Category Filter Pills -->
+      <div class="category-filters">
+        <button class="filter-pill active" onclick="filterCategory('all', this)">All Items (20)</button>
+        <button class="filter-pill" onclick="filterCategory('nuts', this)">Premium Nuts</button>
+        <button class="filter-pill" onclick="filterCategory('dried', this)">Dates & Figs</button>
+        <button class="filter-pill" onclick="filterCategory('berries', this)">Berries & Fruits</button>
+        <button class="filter-pill" onclick="filterCategory('exotic', this)">Exotic & Seeds</button>
+        <button class="filter-pill" onclick="filterCategory('hampers', this)">Gift Boxes</button>
+      </div>
+
+      <div class="no-results" id="noResults" style="display: none;">
+        <p>🔍 No dry fruits found matching your search.</p>
+      </div>
+
+      <!-- Product Grid (20 Items) -->
+      <div class="product-grid" id="productGrid">
+        
+        <!-- 1 -->
+        <div class="product-card" data-id="1" data-category="nuts" data-name="California Jumbo Almonds (Badam)" data-base-price="450" data-base-weight="500g" data-price-250g="240" data-price-500g="450" data-price-1kg="860" data-rating="4.9" data-reviews-count="142" data-origin="California, USA" data-icon="🥜">
+          <div class="product-visual" onclick="openProductQuickView(this.closest('.product-card'))">
+            <span class="product-emoji">🥜</span>
+            <span class="stock-tag">Best Seller</span>
+            <span class="quick-view-badge">🔍 View & Review</span>
+          </div>
+          <div class="product-details">
+            <div class="rating-stars" onclick="openProductQuickView(this.closest('.product-card'))">⭐ 4.9 (142 reviews)</div>
+            <h3 onclick="openProductQuickView(this.closest('.product-card'))">California Almonds (Badam)</h3>
+            <p>Crunchy, nutrient-rich premium handpicked almonds</p>
+            <div class="weight-selector-row">
+              <button class="weight-chip" onclick="selectCardWeight(this, '250g')">250g</button>
+              <button class="weight-chip active" onclick="selectCardWeight(this, '500g')">500g</button>
+              <button class="weight-chip" onclick="selectCardWeight(this, '1kg')">1kg</button>
+            </div>
+            <div class="qty-stepper-row">
+              <span class="qty-label">Quantity:</span>
+              <div class="stepper-box">
+                <button type="button" class="step-btn" onclick="stepCardQty(this, -1)">−</button>
+                <span class="card-qty-val">1</span>
+                <button type="button" class="step-btn" onclick="stepCardQty(this, 1)">+</button>
+              </div>
+            </div>
+            <div class="product-actions-grid">
+              <button class="add-to-cart-btn" onclick="handleAddToCart(this.closest('.product-card'))">🛒 Add</button>
+              <button class="buy-btn" onclick="openCustomerDetails(this)">Buy Now</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2 -->
+        <div class="product-card" data-id="2" data-category="nuts" data-name="Kashmiri Walnut Kernels (Akhrot)" data-base-price="620" data-base-weight="500g" data-price-250g="330" data-price-500g="620" data-price-1kg="1190" data-rating="4.8" data-reviews-count="98" data-origin="Kashmir Valley, India" data-icon="🧠">
+          <div class="product-visual" onclick="openProductQuickView(this.closest('.product-card'))">
+            <span class="product-emoji">🧠</span>
+            <span class="stock-tag">Rich Omega-3</span>
+            <span class="quick-view-badge">🔍 View & Review</span>
+          </div>
+          <div class="product-details">
+            <div class="rating-stars" onclick="openProductQuickView(this.closest('.product-card'))">⭐ 4.8 (98 reviews)</div>
+            <h3 onclick="openProductQuickView(this.closest('.product-card'))">Kashmiri Walnuts (Akhrot)</h3>
+            <p>100% natural, vacuum packed snow-white kernels</p>
+            <div class="weight-selector-row">
+              <button class="weight-chip" onclick="selectCardWeight(this, '250g')">250g</button>
+              <button class="weight-chip active" onclick="selectCardWeight(this, '500g')">500g</button>
+              <button class="weight-chip" onclick="selectCardWeight(this, '1kg')">1kg</button>
+            </div>
+            <div class="qty-stepper-row">
+              <span class="qty-label">Quantity:</span>
+              <div class="stepper-box">
+                <button type="button" class="step-btn" onclick="stepCardQty(this, -1)">−</button>
+                <span class="card-qty-val">1</span>
+                <button type="button" class="step-btn" onclick="stepCardQty(this, 1)">+</button>
+              </div>
+            </div>
+            <div class="product-actions-grid">
+              <button class="add-to-cart-btn" onclick="handleAddToCart(this.closest('.product-card'))">🛒 Add</button>
+              <button class="buy-btn" onclick="openCustomerDetails(this)">Buy Now</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3 -->
+        <div class="product-card" data-id="3" data-category="nuts" data-name="King Size Whole Cashews (Kaju)" data-base-price="490" data-base-weight="500g" data-price-250g="260" data-price-500g="490" data-price-1kg="940" data-rating="4.9" data-reviews-count="165" data-origin="Goa / Mangalore" data-icon="✨">
+          <div class="product-visual" onclick="openProductQuickView(this.closest('.product-card'))">
+            <span class="product-emoji">✨</span>
+            <span class="stock-tag">W240 Grade</span>
+            <span class="quick-view-badge">🔍 View & Review</span>
+          </div>
+          <div class="product-details">
+            <div class="rating-stars" onclick="openProductQuickView(this.closest('.product-card'))">⭐ 4.9 (165 reviews)</div>
+            <h3 onclick="openProductQuickView(this.closest('.product-card'))">Whole Cashews (Kaju)</h3>
+            <p>Rich, creamy and whole roasted grade cashew nuts</p>
+            <div class="weight-selector-row">
+              <button class="weight-chip" onclick="selectCardWeight(this, '250g')">250g</button>
+              <button class="weight-chip active" onclick="selectCardWeight(this, '500g')">500g</button>
+              <button class="weight-chip" onclick="selectCardWeight(this, '1kg')">1kg</button>
+            </div>
+            <div class="qty-stepper-row">
+              <span class="qty-label">Quantity:</span>
+              <div class="stepper-box">
+                <button type="button" class="step-btn" onclick="stepCardQty(this, -1)">−</button>
+                <span class="card-qty-val">1</span>
+                <button type="button" class="step-btn" onclick="stepCardQty(this, 1)">+</button>
+              </div>
+            </div>
+            <div class="product-actions-grid">
+              <button class="add-to-cart-btn" onclick="handleAddToCart(this.closest('.product-card'))">🛒 Add</button>
+              <button class="buy-btn" onclick="openCustomerDetails(this)">Buy Now</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 -->
+        <div class="product-card" data-id="4" data-category="nuts" data-name="Roasted Salted Pistachios (Pista)" data-base-price="580" data-base-weight="500g" data-price-250g="310" data-price-500g="580" data-price-1kg="1100" data-rating="4.8" data-reviews-count="112" data-origin="Iran" data-icon="🌿">
+          <div class="product-visual" onclick="openProductQuickView(this.closest('.product-card'))">
+            <span class="product-emoji">🌿</span>
+            <span class="stock-tag">Crispy</span>
+            <span class="quick-view-badge">🔍 View & Review</span>
+          </div>
+          <div class="product-details">
+            <div class="rating-stars" onclick="openProductQuickView(this.closest('.product-card'))">⭐ 4.8 (112 reviews)</div>
+            <h3 onclick="openProductQuickView(this.closest('.product-card'))">Roasted Pistachios (Pista)</h3>
+            <p>Lightly salted, open-shell roasted Iranian pistachios</p>
+            <div class="weight-selector-row">
+              <button class="weight-chip" onclick="selectCardWeight(this, '250g')">250g</button>
+              <button class="weight-chip active" onclick="selectCardWeight(this, '500g')">500g</button>
+              <button class="weight-chip" onclick="selectCardWeight(this, '1kg')">1kg</button>
+            </div>
+            <div class="qty-stepper-row">
+              <span class="qty-label">Quantity:</span>
+              <div class="stepper-box">
+                <button type="button" class="step-btn" onclick="stepCardQty(this, -1)">−</button>
+                <span class="card-qty-val">1</span>
+                <button type="button" class="step-btn" onclick="stepCardQty(this, 1)">+</button>
+              </div>
+            </div>
+            <div class="product-actions-grid">
+              <button class="add-to-cart-btn" onclick="handleAddToCart(this.closest('.product-card'))">🛒 Add</button>
+              <button class="buy-btn" onclick="openCustomerDetails(this)">Buy Now</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5 -->
+        <div class="product-card" data-id="5" data-category="dried" data-name="Arabian Medjool Dates (Khajoor)" data-base-price="390" data-base-weight="500g" data-price-250g="210" data-price-500g="390" data-price-1kg="740" data-rating="4.9" data-reviews-count="178" data-origin="Medina, Saudi Arabia" data-icon="🌴">
+          <div class="product-visual" onclick="openProductQuickView(this.closest('.product-card'))">
+            <span class="product-emoji">🌴</span>
+            <span class="stock-tag">Natural Sweet</span>
+            <span class="quick-view-badge">🔍 View & Review</span>
+          </div>
+          <div class="product-details">
+            <div class="rating-stars" onclick="openProductQuickView(this.closest('.product-card'))">⭐ 4.9 (178 reviews)</div>
+            <h3 onclick="openProductQuickView(this.closest('.product-card'))">Medjool Dates (Khajoor)</h3>
+            <p>Soft, luscious caramel-sweet authentic Arabian dates</p>
+            <div class="weight-selector-row">
+              <button class="weight-chip" onclick="selectCardWeight(this, '250g')">250g</button>
+              <button class="weight-chip active" onclick="selectCardWeight(this, '500g')">500g</button>
+              <button class="weight-chip" onclick="selectCardWeight(this, '1kg')">1kg</button>
+            </div>
+            <div class="qty-stepper-row">
+              <span class="qty-label">Quantity:</span>
+              <div class="stepper-box">
+                <button type="button" class="step-btn" onclick="stepCardQty(this, -1)">−</button>
+                <span class="card-qty-val">1</span>
+                <button type="button" class="step-btn" onclick="stepCardQty(this, 1)">+</button>
+              </div>
+            </div>
+            <div class="product-actions-grid">
+              <button class="add-to-cart-btn" onclick="handleAddToCart(this.closest('.product-card'))">🛒 Add</button>
+              <button class="buy-btn" onclick="openCustomerDetails(this)">Buy Now</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6 -->
+        <div class="product-card" data-id="6" data-category="dried" data-name="Afghani Green Raisins (Kismis)" data-base-price="260" data-base-weight="500g" data-price-250g="140" data-price-500g="260" data-price-1kg="490" data-rating="4.7" data-reviews-count="84" data-origin="Kandahar, Afghanistan" data-icon="🍇">
+          <div class="product-visual" onclick="openProductQuickView(this.closest('.product-card'))">
+            <span class="product-emoji">🍇</span>
+            <span class="stock-tag">Seedless</span>
+            <span class="quick-view-badge">🔍 View & Review</span>
+          </div>
+          <div class="product-details">
+            <div class="rating-stars" onclick="openProductQuickView(this.closest('.product-card'))">⭐ 4.7 (84 reviews)</div>
+            <h3 onclick="openProductQuickView(this.closest('.product-card'))">Green Raisins (Kismis)</h3>
+            <p>Long green seedless naturally dried sun-kissed raisins</p>
+            <div class="weight-selector-row">
+              <button class="weight-chip" onclick="selectCardWeight(this, '250g')">250g</button>
+              <button class="weight-chip active" onclick="selectCardWeight(this, '500g')">500g</button>
+              <button class="weight-chip" onclick="selectCardWeight(this, '1kg')">1kg</button>
+            </div>
+            <div class="qty-stepper-row">
+              <span class="qty-label">Quantity:</span>
+              <div class="stepper-box">
+                <button type="button" class="step-btn" onclick="stepCardQty(this, -1)">−</button>
+                <span class="card-qty-val">1</span>
+                <button type="button" class="step-btn" onclick="stepCardQty(this, 1)">+</button>
+              </div>
+            </div>
+            <div class="product-actions-grid">
+              <button class="add-to-cart-btn" onclick="handleAddToCart(this.closest('.product-card'))">🛒 Add</button>
+              <button class="buy-btn" onclick="openCustomerDetails(this)">Buy Now</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 7 -->
+        <div class="product-card" data-id="7" data-category="dried" data-name="Turkish Dried Figs (Anjeer)" data-base-price="750" data-base-weight="500g" data-price-250g="390" data-price-500g="750" data-price-1kg="1420" data-rating="4.9" data-reviews-count="131" data-origin="Izmir, Turkey" data-icon="🍯">
+          <div class="product-visual" onclick="openProductQuickView(this.closest('.product-card'))">
+            <span class="product-emoji">🍯</span>
+            <span class="stock-tag">High Fiber</span>
+            <span class="quick-view-badge">🔍 View & Review</span>
+          </div>
+          <div class="product-details">
+            <div class="rating-stars" onclick="openProductQuickView(this.closest('.product-card'))">⭐ 4.9 (131 reviews)</div>
+            <h3 onclick="openProductQuickView(this.closest('.product-card'))">Turkish Figs (Anjeer)</h3>
+            <p>Plump, chewy and sweet dried garland figs</p>
+            <div class="weight-selector-row">
+              <button class="weight-chip" onclick="selectCardWeight(this, '250g')">250g</button>
+              <button class="weight-chip active" onclick="selectCardWeight(this, '500g')">500g</button>
+              <button class="weight-chip" onclick="selectCardWeight(this, '1kg')">1kg</button>
+            </div>
+            <div class="qty-stepper-row">
+              <span class="qty-label">Quantity:</span>
+              <div class="stepper-box">
+                <button type="button" class="step-btn" onclick="stepCardQty(this, -1)">−</button>
+                <span class="card-qty-val">1</span>
+                <button type="button" class="step-btn" onclick="stepCardQty(this, 1)">+</button>
+              </div>
+            </div>
+            <div class="product-actions-grid">
+              <button class="add-to-cart-btn" onclick="handleAddToCart(this.closest('.product-card'))">🛒 Add</button>
+              <button class="buy-btn" onclick="openCustomerDetails(this)">Buy Now</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 8 -->
+        <div class="product-card" data-id="8" data-category="exotic" data-name="Kashmir Mogra Saffron (Kesar)" data-base-price="550" data-base-weight="2g" data-price-250g="300" data-price-500g="550" data-price-1kg="1050" data-unit-type="grams" data-rating="5.0" data-reviews-count="210" data-origin="Pampore, Kashmir" data-icon="🌸">
+          <div class="product-visual" onclick="openProductQuickView(this.closest('.product-card'))">
+            <span class="product-emoji">🌸</span>
+            <span class="stock-tag">Pure Grade A1</span>
+            <span class="quick-view-badge">🔍 View & Review</span>
+          </div>
+          <div class="product-details">
+            <div class="rating-stars" onclick="openProductQuickView(this.closest('.product-card'))">⭐ 5.0 (210 reviews)</div>
+            <h3 onclick="openProductQuickView(this.closest('.product-card'))">Kashmiri Saffron (Kesar)</h3>
+            <p>Original high aroma crimson threads of Kashmiri Mogra</p>
+            <div class="weight-selector-row">
+              <button class="weight-chip" onclick="selectCardWeight(this, '1g')">1g</button>
+              <button class="weight-chip active" onclick="selectCardWeight(this, '2g')">2g</button>
+              <button class="weight-chip" onclick="selectCardWeight(this, '5g')">5g</button>
+            </div>
+            <div class="qty-stepper-row">
+              <span class="qty-label">Quantity:</span>
+              <div class="stepper-box">
+                <button type="button" class="step-btn" onclick="stepCardQty(this, -1)">−</button>
+                <span class="card-qty-val">1</span>
+                <button type="button" class="step-btn" onclick="stepCardQty(this, 1)">+</button>
+              </div>
+            </div>
+            <div class="product-actions-grid">
+              <button class="add-to-cart-btn" onclick="handleAddToCart(this.closest('.product-card'))">🛒 Add</button>
+              <button class="buy-btn" onclick="openCustomerDetails(this)">Buy Now</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 9 -->
+        <div class="product-card" data-id="9" data-category="exotic" data-name="Dried Chia & Pumpkin Seeds Mix" data-base-price="340" data-base-weight="500g" data-price-250g="190" data-price-500g="340" data-price-1kg="640" data-rating="4.8" data-reviews-count="76" data-origin="Organic India Farms" data-icon="🌻">
+          <div class="product-visual" onclick="openProductQuickView(this.closest('.product-card'))">
+            <span class="product-emoji">🌻</span>
+            <span class="stock-tag">Superfood</span>
+            <span class="quick-view-badge">🔍 View & Review</span>
+          </div>
+          <div class="product-details">
+            <div class="rating-stars" onclick="openProductQuickView(this.closest('.product-card'))">⭐ 4.8 (76 reviews)</div>
+            <h3 onclick="openProductQuickView(this.closest('.product-card'))">7-in-1 Healthy Seed Mix</h3>
+            <p>Chia, flax, pumpkin, sunflower, watermelon seeds mix</p>
+            <div class="weight-selector-row">
+              <button class="weight-chip" onclick="selectCardWeight(this, '250g')">250g</button>
+              <button class="weight-chip active" onclick="selectCardWeight(this, '500g')">500g</button>
+              <button class="weight-chip" onclick="selectCardWeight(this, '1kg')">1kg</button>
+            </div>
+            <div class="qty-stepper-row">
+              <span class="qty-label">Quantity:</span>
+              <div class="stepper-box">
+                <button type="button" class="step-btn" onclick="stepCardQty(this, -1)">−</button>
+                <span class="card-qty-val">1</span>
+                <button type="button" class="step-btn" onclick="stepCardQty(this, 1)">+</button>
+              </div>
+            </div>
+            <div class="product-actions-grid">
+              <button class="add-to-cart-btn" onclick="handleAddToCart(this.closest('.product-card'))">🛒 Add</button>
+              <button class="buy-btn" onclick="openCustomerDetails(this)">Buy Now</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 10 -->
+        <div class="product-card" data-id="10" data-category="hampers" data-name="Royal Gourmet Dry Fruit Hamper" data-base-price="1299" data-base-weight="1kg" data-price-250g="699" data-price-500g="999" data-price-1kg="1299" data-rating="4.9" data-reviews-count="194" data-origin="Royal Custom Packaging" data-icon="🎁">
+          <div class="product-visual" onclick="openProductQuickView(this.closest('.product-card'))">
+            <span class="product-emoji">🎁</span>
+            <span class="stock-tag">Gift Box</span>
+            <span class="quick-view-badge">🔍 View & Review</span>
+          </div>
+          <div class="product-details">
+            <div class="rating-stars" onclick="openProductQuickView(this.closest('.product-card'))">⭐ 4.9 (194 reviews)</div>
+            <h3 onclick="openProductQuickView(this.closest('.product-card'))">Royal Gourmet Gift Hamper</h3>
+            <p>Assorted premium box: Badam, Kaju, Pista & Akhrot</p>
+            <div class="weight-selector-row">
+              <button class="weight-chip" onclick="selectCardWeight(this, '500g')">500g</button>
+              <button class="weight-chip active" onclick="selectCardWeight(this, '1kg')">1kg</button>
+              <button class="weight-chip" onclick="selectCardWeight(this, '2kg')">2kg</button>
+            </div>
+            <div class="qty-stepper-row">
+              <span class="qty-label">Quantity:</span>
+              <div class="stepper-box">
+                <button type="button" class="step-btn" onclick="stepCardQty(this, -1)">−</button>
+                <span class="card-qty-val">1</span>
+                <button type="button" class="step-btn" onclick="stepCardQty(this, 1)">+</button>
+              </div>
+            </div>
+            <div class="product-actions-grid">
+              <button class="add-to-cart-btn" onclick="handleAddToCart(this.closest('.product-card'))">🛒 Add</button>
+              <button class="buy-btn" onclick="openCustomerDetails(this)">Buy Now</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 11 -->
+        <div class="product-card" data-id="11" data-category="nuts" data-name="Raw Turkish Hazelnuts" data-base-price="590" data-base-weight="500g" data-price-250g="320" data-price-500g="590" data-price-1kg="1120" data-rating="4.8" data-reviews-count="67" data-origin="Trabzon, Turkey" data-icon="🌰">
+          <div class="product-visual" onclick="openProductQuickView(this.closest('.product-card'))">
+            <span class="product-emoji">🌰</span>
+            <span class="stock-tag">Imported</span>
+            <span class="quick-view-badge">🔍 View & Review</span>
+          </div>
+          <div class="product-details">
+            <div class="rating-stars" onclick="openProductQuickView(this.closest('.product-card'))">⭐ 4.8 (67 reviews)</div>
+            <h3 onclick="openProductQuickView(this.closest('.product-card'))">Turkish Hazelnuts</h3>
+            <p>Crunchy, buttery, unroasted premium Turkish whole filberts</p>
+            <div class="weight-selector-row">
+              <button class="weight-chip" onclick="selectCardWeight(this, '250g')">250g</button>
+              <button class="weight-chip active" onclick="selectCardWeight(this, '500g')">500g</button>
+              <button class="weight-chip" onclick="selectCardWeight(this, '1kg')">1kg</button>
+            </div>
+            <div class="qty-stepper-row">
+              <span class="qty-label">Quantity:</span>
+              <div class="stepper-box">
+                <button type="button" class="step-btn" onclick="stepCardQty(this, -1)">−</button>
+                <span class="card-qty-val">1</span>
+                <button type="button" class="step-btn" onclick="stepCardQty(this, 1)">+</button>
+              </div>
+            </div>
+            <div class="product-actions-grid">
+              <button class="add-to-cart-btn" onclick="handleAddToCart(this.closest('.product-card'))">🛒 Add</button>
+              <button class="buy-btn" onclick="openCustomerDetails(this)">Buy Now</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 12 -->
+        <div class="product-card" data-id="12" data-category="nuts" data-name="Australian Macadamia Nuts" data-base-price="890" data-base-weight="500g" data-price-250g="480" data-price-500g="890" data-price-1kg="1690" data-rating="5.0" data-reviews-count="53" data-origin="Queensland, Australia" data-icon="🥥">
+          <div class="product-visual" onclick="openProductQuickView(this.closest('.product-card'))">
+            <span class="product-emoji">🥥</span>
+            <span class="stock-tag">Royal Luxury</span>
+            <span class="quick-view-badge">🔍 View & Review</span>
+          </div>
+          <div class="product-details">
+            <div class="rating-stars" onclick="openProductQuickView(this.closest('.product-card'))">⭐ 5.0 (53 reviews)</div>
+            <h3 onclick="openProductQuickView(this.closest('.product-card'))">Australian Macadamias</h3>
+            <p>Rich, ultra-creamy, lightly roasted premium whole macadamias</p>
+            <div class="weight-selector-row">
+              <button class="weight-chip" onclick="selectCardWeight(this, '250g')">250g</button>
+              <button class="weight-chip active" onclick="selectCardWeight(this, '500g')">500g</button>
+              <button class="weight-chip" onclick="selectCardWeight(this, '1kg')">1kg</button>
+            </div>
+            <div class="qty-stepper-row">
+              <span class="qty-label">Quantity:</span>
+              <div class="stepper-box">
+                <button type="button" class="step-btn" onclick="stepCardQty(this, -1)">−</button>
+                <span class="card-qty-val">1</span>
+                <button type="button" class="step-btn" onclick="stepCardQty(this, 1)">+</button>
+              </div>
+            </div>
+            <div class="product-actions-grid">
+              <button class="add-to-cart-btn" onclick="handleAddToCart(this.closest('.product-card'))">🛒 Add</button>
+              <button class="buy-btn" onclick="openCustomerDetails(this)">Buy Now</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 13 -->
+        <div class="product-card" data-id="13" data-category="nuts" data-name="American Pecan Nut Halves" data-base-price="780" data-base-weight="500g" data-price-250g="410" data-price-500g="780" data-price-1kg="1480" data-rating="4.8" data-reviews-count="47" data-origin="Georgia, USA" data-icon="🍂">
+          <div class="product-visual" onclick="openProductQuickView(this.closest('.product-card'))">
+            <span class="product-emoji">🍂</span>
+            <span class="stock-tag">Keto Friendly</span>
+            <span class="quick-view-badge">🔍 View & Review</span>
+          </div>
+          <div class="product-details">
+            <div class="rating-stars" onclick="openProductQuickView(this.closest('.product-card'))">⭐ 4.8 (47 reviews)</div>
+            <h3 onclick="openProductQuickView(this.closest('.product-card'))">American Pecan Halves</h3>
+            <p>Sweet, buttery, raw natural pecan nut halves from Georgia</p>
+            <div class="weight-selector-row">
+              <button class="weight-chip" onclick="selectCardWeight(this, '250g')">250g</button>
+              <button class="weight-chip active" onclick="selectCardWeight(this, '500g')">500g</button>
+              <button class="weight-chip" onclick="selectCardWeight(this, '1kg')">1kg</button>
+            </div>
+            <div class="qty-stepper-row">
+              <span class="qty-label">Quantity:</span>
+              <div class="stepper-box">
+                <button type="button" class="step-btn" onclick="stepCardQty(this, -1)">−</button>
+                <span class="card-qty-val">1</span>
+                <button type="button" class="step-btn" onclick="stepCardQty(this, 1)">+</button>
+              </div>
+            </div>
+            <div class="product-actions-grid">
+              <button class="add-to-cart-btn" onclick="handleAddToCart(this.closest('.product-card'))">🛒 Add</button>
+              <button class="buy-btn" onclick="openCustomerDetails(this)">Buy Now</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 14 -->
+        <div class="product-card" data-id="14" data-category="berries" data-name="Dried Whole Cranberries" data-base-price="380" data-base-weight="500g" data-price-250g="210" data-price-500g="380" data-price-1kg="720" data-rating="4.8" data-reviews-count="94" data-origin="Wisconsin, USA" data-icon="🍒">
+          <div class="product-visual" onclick="openProductQuickView(this.closest('.product-card'))">
+            <span class="product-emoji">🍒</span>
+            <span class="stock-tag">Antioxidant</span>
+            <span class="quick-view-badge">🔍 View & Review</span>
+          </div>
+          <div class="product-details">
+            <div class="rating-stars" onclick="openProductQuickView(this.closest('.product-card'))">⭐ 4.8 (94 reviews)</div>
+            <h3 onclick="openProductQuickView(this.closest('.product-card'))">Dried Whole Cranberries</h3>
+            <p>Sweet and tangy, sun-dried juicy cranberries for daily wellness</p>
+            <div class="weight-selector-row">
+              <button class="weight-chip" onclick="selectCardWeight(this, '250g')">250g</button>
+              <button class="weight-chip active" onclick="selectCardWeight(this, '500g')">500g</button>
+              <button class="weight-chip" onclick="selectCardWeight(this, '1kg')">1kg</button>
+            </div>
+            <div class="qty-stepper-row">
+              <span class="qty-label">Quantity:</span>
+              <div class="stepper-box">
+                <button type="button" class="step-btn" onclick="stepCardQty(this, -1)">−</button>
+                <span class="card-qty-val">1</span>
+                <button type="button" class="step-btn" onclick="stepCardQty(this, 1)">+</button>
+              </div>
+            </div>
+            <div class="product-actions-grid">
+              <button class="add-to-cart-btn" onclick="handleAddToCart(this.closest('.product-card'))">🛒 Add</button>
+              <button class="buy-btn" onclick="openCustomerDetails(this)">Buy Now</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 15 -->
+        <div class="product-card" data-id="15" data-category="berries" data-name="Dried Wild Blueberries" data-base-price="540" data-base-weight="500g" data-price-250g="290" data-price-500g="540" data-price-1kg="1020" data-rating="4.9" data-reviews-count="118" data-origin="Nova Scotia, Canada" data-icon="🫐">
+          <div class="product-visual" onclick="openProductQuickView(this.closest('.product-card'))">
+            <span class="product-emoji">🫐</span>
+            <span class="stock-tag">Brain Food</span>
+            <span class="quick-view-badge">🔍 View & Review</span>
+          </div>
+          <div class="product-details">
+            <div class="rating-stars" onclick="openProductQuickView(this.closest('.product-card'))">⭐ 4.9 (118 reviews)</div>
+            <h3 onclick="openProductQuickView(this.closest('.product-card'))">Wild Blueberries</h3>
+            <p>Naturally sweetened dried Canadian blueberries packed with minerals</p>
+            <div class="weight-selector-row">
+              <button class="weight-chip" onclick="selectCardWeight(this, '250g')">250g</button>
+              <button class="weight-chip active" onclick="selectCardWeight(this, '500g')">500g</button>
+              <button class="weight-chip" onclick="selectCardWeight(this, '1kg')">1kg</button>
+            </div>
+            <div class="qty-stepper-row">
+              <span class="qty-label">Quantity:</span>
+              <div class="stepper-box">
+                <button type="button" class="step-btn" onclick="stepCardQty(this, -1)">−</button>
+                <span class="card-qty-val">1</span>
+                <button type="button" class="step-btn" onclick="stepCardQty(this, 1)">+</button>
+              </div>
+            </div>
+            <div class="product-actions-grid">
+              <button class="add-to-cart-btn" onclick="handleAddToCart(this.closest('.product-card'))">🛒 Add</button>
+              <button class="buy-btn" onclick="openCustomerDetails(this)">Buy Now</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 16 -->
+        <div class="product-card" data-id="16" data-category="dried" data-name="Turkish Dried Apricots (Jardalu)" data-base-price="360" data-base-weight="500g" data-price-250g="195" data-price-500g="360" data-price-1kg="680" data-rating="4.8" data-reviews-count="79" data-origin="Malatya, Turkey" data-icon="🍑">
+          <div class="product-visual" onclick="openProductQuickView(this.closest('.product-card'))">
+            <span class="product-emoji">🍑</span>
+            <span class="stock-tag">Vitamin A</span>
+            <span class="quick-view-badge">🔍 View & Review</span>
+          </div>
+          <div class="product-details">
+            <div class="rating-stars" onclick="openProductQuickView(this.closest('.product-card'))">⭐ 4.8 (79 reviews)</div>
+            <h3 onclick="openProductQuickView(this.closest('.product-card'))">Dried Apricots (Jardalu)</h3>
+            <p>Golden, soft, naturally sweet and fiber-rich Turkish apricots</p>
+            <div class="weight-selector-row">
+              <button class="weight-chip" onclick="selectCardWeight(this, '250g')">250g</button>
+              <button class="weight-chip active" onclick="selectCardWeight(this, '500g')">500g</button>
+              <button class="weight-chip" onclick="selectCardWeight(this, '1kg')">1kg</button>
+            </div>
+            <div class="qty-stepper-row">
+              <span class="qty-label">Quantity:</span>
+              <div class="stepper-box">
+                <button type="button" class="step-btn" onclick="stepCardQty(this, -1)">−</button>
+                <span class="card-qty-val">1</span>
+                <button type="button" class="step-btn" onclick="stepCardQty(this, 1)">+</button>
+              </div>
+            </div>
+            <div class="product-actions-grid">
+              <button class="add-to-cart-btn" onclick="handleAddToCart(this.closest('.product-card'))">🛒 Add</button>
+              <button class="buy-btn" onclick="openCustomerDetails(this)">Buy Now</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 17 -->
+        <div class="product-card" data-id="17" data-category="dried" data-name="Seedless Dried Prunes (Aloo Bukhara)" data-base-price="390" data-base-weight="500g" data-price-250g="210" data-price-500g="390" data-price-1kg="740" data-rating="4.7" data-reviews-count="61" data-origin="Yuba City, USA" data-icon="🍇">
+          <div class="product-visual" onclick="openProductQuickView(this.closest('.product-card'))">
+            <span class="product-emoji">🍇</span>
+            <span class="stock-tag">Digestion Care</span>
+            <span class="quick-view-badge">🔍 View & Review</span>
+          </div>
+          <div class="product-details">
+            <div class="rating-stars" onclick="openProductQuickView(this.closest('.product-card'))">⭐ 4.7 (61 reviews)</div>
+            <h3 onclick="openProductQuickView(this.closest('.product-card'))">Dried Prunes (Aloo Bukhara)</h3>
+            <p>Plump, soft pitted California dried plums for bone and gut health</p>
+            <div class="weight-selector-row">
+              <button class="weight-chip" onclick="selectCardWeight(this, '250g')">250g</button>
+              <button class="weight-chip active" onclick="selectCardWeight(this, '500g')">500g</button>
+              <button class="weight-chip" onclick="selectCardWeight(this, '1kg')">1kg</button>
+            </div>
+            <div class="qty-stepper-row">
+              <span class="qty-label">Quantity:</span>
+              <div class="stepper-box">
+                <button type="button" class="step-btn" onclick="stepCardQty(this, -1)">−</button>
+                <span class="card-qty-val">1</span>
+                <button type="button" class="step-btn" onclick="stepCardQty(this, 1)">+</button>
+              </div>
+            </div>
+            <div class="product-actions-grid">
+              <button class="add-to-cart-btn" onclick="handleAddToCart(this.closest('.product-card'))">🛒 Add</button>
+              <button class="buy-btn" onclick="openCustomerDetails(this)">Buy Now</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 18 -->
+        <div class="product-card" data-id="18" data-category="nuts" data-name="Pine Nuts without Shell (Chilgoza)" data-base-price="1450" data-base-weight="250g" data-price-250g="1450" data-price-500g="2800" data-price-1kg="5400" data-rating="5.0" data-reviews-count="89" data-origin="Kinnaur, Himachal Pradesh" data-icon="🌲">
+          <div class="product-visual" onclick="openProductQuickView(this.closest('.product-card'))">
+            <span class="product-emoji">🌲</span>
+            <span class="stock-tag">Ultra Premium</span>
+            <span class="quick-view-badge">🔍 View & Review</span>
+          </div>
+          <div class="product-details">
+            <div class="rating-stars" onclick="openProductQuickView(this.closest('.product-card'))">⭐ 5.0 (89 reviews)</div>
+            <h3 onclick="openProductQuickView(this.closest('.product-card'))">Pine Nuts (Chilgoza)</h3>
+            <p>Himalayan hand-harvested pure shelled creamy pine nuts</p>
+            <div class="weight-selector-row">
+              <button class="weight-chip active" onclick="selectCardWeight(this, '250g')">250g</button>
+              <button class="weight-chip" onclick="selectCardWeight(this, '500g')">500g</button>
+              <button class="weight-chip" onclick="selectCardWeight(this, '1kg')">1kg</button>
+            </div>
+            <div class="qty-stepper-row">
+              <span class="qty-label">Quantity:</span>
+              <div class="stepper-box">
+                <button type="button" class="step-btn" onclick="stepCardQty(this, -1)">−</button>
+                <span class="card-qty-val">1</span>
+                <button type="button" class="step-btn" onclick="stepCardQty(this, 1)">+</button>
+              </div>
+            </div>
+            <div class="product-actions-grid">
+              <button class="add-to-cart-btn" onclick="handleAddToCart(this.closest('.product-card'))">🛒 Add</button>
+              <button class="buy-btn" onclick="openCustomerDetails(this)">Buy Now</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 19 -->
+        <div class="product-card" data-id="19" data-category="berries" data-name="Himalayan Goji Berries" data-base-price="420" data-base-weight="500g" data-price-250g="230" data-price-500g="420" data-price-1kg="790" data-rating="4.8" data-reviews-count="56" data-origin="Tibetan Plateau" data-icon="🍎">
+          <div class="product-visual" onclick="openProductQuickView(this.closest('.product-card'))">
+            <span class="product-emoji">🍎</span>
+            <span class="stock-tag">Immunity Booster</span>
+            <span class="quick-view-badge">🔍 View & Review</span>
+          </div>
+          <div class="product-details">
+            <div class="rating-stars" onclick="openProductQuickView(this.closest('.product-card'))">⭐ 4.8 (56 reviews)</div>
+            <h3 onclick="openProductQuickView(this.closest('.product-card'))">Himalayan Goji Berries</h3>
+            <p>Sun-dried ruby red super-berries rich in carotenoids & vitality</p>
+            <div class="weight-selector-row">
+              <button class="weight-chip" onclick="selectCardWeight(this, '250g')">250g</button>
+              <button class="weight-chip active" onclick="selectCardWeight(this, '500g')">500g</button>
+              <button class="weight-chip" onclick="selectCardWeight(this, '1kg')">1kg</button>
+            </div>
+            <div class="qty-stepper-row">
+              <span class="qty-label">Quantity:</span>
+              <div class="stepper-box">
+                <button type="button" class="step-btn" onclick="stepCardQty(this, -1)">−</button>
+                <span class="card-qty-val">1</span>
+                <button type="button" class="step-btn" onclick="stepCardQty(this, 1)">+</button>
+              </div>
+            </div>
+            <div class="product-actions-grid">
+              <button class="add-to-cart-btn" onclick="handleAddToCart(this.closest('.product-card'))">🛒 Add</button>
+              <button class="buy-btn" onclick="openCustomerDetails(this)">Buy Now</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 20 -->
+        <div class="product-card" data-id="20" data-category="hampers" data-name="Imperial Grand Celebration Box" data-base-price="1999" data-base-weight="1.5kg" data-price-250g="1199" data-price-500g="1599" data-price-1kg="1999" data-rating="5.0" data-reviews-count="240" data-origin="Royal Master Collection" data-icon="👑">
+          <div class="product-visual" onclick="openProductQuickView(this.closest('.product-card'))">
+            <span class="product-emoji">👑</span>
+            <span class="stock-tag">Luxury Wood Box</span>
+            <span class="quick-view-badge">🔍 View & Review</span>
+          </div>
+          <div class="product-details">
+            <div class="rating-stars" onclick="openProductQuickView(this.closest('.product-card'))">⭐ 5.0 (240 reviews)</div>
+            <h3 onclick="openProductQuickView(this.closest('.product-card'))">Imperial Celebration Hamper</h3>
+            <p>6-in-1 Royal Wooden Chest: Badam, Kaju, Pista, Akhrot, Anjeer & Dates</p>
+            <div class="weight-selector-row">
+              <button class="weight-chip" onclick="selectCardWeight(this, '1kg')">1kg</button>
+              <button class="weight-chip active" onclick="selectCardWeight(this, '1.5kg')">1.5kg</button>
+              <button class="weight-chip" onclick="selectCardWeight(this, '2.5kg')">2.5kg</button>
+            </div>
+            <div class="qty-stepper-row">
+              <span class="qty-label">Quantity:</span>
+              <div class="stepper-box">
+                <button type="button" class="step-btn" onclick="stepCardQty(this, -1)">−</button>
+                <span class="card-qty-val">1</span>
+                <button type="button" class="step-btn" onclick="stepCardQty(this, 1)">+</button>
+              </div>
+            </div>
+            <div class="product-actions-grid">
+              <button class="add-to-cart-btn" onclick="handleAddToCart(this.closest('.product-card'))">🛒 Add</button>
+              <button class="buy-btn" onclick="openCustomerDetails(this)">Buy Now</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+      <div class="about-container">
+        <div class="about-header">
+          <span class="hero-tag">ABOUT US</span>
+          <h2>Crafted by Nature, Perfected by Tradition</h2>
+          <p>Royal Dry Fruits is dedicated to sourcing pure, unadulterated dry fruits, nuts, and natural superfoods across India and global heritage farms.</p>
+        </div>
+
+        <div class="about-grid">
+          <div class="about-card">
+            <div class="about-icon">🌱</div>
+            <h3>100% Organic & Raw</h3>
+            <p>Direct farm-sourced produce free from chemical additives, artificial gloss, or preservatives.</p>
+          </div>
+
+          <div class="about-card">
+            <div class="about-icon">⚡</div>
+            <h3>Instant UPI Checkout</h3>
+            <p>Seamless zero-delay UPI payment gateway with authentic real-time receipt generation.</p>
+          </div>
+
+          <div class="about-card">
+            <div class="about-icon">📦</div>
+            <h3>Aroma Seal Packaging</h3>
+            <p>Multi-layered vacuum packaging ensures long-lasting crunchiness, hygiene, and fresh taste.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Comprehensive Product Quick View Modal -->
+  <div class="modal-backdrop" id="productModal">
+    <div class="checkout-wrapper">
+      <div class="terminal-card quickview-card">
+        <div class="modal-title-row">
+          <span class="quickview-origin-tag" id="qvOriginTag">Origin: California, USA</span>
+          <button class="modal-close-icon" onclick="closeProductQuickView()">&times;</button>
+        </div>
+
+        <div class="quickview-hero">
+          <div class="qv-visual-badge" id="qvProductIcon">🥜</div>
+          <div class="qv-hero-meta">
+            <h3 id="qvProductName">California Almonds (Badam)</h3>
+            <div class="qv-rating-bar" id="qvRatingBar">⭐ 4.9 · 142 Verified Customer Ratings</div>
+            <div class="qv-price" id="qvPriceDisplay">₹450.00</div>
+          </div>
+        </div>
+
+        <!-- Strict Return & Refund Policy Guarantee Box -->
+        <div class="return-policy-guarantee-box">
+          <div class="policy-header">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+            <h4>Official Return & Replacement Policy</h4>
+          </div>
+          <p class="policy-text">
+            Because dry fruits are perishable food items, returns/replacements are <strong>strictly accepted ONLY if:</strong>
+          </p>
+          <ul class="policy-bullets">
+            <li>⚠️ <strong>Spoiled, Damaged, or Expired:</strong> Broken seal, moisture leakage, or staleness upon delivery.</li>
+            <li>❌ <strong>Missing Items:</strong> Packet missing from order upon unboxing.</li>
+            <li>📦 <strong>Wrong Product Delivered:</strong> Received a different weight, grade, or item than invoiced.</li>
+          </ul>
+          <span class="policy-footer-note">48-hour video unboxing evidence window required for instant refund/dispatch.</span>
+        </div>
+
+        <!-- Verified Reviews Section with Interactive Submission Form -->
+        <div class="customer-reviews-section">
+          <div class="reviews-section-header">
+            <h4>Verified Customer Reviews</h4>
+            <button class="write-review-toggle-btn" id="toggleReviewFormBtn" onclick="toggleReviewForm()">✍️ Write Review</button>
+          </div>
+
+          <!-- Add Review Form -->
+          <form class="add-review-form" id="addReviewForm" style="display: none;" onsubmit="handleReviewSubmit(event)">
+            <div class="star-rating-selector">
+              <span>Your Rating:</span>
+              <div class="star-inputs">
+                <span class="star-select active" onclick="setRatingStar(1)">⭐</span>
+                <span class="star-select active" onclick="setRatingStar(2)">⭐</span>
+                <span class="star-select active" onclick="setRatingStar(3)">⭐</span>
+                <span class="star-select active" onclick="setRatingStar(4)">⭐</span>
+                <span class="star-select active" onclick="setRatingStar(5)">⭐</span>
+              </div>
+            </div>
+            <textarea id="reviewTextInput" rows="2" placeholder="Share your experience about freshness, taste, and packaging..." required maxlength="280"></textarea>
+            <button type="submit" class="submit-review-btn" id="submitReviewBtn">Submit Review</button>
+          </form>
+
+          <div class="reviews-list" id="modalReviewsList">
+            <!-- Dynamically populated from Cloudflare KV / Mock Fallbacks -->
+          </div>
+        </div>
+
+        <!-- Quick View Action Bottom Bar -->
+        <div class="quickview-actions-footer">
+          <button class="qv-cart-btn" id="qvAddToCartBtn">🛒 Add to Cart</button>
+          <button class="qv-buy-btn" id="qvBuyNowBtn">Order Now →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile Management Modal -->
+  <div class="modal-backdrop" id="profileModal">
+    <div class="checkout-wrapper">
+      <div class="terminal-card profile-card">
+        <div class="modal-title-row">
+          <h3>Member Profile</h3>
+          <button class="modal-close-icon" onclick="closeProfileModal()">&times;</button>
+        </div>
+
+        <div class="profile-photo-upload-wrap">
+          <div class="avatar-preview-box">
+            <img id="profileImagePreview" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80" alt="Avatar" />
+            <label for="avatarFileInput" class="avatar-edit-badge" title="Change Photo">📷</label>
+            <input type="file" id="avatarFileInput" accept="image/*" style="display: none;" onchange="handleAvatarChange(event)" />
+          </div>
+          <span class="avatar-note">Click the camera to upload a custom profile picture</span>
+        </div>
+
+        <form id="profileForm" onsubmit="saveProfileDetails(event)">
+          <div class="input-group">
+            <label>Full Name</label>
+            <input type="text" id="profNameInput" required />
+          </div>
+          <div class="input-group">
+            <label>Phone Number</label>
+            <input type="tel" id="profPhoneInput" pattern="[0-9]{10}" required />
+          </div>
+          <div class="input-group">
+            <label>Default Shipping Address</label>
+            <textarea id="profAddressInput" rows="2" placeholder="Street, City, Pincode" required></textarea>
+          </div>
+          <button type="submit" class="submit-proceed-btn">Save Changes</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Checkout & Printing Modal Backdrop -->
+  <div class="modal-backdrop" id="checkoutModal">
+    <div class="checkout-wrapper">
+
+      <!-- STEP 1: Customer Details & Animated Coupon -->
+      <div class="terminal-card" id="stepCustomer">
+        <div class="modal-title-row">
+          <h3>Delivery & Coupon</h3>
+          <button class="modal-close-icon" onclick="closeAllModals()">&times;</button>
+        </div>
+
+        <div class="selected-product-banner">
+          <span id="formProductIcon">🥜</span>
+          <div class="product-banner-meta">
+            <h4 id="formProductName">California Almonds</h4>
+            <div class="selected-config-pill" id="formProductConfig">Pack: 500g | Qty: 1</div>
+            <div class="price-calc-display">
+              <span class="original-strike" id="formOriginalPrice" style="display: none;">₹450.00</span>
+              <p id="formProductPrice">₹450.00</p>
+            </div>
+          </div>
+        </div>
+
+        <form id="customerForm" onsubmit="handleCustomerSubmit(event)">
+          <div class="input-group">
+            <label>Full Name</label>
+            <input type="text" id="custName" placeholder="e.g. Rahul Sharma" required />
+          </div>
+          <div class="input-group">
+            <label>Mobile Number</label>
+            <input type="tel" id="custPhone" placeholder="e.g. 9876543210" pattern="[0-9]{10}" required />
+          </div>
+          <div class="input-group">
+            <label>Customer Email (for receipt copy)</label>
+            <input type="email" id="custEmail" placeholder="e.g. rahul@gmail.com" required />
+          </div>
+          <div class="input-group">
+            <label>Delivery Address</label>
+            <textarea id="custAddress" rows="2" placeholder="House no, Street, City, Pincode" required></textarea>
+          </div>
+
+          <!-- Coupon Code Input Box with Animated Badges -->
+          <div class="input-group coupon-group" id="couponGroup">
+            <label>Have a Promo / Discount Coupon?</label>
+            <div class="coupon-input-wrapper">
+              <input type="text" id="couponInput" placeholder="Try WELCOME50, ROYAL25, ORGANIC100" autocomplete="off" />
+              <button type="button" class="apply-coupon-btn" id="applyCouponBtn" onclick="applyCoupon()">Apply</button>
+            </div>
+            
+            <!-- Animated Feedback Container -->
+            <div class="coupon-feedback" id="couponFeedback" style="display: none;">
+              <div class="feedback-icon-wrap success-wrap" id="feedbackSuccess" style="display: none;">
+                <svg class="animated-check" viewBox="0 0 52 52">
+                  <circle class="check-circle" cx="26" cy="26" r="25" fill="none"/>
+                  <path class="check-tick" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                </svg>
+                <span id="couponSuccessMsg">Coupon Applied! Saved ₹0.00</span>
+              </div>
+
+              <div class="feedback-icon-wrap error-wrap" id="feedbackError" style="display: none;">
+                <svg class="animated-cross" viewBox="0 0 52 52">
+                  <circle class="cross-circle" cx="26" cy="26" r="25" fill="none"/>
+                  <path class="cross-line cross-1" fill="none" d="M16 16 36 36"/>
+                  <path class="cross-line cross-2" fill="none" d="M36 16 16 36"/>
+                </svg>
+                <span id="couponErrorMsg">Invalid coupon code</span>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="submit-proceed-btn">Proceed to UPI Payment →</button>
+        </form>
+      </div>
+
+      <!-- STEP 2: UPI QR Payment with 6-Minute Countdown Timer & Mobile Deep Links -->
+      <div class="terminal-card" id="stepPayment" style="display: none;">
+        <div class="modal-title-row">
+          <h3>UPI Payment</h3>
+          <button class="modal-close-icon" onclick="closeAllModals()">&times;</button>
+        </div>
+
+        <!-- 6-Minute Countdown Timer -->
+        <div class="payment-timer-wrapper">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          <span>Session Expires In: <strong id="timerDisplay">06:00</strong></span>
+        </div>
+
+        <div class="upi-bill-summary">
+          <span>Final Amount to Pay</span>
+          <h2 id="qrAmountDisplay">₹450.00</h2>
+          <span class="savings-tag" id="qrSavingsTag" style="display: none;">🎉 You saved ₹0.00</span>
+        </div>
+
+        <!-- Direct UPI App Launcher for Mobile Devices -->
+        <a href="" id="mobileUpiDirectLink" class="mobile-upi-btn" target="_blank">
+          <span>Pay Directly via Any UPI App</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </a>
+
+        <div class="qr-container">
+          <div class="qr-frame">
+            <img src="" alt="UPI QR Code" class="qr-image" id="upiQrImage">
+          </div>
+          <div class="upi-apps-row">
+            <span class="upi-badge">GPay</span>
+            <span class="upi-badge">PhonePe</span>
+            <span class="upi-badge">Paytm</span>
+            <span class="upi-badge">BHIM</span>
+          </div>
+          <p class="upi-note">Scan QR code or click pay above on mobile</p>
+        </div>
+
+        <!-- Dynamic Payment Confirm Button -->
+        <button class="payment-confirm-btn" id="confirmPaymentBtn" onclick="processPaymentAndPrint()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          I Have Paid ₹<span id="btnPayAmount">450</span>
+        </button>
+      </div>
+
+      <!-- STEP 3: Printing & Receipt Step -->
+      <div class="terminal-card" id="stepPrinting" style="display: none;">
+        <div class="card-header">
+          <div class="product-summary">
+            <div class="product-badge" id="modalProductIcon">🥜</div>
+            <div>
+              <h3 id="modalProductName">California Almonds</h3>
+              <p id="modalProductSub">Pack: 500g × 1 | Instant UPI</p>
+            </div>
+          </div>
+          <div class="price-summary">
+            <span class="label">Total Paid</span>
+            <span class="price" id="modalProductPrice">₹450.00</span>
+          </div>
+        </div>
+
+        <!-- Dynamic Status Bar -->
+        <div class="status-box" id="statusBox">
+          <div class="status-indicator">
+            <span class="spinner" id="spinner"></span>
+            <svg class="check-icon" id="checkIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
+          <span class="status-text" id="statusText">Verifying UPI payment & syncing order...</span>
+        </div>
+
+        <!-- Post-Print Actions -->
+        <div class="receipt-actions" id="receiptActions">
+          <button class="action-btn download-btn" id="downloadBtn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Download Bill (PDF)
+          </button>
+          <button class="action-btn close-btn" onclick="closeAllModals()">Done</button>
+        </div>
+      </div>
+
+      <!-- Thermal Receipt Printer Paper Output -->
+      <div class="printer-slot" id="printerSlot" style="display: none;">
+        <div class="receipt" id="receipt">
+          <div class="zigzag-edge top"></div>
+
+          <!-- Printable Area -->
+          <div class="receipt-content" id="printableReceipt">
+            <div class="receipt-header">
+              <div class="receipt-logo">🌰</div>
+              <p class="receipt-brand">ROYAL DRY FRUITS & NUTS</p>
+              <span class="terminal-id">GSTIN: 29AAACR1234F1Z5</span>
+            </div>
+
+            <div class="receipt-divider dashed"></div>
+
+            <div class="receipt-line bold">
+              <span id="rcptItemName">California Almonds (Badam)</span>
+              <span id="rcptItemPrice">₹450.00</span>
+            </div>
+            <div class="receipt-subtext" id="rcptWeight">Pack Size: 500g | Qty: 1 Unit</div>
+
+            <div class="receipt-divider dashed"></div>
+
+            <div class="receipt-line muted">
+              <span>Customer:</span>
+              <span id="rcptCustName">Rahul Sharma</span>
+            </div>
+            <div class="receipt-line muted">
+              <span>Phone:</span>
+              <span id="rcptCustPhone">+91 9876543210</span>
+            </div>
+            <div class="receipt-line muted">
+              <span>Delivery:</span>
+              <span id="rcptCustAddress">Bangalore, IN</span>
+            </div>
+
+            <div class="receipt-divider dashed"></div>
+
+            <div class="receipt-line muted">
+              <span>Original Subtotal:</span>
+              <span id="rcptSubtotal">₹427.50</span>
+            </div>
+            
+            <!-- Dynamic Coupon Line -->
+            <div class="receipt-line discount" id="rcptDiscountRow" style="display: none;">
+              <span id="rcptCouponLabel">Coupon Applied:</span>
+              <span id="rcptDiscountAmount">-₹112.50</span>
+            </div>
+
+            <div class="receipt-line muted">
+              <span>GST (5% Dry Fruits):</span>
+              <span id="rcptTax">₹22.50</span>
+            </div>
+
+            <div class="receipt-divider dashed"></div>
+
+            <div class="receipt-line total">
+              <span>TOTAL PAID (INR):</span>
+              <span id="rcptTotal">₹450.00</span>
+            </div>
+
+            <div class="receipt-meta">
+              <div class="receipt-line mini">
+                <span>Order No:</span>
+                <span class="mono-highlight" id="rcptOrderId">ORD-89410</span>
+              </div>
+              <div class="receipt-line mini">
+                <span>Payment Mode:</span>
+                <span>UPI QR / Instant</span>
+              </div>
+              <div class="receipt-line mini">
+                <span>UPI Ref ID:</span>
+                <span id="rcptUpiRef">UPI-908129481</span>
+              </div>
+              <div class="receipt-line mini">
+                <span>Date & Time:</span>
+                <span id="rcptDate">18 AUG 2026 - 00:00</span>
+              </div>
+            </div>
+
+            <!-- Crisp SVG Vector Barcode -->
+            <div class="barcode">
+              <svg class="barcode-svg" id="receiptBarcodeSvg" viewBox="0 0 200 40" preserveAspectRatio="none">
+                <rect x="0" y="0" width="4" height="40" fill="#000000"/>
+                <rect x="7" y="0" width="2" height="40" fill="#000000"/>
+                <rect x="12" y="0" width="6" height="40" fill="#000000"/>
+                <rect x="22" y="0" width="3" height="40" fill="#000000"/>
+                <rect x="28" y="0" width="5" height="40" fill="#000000"/>
+                <rect x="37" y="0" width="2" height="40" fill="#000000"/>
+                <rect x="42" y="0" width="7" height="40" fill="#000000"/>
+                <rect x="53" y="0" width="3" height="40" fill="#000000"/>
+                <rect x="59" y="0" width="4" height="40" fill="#000000"/>
+                <rect x="67" y="0" width="6" height="40" fill="#000000"/>
+                <rect x="77" y="0" width="2" height="40" fill="#000000"/>
+                <rect x="83" y="0" width="8" height="40" fill="#000000"/>
+                <rect x="95" y="0" width="3" height="40" fill="#000000"/>
+                <rect x="102" y="0" width="5" height="40" fill="#000000"/>
+                <rect x="111" y="0" width="2" height="40" fill="#000000"/>
+                <rect x="116" y="0" width="7" height="40" fill="#000000"/>
+                <rect x="127" y="0" width="4" height="40" fill="#000000"/>
+                <rect x="135" y="0" width="2" height="40" fill="#000000"/>
+                <rect x="140" y="0" width="6" height="40" fill="#000000"/>
+                <rect x="150" y="0" width="3" height="40" fill="#000000"/>
+                <rect x="156" y="0" width="8" height="40" fill="#000000"/>
+                <rect x="168" y="0" width="2" height="40" fill="#000000"/>
+                <rect x="174" y="0" width="5" height="40" fill="#000000"/>
+                <rect x="183" y="0" width="4" height="40" fill="#000000"/>
+                <rect x="191" y="0" width="6" height="40" fill="#000000"/>
+              </svg>
+              <span id="rcptBarcodeNum">*ORD-89410*</span>
+            </div>
+          </div>
+
+          <div class="zigzag-edge bottom"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Connected Site Footer Section -->
+  <footer id="contact" class="site-footer">
+    <div class="footer-container">
+      <div class="footer-col brand-col">
+        <a href="#home" class="nav-brand">
+          <div class="brand-badge">🌰</div>
+          <span>ROYAL DRY FRUITS</span>
+        </a>
+        <p>Premium dry fruits, exotic nuts, and authentic Indian spice blends delivered directly to your doorstep with guaranteed freshness.</p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Quick Navigation</h4>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#products">All Products</a></li>
+          <li><a href="#about">About Our Heritage</a></li>
+          <li><a href="#contact">Contact Support</a></li>
+          <li><a href="auth.html">Member Portal</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Customer Support</h4>
+        <ul>
+          <li>Email: support@royaldryfruits.in</li>
+          <li>Helpline: +91 98765 43210</li>
+          <li>UPI VPA: alsa8181@ibl</li>
+          <li>Location: Bengaluru, Karnataka, India</li>
+        </ul>
+      </div>
+    </div>
+
+    
+    <div class="footer-bottom">
+  <p>© 2026 ROYAL DRY FRUITS & NUTS. All Rights Reserved. | Designed & Developed by <a href="https://alfaz81.vercel.app" target="_blank" rel="noopener noreferrer" class="designer-link">ALFAZ KALADAGI</a></p>
+
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
