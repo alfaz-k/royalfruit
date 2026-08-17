@@ -1427,9 +1427,9 @@ body {
   line-height: 1.5;
 }
 
-/* Profile Modal */
+/* Profile Modal Specifics */
 .profile-card {
-  max-width: 390px;
+  max-width: 420px;
 }
 
 .profile-photo-upload-wrap {
@@ -1472,6 +1472,13 @@ body {
   color: #64748b;
 }
 
+/* 2-Column Responsive Form Row for City, State, PIN, Landmark */
+.form-row-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
 /* Modal Backbone */
 .modal-backdrop {
   position: fixed;
@@ -1498,7 +1505,7 @@ body {
 .checkout-wrapper {
   position: relative;
   width: 100%;
-  max-width: 380px;
+  max-width: 420px;
   margin: auto;
   display: flex;
   flex-direction: column;
@@ -1648,7 +1655,7 @@ body {
   border-color: #059669;
 }
 
-/* Coupon Box & Animations */
+/* Coupon Box */
 .coupon-group {
   background: #0c1017;
   padding: 10px;
@@ -2215,6 +2222,21 @@ body {
   text-decoration: none;
 }
 
+.designer-link {
+  color: #34d399;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border-bottom: 1px dashed rgba(52, 211, 153, 0.4);
+  padding-bottom: 1px;
+}
+
+.designer-link:hover {
+  color: #ffffff;
+  border-bottom-color: #34d399;
+  text-shadow: 0 0 8px rgba(52, 211, 153, 0.6);
+}
+
 .footer-bottom {
   text-align: center;
   padding-top: 1.8rem;
@@ -2274,6 +2296,11 @@ body {
     text-align: center;
   }
 
+  .form-row-2col {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
   .footer-container {
     grid-template-columns: 1fr;
     gap: 2rem;
@@ -2297,19 +2324,4 @@ body {
     margin-top: 15px;
     margin-bottom: 25px;
   }
-}
-
-.designer-link {
-  color: #34d399;
-  font-weight: 700;
-  text-decoration: none;
-  transition: all 0.2s ease;
-  border-bottom: 1px dashed rgba(52, 211, 153, 0.4);
-  padding-bottom: 1px;
-}
-
-.designer-link:hover {
-  color: #ffffff;
-  border-bottom-color: #34d399;
-  text-shadow: 0 0 8px rgba(52, 211, 153, 0.6);
 }
