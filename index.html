@@ -985,14 +985,38 @@
             <input type="text" id="profNameInput" required />
           </div>
           <div class="input-group">
-            <label>Phone Number</label>
+            <label>Primary Phone Number</label>
             <input type="tel" id="profPhoneInput" pattern="[0-9]{10}" required />
           </div>
           <div class="input-group">
-            <label>Default Shipping Address</label>
-            <textarea id="profAddressInput" rows="2" placeholder="Street, City, Pincode" required></textarea>
+            <label>Alternative Phone Number</label>
+            <input type="tel" id="profAltPhoneInput" pattern="[0-9]{10}" placeholder="Optional (e.g. 9876543210)" />
           </div>
-          <button type="submit" class="submit-proceed-btn">Save Changes</button>
+          <div class="input-group">
+            <label>House / Flat / Building & Street</label>
+            <input type="text" id="profStreetInput" placeholder="House no, Flat, Street address" required />
+          </div>
+          <div class="form-row-2col">
+            <div class="input-group">
+              <label>Area / Landmark</label>
+              <input type="text" id="profLandmarkInput" placeholder="Near Temple / Park" required />
+            </div>
+            <div class="input-group">
+              <label>Pincode</label>
+              <input type="text" id="profPinInput" pattern="[0-9]{6}" placeholder="e.g. 560001" required />
+            </div>
+          </div>
+          <div class="form-row-2col">
+            <div class="input-group">
+              <label>City</label>
+              <input type="text" id="profCityInput" placeholder="e.g. Bengaluru" required />
+            </div>
+            <div class="input-group">
+              <label>State</label>
+              <input type="text" id="profStateInput" placeholder="e.g. Karnataka" required />
+            </div>
+          </div>
+          <button type="submit" class="submit-proceed-btn">Save Address</button>
         </form>
       </div>
     </div>
@@ -1002,7 +1026,7 @@
   <div class="modal-backdrop" id="checkoutModal">
     <div class="checkout-wrapper">
 
-      <!-- STEP 1: Customer Details & Animated Coupon -->
+      <!-- STEP 1: Detailed Delivery Address & Coupon -->
       <div class="terminal-card" id="stepCustomer">
         <div class="modal-title-row">
           <h3>Delivery & Coupon</h3>
@@ -1026,17 +1050,48 @@
             <label>Full Name</label>
             <input type="text" id="custName" placeholder="e.g. Rahul Sharma" required />
           </div>
-          <div class="input-group">
-            <label>Mobile Number</label>
-            <input type="tel" id="custPhone" placeholder="e.g. 9876543210" pattern="[0-9]{10}" required />
+
+          <div class="form-row-2col">
+            <div class="input-group">
+              <label>Primary Phone</label>
+              <input type="tel" id="custPhone" placeholder="10-digit number" pattern="[0-9]{10}" required />
+            </div>
+            <div class="input-group">
+              <label>Alternative Number</label>
+              <input type="tel" id="custAltPhone" placeholder="Optional 2nd number" pattern="[0-9]{10}" />
+            </div>
           </div>
+
           <div class="input-group">
-            <label>Customer Email (for receipt copy)</label>
+            <label>Email Address</label>
             <input type="email" id="custEmail" placeholder="e.g. rahul@gmail.com" required />
           </div>
+
           <div class="input-group">
-            <label>Delivery Address</label>
-            <textarea id="custAddress" rows="2" placeholder="House no, Street, City, Pincode" required></textarea>
+            <label>House / Flat / Building / Street</label>
+            <input type="text" id="custStreet" placeholder="Flat No. 402, Royal Residency, Main Rd" required />
+          </div>
+
+          <div class="form-row-2col">
+            <div class="input-group">
+              <label>Area / Landmark</label>
+              <input type="text" id="custLandmark" placeholder="Near Metro / Landmark" required />
+            </div>
+            <div class="input-group">
+              <label>Pincode</label>
+              <input type="text" id="custPin" placeholder="6-digit PIN" pattern="[0-9]{6}" required />
+            </div>
+          </div>
+
+          <div class="form-row-2col">
+            <div class="input-group">
+              <label>City</label>
+              <input type="text" id="custCity" placeholder="City" required />
+            </div>
+            <div class="input-group">
+              <label>State</label>
+              <input type="text" id="custState" placeholder="State" required />
+            </div>
           </div>
 
           <!-- Coupon Code Input Box with Animated Badges -->
@@ -1068,7 +1123,7 @@
             </div>
           </div>
 
-          <button type="submit" class="submit-proceed-btn">Proceed to UPI Payment →</button>
+          <button type="submit" class="submit-proceed-btn">Save Address</button>
         </form>
       </div>
 
@@ -1193,12 +1248,20 @@
               <span id="rcptCustName">Rahul Sharma</span>
             </div>
             <div class="receipt-line muted">
-              <span>Phone:</span>
+              <span>Primary Phone:</span>
               <span id="rcptCustPhone">+91 9876543210</span>
             </div>
+            <div class="receipt-line muted" id="rcptCustAltPhoneRow" style="display: none;">
+              <span>Alt Phone:</span>
+              <span id="rcptCustAltPhone">+91 9123456780</span>
+            </div>
             <div class="receipt-line muted">
-              <span>Delivery:</span>
-              <span id="rcptCustAddress">Bangalore, IN</span>
+              <span>Delivery Address:</span>
+              <span id="rcptCustAddress">Flat 402, Bangalore, IN</span>
+            </div>
+            <div class="receipt-line muted">
+              <span>Landmark & PIN:</span>
+              <span id="rcptCustLandmarkPin">Near Metro - 560001</span>
             </div>
 
             <div class="receipt-divider dashed"></div>
@@ -1285,7 +1348,7 @@
     </div>
   </div>
 
-  <!-- Connected Site Footer Section -->
+  <!-- Connected Site Footer Section with In-page Anchor Links (#) -->
   <footer id="contact" class="site-footer">
     <div class="footer-container">
       <div class="footer-col brand-col">
@@ -1318,10 +1381,8 @@
       </div>
     </div>
 
-    
     <div class="footer-bottom">
-  <p>© 2026 ROYAL DRY FRUITS & NUTS. All Rights Reserved. | Designed & Developed by <a href="https://alfaz81.vercel.app" target="_blank" rel="noopener noreferrer" class="designer-link">ALFAZ KALADAGI</a></p>
-
+      <p>© 2026 ROYAL DRY FRUITS & NUTS. All Rights Reserved. | Designed & Developed by <a href="https://royaldryfruit.vercel.app/" target="_blank" rel="noopener noreferrer" class="designer-link">ALFAZ KALADAGI</a></p>
     </div>
   </footer>
 
