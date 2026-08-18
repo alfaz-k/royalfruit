@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentSelectedRating = 5;
   let activeQuickViewCard = null;
 
-  // Valid Coupons Configuration (WELCOME50 Spotlight Enforced)
+  // Valid Coupons Configuration
   const COUPONS = {
     'WELCOME50': { type: 'percent', value: 50, desc: '50% OFF (1st Order Special)', firstOrderOnly: true },
     'ROYAL25': { type: 'percent', value: 25, desc: '25% OFF' },
@@ -679,7 +679,7 @@ document.addEventListener('DOMContentLoaded', () => {
     countdownInterval = setInterval(updateDisplay, 1000);
   }
 
-  // Slider & Filters (4 items)
+  // Slider & Filters
   let currentSlide = 0;
   const track = document.getElementById('offersTrack');
   const dots = document.querySelectorAll('.dot');
@@ -834,7 +834,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (COUPONS[enteredCode]) {
       const coupon = COUPONS[enteredCode];
 
-      // Strict Check for 1st Order User Status
       if (coupon.firstOrderOnly) {
         const userOrdersCount = parseInt(localStorage.getItem('royal_orders_placed') || '0');
         if (userOrdersCount > 0) {
@@ -1070,140 +1069,182 @@ document.addEventListener('DOMContentLoaded', () => {
     receipt.classList.remove('print-out');
   };
 
-  // PDF Export with Granular Address Details
+  // --- Direct Clean PDF Invoice Generation (Corporate A4 Tax Invoice Layout) ---
   downloadBtn.addEventListener('click', async () => {
     downloadBtn.textContent = 'Generating PDF...';
     downloadBtn.disabled = true;
 
+    // 1. Create a structured corporate A4 tax invoice container in the DOM
     const printWrapper = document.createElement('div');
     printWrapper.style.position = 'fixed';
     printWrapper.style.left = '0';
     printWrapper.style.top = '0';
-    printWrapper.style.width = '380px';
+    printWrapper.style.width = '750px';
     printWrapper.style.backgroundColor = '#ffffff';
-    printWrapper.style.color = '#000000';
-    printWrapper.style.padding = '24px 20px';
+    printWrapper.style.color = '#111827';
+    printWrapper.style.padding = '40px';
     printWrapper.style.boxSizing = 'border-box';
-    printWrapper.style.fontFamily = "'Courier New', Courier, monospace";
+    printWrapper.style.fontFamily = "'Plus Jakarta Sans', Arial, sans-serif";
     printWrapper.style.zIndex = '-9999';
     printWrapper.style.opacity = '1';
     printWrapper.style.pointerEvents = 'none';
 
-    const couponRow = appliedDiscount > 0 ? `
-      <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:4px; font-weight:bold; color:#047857;">
-        <span>Coupon (${appliedCouponCode}):</span>
-        <span>-₹${appliedDiscount.toFixed(2)}</span>
-      </div>
+    const couponRowHtml = appliedDiscount > 0 ? `
+      <tr>
+        <td style="padding: 10px 14px; text-align: left; color: #047857; font-weight: bold; border-bottom: 1px solid #e5e7eb;">
+          Discount Coupon Applied (${appliedCouponCode})
+        </td>
+        <td style="padding: 10px 14px; text-align: center; color: #047857; font-weight: bold; border-bottom: 1px solid #e5e7eb;">1</td>
+        <td style="padding: 10px 14px; text-align: right; color: #047857; font-weight: bold; border-bottom: 1px solid #e5e7eb;">-₹${appliedDiscount.toFixed(2)}</td>
+        <td style="padding: 10px 14px; text-align: right; color: #047857; font-weight: bold; border-bottom: 1px solid #e5e7eb;">-₹${appliedDiscount.toFixed(2)}</td>
+      </tr>
     ` : '';
 
-    const altPhoneLine = activeCustomer.altPhone && activeCustomer.altPhone !== 'N/A' ? `
-      <div style="display:flex; justify-content:space-between; margin-bottom:2px;">
-        <span>Alt Phone:</span>
-        <span>+91 ${activeCustomer.altPhone}</span>
-      </div>
-    ` : '';
+    const altPhoneHtml = activeCustomer.altPhone && activeCustomer.altPhone !== 'N/A' 
+      ? `<div><strong>Alt Phone:</strong> +91 ${activeCustomer.altPhone}</div>` 
+      : '';
 
     printWrapper.innerHTML = `
-      <div style="text-align:center; margin-bottom:12px;">
-        <div style="font-size:22px; margin-bottom:4px;">🌰</div>
-        <h2 style="font-size:16px; margin:0; font-weight:bold; letter-spacing:1.2px; color:#000000;">ROYAL DRY FRUITS & NUTS</h2>
-        <p style="font-size:11px; margin:3px 0 0; color:#333333;">GSTIN: 29AAACR1234F1Z5</p>
-        <p style="font-size:10px; margin:2px 0 0; color:#555555;">OFFICIAL TAX INVOICE</p>
-      </div>
-
-      <div style="border-top:2px dashed #000000; margin:10px 0;"></div>
-
-      <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:bold; color:#000000;">
-        <span>${activeProduct.name}</span>
-        <span>₹${activeProduct.originalPrice.toFixed(2)}</span>
-      </div>
-      <div style="font-size:11px; color:#333333; margin-bottom:6px;">Pack: ${activeProduct.weight} | Qty: ${activeProduct.quantity} Unit${activeProduct.quantity > 1 ? 's' : ''}</div>
-
-      <div style="border-top:2px dashed #000000; margin:10px 0;"></div>
-
-      <div style="font-size:11px; color:#000000; line-height:1.5;">
-        <div style="display:flex; justify-content:space-between; margin-bottom:2px;">
-          <span>Customer:</span>
-          <span style="font-weight:bold;">${activeCustomer.name}</span>
+      <!-- Invoice Header & Brand Info -->
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #059669; padding-bottom: 24px; margin-bottom: 24px;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+            <span style="font-size: 26px;">🌰</span>
+            <h1 style="font-size: 20px; font-weight: 800; color: #0f172a; letter-spacing: 0.5px; margin: 0;">ROYAL DRY FRUITS & NUTS</h1>
+          </div>
+          <p style="font-size: 11.5px; color: #4b5563; margin: 2px 0;">Premium Dry Fruits, Exotic Nuts & Spices</p>
+          <p style="font-size: 11.5px; color: #4b5563; margin: 2px 0;">Bengaluru, Karnataka, India | support@royaldryfruits.in</p>
+          <p style="font-size: 11px; color: #6b7280; margin: 4px 0 0;"><strong>GSTIN:</strong> 29AAACR1234F1Z5 | <strong>FSSAI:</strong> 11223344005566</p>
         </div>
-        <div style="display:flex; justify-content:space-between; margin-bottom:2px;">
-          <span>Primary Phone:</span>
-          <span>+91 ${activeCustomer.phone}</span>
-        </div>
-        ${altPhoneLine}
-        <div style="display:flex; justify-content:space-between; margin-bottom:2px;">
-          <span>Address:</span>
-          <span>${activeCustomer.street}</span>
-        </div>
-        <div style="display:flex; justify-content:space-between; margin-bottom:2px;">
-          <span>Landmark & City:</span>
-          <span>${activeCustomer.landmark}, ${activeCustomer.city}</span>
-        </div>
-        <div style="display:flex; justify-content:space-between; margin-bottom:2px;">
-          <span>State & PIN:</span>
-          <span>${activeCustomer.state} - ${activeCustomer.pincode}</span>
+
+        <div style="text-align: right;">
+          <div style="display: inline-block; background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; font-size: 12px; font-weight: 800; padding: 4px 12px; border-radius: 6px; margin-bottom: 8px;">
+            TAX INVOICE
+          </div>
+          <div style="font-size: 12px; color: #374151;"><strong>Invoice No:</strong> ${currentOrderId}</div>
+          <div style="font-size: 11.5px; color: #6b7280; margin-top: 3px;"><strong>Date:</strong> ${getIndianFormattedDate()}</div>
+          <div style="font-size: 11.5px; color: #6b7280; margin-top: 3px;"><strong>Payment Status:</strong> PAID (UPI)</div>
         </div>
       </div>
 
-      <div style="border-top:2px dashed #000000; margin:10px 0;"></div>
-
-      <div style="font-size:12px; color:#000000;">
-        <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
-          <span>Original Subtotal:</span>
-          <span>₹${(activeProduct.originalPrice / 1.05).toFixed(2)}</span>
+      <!-- Bill To & Shipping Address Grid -->
+      <div style="display: flex; justify-content: space-between; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px 20px; margin-bottom: 24px; font-size: 12px;">
+        <div style="flex: 1; padding-right: 16px;">
+          <h4 style="font-size: 11px; text-transform: uppercase; color: #64748b; margin-bottom: 6px; letter-spacing: 0.5px;">Billed & Shipped To:</h4>
+          <div style="font-size: 14px; font-weight: 700; color: #0f172a; margin-bottom: 4px;">${activeCustomer.name}</div>
+          <div style="color: #475569; line-height: 1.45;">
+            <div>${activeCustomer.street}</div>
+            <div>Landmark: ${activeCustomer.landmark}</div>
+            <div>${activeCustomer.city}, ${activeCustomer.state} - <strong>${activeCustomer.pincode}</strong></div>
+          </div>
         </div>
-        ${couponRow}
-        <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
-          <span>GST (5% Dry Fruits):</span>
-          <span>₹${activeProduct.tax.toFixed(2)}</span>
+
+        <div style="flex: 0.9; border-left: 1px solid #e2e8f0; padding-left: 20px; color: #475569; line-height: 1.5;">
+          <h4 style="font-size: 11px; text-transform: uppercase; color: #64748b; margin-bottom: 6px; letter-spacing: 0.5px;">Contact & Settlement:</h4>
+          <div><strong>Primary Phone:</strong> +91 ${activeCustomer.phone}</div>
+          ${altPhoneHtml}
+          <div><strong>Email:</strong> ${activeCustomer.email}</div>
+          <div><strong>Payment Mode:</strong> Instant UPI VPA (alsa8181@ibl)</div>
         </div>
       </div>
 
-      <div style="border-top:2px dashed #000000; margin:10px 0;"></div>
+      <!-- Ordered Items Breakdown Table -->
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px; font-size: 12.5px;">
+        <thead>
+          <tr style="background: #0f172a; color: #ffffff;">
+            <th style="padding: 10px 14px; text-align: left; border-radius: 8px 0 0 0; font-weight: 700;">Item Description & Grade</th>
+            <th style="padding: 10px 14px; text-align: center; font-weight: 700;">Qty</th>
+            <th style="padding: 10px 14px; text-align: right; font-weight: 700;">Unit Rate</th>
+            <th style="padding: 10px 14px; text-align: right; border-radius: 0 8px 0 0; font-weight: 700;">Amount (INR)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px 14px; text-align: left; border-bottom: 1px solid #e5e7eb;">
+              <div style="font-weight: 700; color: #111827;">${activeProduct.name}</div>
+              <div style="font-size: 11px; color: #6b7280;">Packaging: ${activeProduct.weight} · Premium Quality Guaranteed</div>
+            </td>
+            <td style="padding: 12px 14px; text-align: center; border-bottom: 1px solid #e5e7eb; color: #374151; font-weight: 600;">
+              ${activeProduct.quantity}
+            </td>
+            <td style="padding: 12px 14px; text-align: right; border-bottom: 1px solid #e5e7eb; color: #374151;">
+              ₹${(activeProduct.originalPrice / activeProduct.quantity).toFixed(2)}
+            </td>
+            <td style="padding: 12px 14px; text-align: right; border-bottom: 1px solid #e5e7eb; font-weight: 700; color: #111827;">
+              ₹${activeProduct.originalPrice.toFixed(2)}
+            </td>
+          </tr>
+          ${couponRowHtml}
+        </tbody>
+      </table>
 
-      <div style="display:flex; justify-content:space-between; font-size:16px; font-weight:bold; color:#000000; padding:2px 0;">
-        <span>TOTAL PAID (INR):</span>
-        <span>₹${activeProduct.finalPrice.toFixed(2)}</span>
+      <!-- Calculations & Total Summary -->
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px;">
+        <div style="width: 55%; font-size: 11px; color: #6b7280; line-height: 1.5; background: #fdfdfd; border: 1px dashed #cbd5e1; padding: 12px; border-radius: 8px;">
+          <strong style="color: #374151;">Return & Refund Terms:</strong><br>
+          Returns are accepted strictly within 48 hours only if the product is spoiled, damaged upon delivery, or incorrect. Unboxing video verification required.
+        </div>
+
+        <div style="width: 40%; font-size: 12.5px;">
+          <div style="display: flex; justify-content: space-between; padding: 4px 0; color: #4b5563;">
+            <span>Subtotal:</span>
+            <span>₹${(activeProduct.originalPrice / 1.05).toFixed(2)}</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 4px 0; color: #4b5563;">
+            <span>Estimated GST (5%):</span>
+            <span>₹${activeProduct.tax.toFixed(2)}</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 4px 0; color: #4b5563;">
+            <span>Delivery & Packaging:</span>
+            <span style="color: #059669; font-weight: 700;">FREE</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 10px 0 6px; border-top: 2px solid #0f172a; margin-top: 6px; font-size: 16px; font-weight: 800; color: #059669;">
+            <span>Total Paid (INR):</span>
+            <span>₹${activeProduct.finalPrice.toFixed(2)}</span>
+          </div>
+        </div>
       </div>
 
-      <div style="border-top:2px dashed #000000; margin:10px 0;"></div>
-
-      <div style="font-size:10.5px; color:#222222; line-height:1.5;">
-        <div><strong>Order No:</strong> ${currentOrderId}</div>
-        <div><strong>Payment Mode:</strong> UPI QR (alsa8181@ibl)</div>
-        <div><strong>UPI Ref ID:</strong> UPI-${Math.floor(1000000000 + Math.random() * 9000000000)}</div>
-        <div><strong>Date & Time:</strong> ${getIndianFormattedDate()}</div>
-      </div>
-
-      <div style="text-align:center; margin-top:14px; font-size:11px; letter-spacing:2px; font-weight:bold; color:#000000;">
-        *${currentOrderId}*
+      <!-- Footer & Signature Verification Stamp -->
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px solid #e5e7eb; padding-top: 18px;">
+        <div>
+          <div style="font-size: 11px; color: #4b5563;">This is a computer-generated official tax invoice.</div>
+          <div style="font-size: 10.5px; color: #9ca3af; margin-top: 2px;">Order Verification Token: ${currentOrderId} | Royal Dry Fruits</div>
+        </div>
+        <div style="text-align: center; border: 1.5px solid #059669; padding: 6px 14px; border-radius: 8px; background: #f0fdf4;">
+          <div style="font-size: 11px; font-weight: 800; color: #059669; letter-spacing: 0.5px;">ROYAL DRY FRUITS</div>
+          <div style="font-size: 9px; color: #047857; text-transform: uppercase;">Digitally Verified & Authorized</div>
+        </div>
       </div>
     `;
 
     document.body.appendChild(printWrapper);
 
     try {
+      // 2. Render high-resolution raster canvas
       const canvas = await html2canvas(printWrapper, {
-        scale: 2.5,
+        scale: 2.2,
         useCORS: true,
         backgroundColor: '#ffffff',
         logging: false
       });
 
-      const imgData = canvas.toDataURL('image/jpeg', 1.0);
+      // 3. Export directly into a crisp A4 PDF document
+      const imgData = canvas.toDataURL('image/jpeg', 0.98);
       const { jsPDF } = window.jspdf;
-      
-      const imgWidth = 90;
-      const pageHeight = (canvas.height * imgWidth) / canvas.width;
       
       const pdf = new jsPDF({
         orientation: 'portrait',
         unit: 'mm',
-        format: [imgWidth, pageHeight]
+        format: 'a4'
       });
 
-      pdf.addImage(imgData, 'JPEG', 0, 0, imgWidth, pageHeight);
-      pdf.save(`RoyalDryFruits_Invoice_${currentOrderId || 'Order'}.pdf`);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+      pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+      pdf.save(`Invoice_${currentOrderId || 'RoyalDryFruits'}.pdf`);
+      showToast('Downloaded!', `Tax Invoice PDF saved to your downloads.`, '📄');
     } catch (error) {
       showToast('Error', 'Failed to generate invoice PDF.', '⚠️');
     } finally {
@@ -1214,7 +1255,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <polyline points="7 10 12 15 17 10"></polyline>
           <line x1="12" y1="15" x2="12" y2="3"></line>
         </svg>
-        Download Bill (PDF)
+        Download Official Invoice (PDF)
       `;
       downloadBtn.disabled = false;
     }
