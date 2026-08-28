@@ -553,19 +553,17 @@ document.addEventListener('DOMContentLoaded', () => {
     customAlertModal.classList.remove('active');
   };
 
-  // Auth State Updates for Desktop and Mobile Drawer
+  // Auth State Updates
   function updateAuthNavbar() {
     const isAuth = localStorage.getItem('royal_auth') === 'true';
     const user = JSON.parse(localStorage.getItem('royal_user') || '{}');
 
     if (isAuth && user.name) {
-      // Desktop
       navAccountBtn.style.display = 'none';
       navUserMenu.style.display = 'flex';
       navUserName.textContent = user.name.split(' ')[0];
       navUserAvatar.src = user.avatar || user.picture || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80';
 
-      // Mobile Drawer
       mobileUserCard.style.display = 'flex';
       mobileUserName.textContent = user.name;
       mobileUserAvatar.src = user.avatar || user.picture || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80';
@@ -573,11 +571,9 @@ document.addEventListener('DOMContentLoaded', () => {
       mobileProfileBtn.style.display = 'flex';
       mobileLogoutBtn.style.display = 'flex';
     } else {
-      // Desktop
       navAccountBtn.style.display = 'flex';
       navUserMenu.style.display = 'none';
 
-      // Mobile Drawer
       mobileUserCard.style.display = 'none';
       mobileAuthLink.style.display = 'flex';
       mobileProfileBtn.style.display = 'none';
@@ -978,7 +974,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // UPI Step - Packages all granular address details
+  // UPI Step
   window.handleCustomerSubmit = function(e) {
     e.preventDefault();
 
