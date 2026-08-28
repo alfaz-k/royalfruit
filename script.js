@@ -153,6 +153,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
+  window.toggleCardFav = function(btn) {
+    btn.classList.toggle('favorited');
+    const isFav = btn.classList.contains('favorited');
+    btn.textContent = isFav ? '❤️' : '♡';
+    showToast(isFav ? 'Added to Wishlist' : 'Removed', isFav ? 'Item saved to your favorites.' : 'Removed from wishlist.', '❤️');
+  };
+
   // Dynamic Weight & Quantity Math
   function computeCardPrice(card, customWeight = null, customQty = null) {
     const selectedWeight = customWeight || card.getAttribute('data-base-weight') || '500g';
@@ -870,6 +877,7 @@ document.addEventListener('DOMContentLoaded', () => {
       icon
     };
 
+    // Auto-fill logged-in user credentials
     const user = JSON.parse(localStorage.getItem('royal_user') || '{}');
     custNameInput.value = user.name || '';
     custEmailInput.value = user.email || '';
