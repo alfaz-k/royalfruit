@@ -101,6 +101,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let cartItems = [];
   let currentSelectedRating = 5;
   let activeQuickViewCard = null;
+  let modalCurrentQty = 1;
+  let modalCurrentWeight = '500g';
 
   // Valid Coupons Configuration
   const COUPONS = {
@@ -111,10 +113,10 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   // Dynamic Weight & Quantity Math
-  function computeCardPrice(card) {
+  function computeCardPrice(card, customWeight = null, customQty = null) {
     const activeChip = card.querySelector('.weight-chip.active');
-    const selectedWeight = activeChip ? activeChip.textContent.trim() : (card.getAttribute('data-base-weight') || '500g');
-    const qty = parseInt(card.querySelector('.card-qty-val').textContent.trim()) || 1;
+    const selectedWeight = customWeight || (activeChip ? activeChip.textContent.trim() : (card.getAttribute('data-base-weight') || '500g'));
+    const qty = customQty !== null ? customQty : (parseInt(card.querySelector('.card-qty-val')?.textContent.trim()) || 1);
     
     let unitPrice = parseFloat(card.getAttribute('data-base-price'));
     if (selectedWeight === '250g' && card.hasAttribute('data-price-250g')) {
@@ -155,22 +157,40 @@ document.addEventListener('DOMContentLoaded', () => {
     computeCardPrice(card);
   };
 
-  // Product Quick View with Reviews
+  // Product Studio Detail Quick View Modal
   window.openProductQuickView = async function(card) {
     activeQuickViewCard = card;
     const prodId = card.getAttribute('data-id') || '1';
     const name = card.getAttribute('data-name');
     const icon = card.getAttribute('data-icon');
     const rating = card.getAttribute('data-rating') || '4.9';
-    const reviewsCount = card.getAttribute('data-reviews-count') || '120';
+    const reviewsCount = card.getAttribute('data-reviews-count') || '142';
     const origin = card.getAttribute('data-origin') || 'India / Global';
-    const { totalPrice, selectedWeight, qty } = computeCardPrice(card);
+    const desc = card.getAttribute('data-desc') || 'Premium farm-fresh harvest guaranteed.';
+
+    const activeCardChip = card.querySelector('.weight-chip.active');
+    modalCurrentWeight = activeCardChip ? activeCardChip.textContent.trim() : (card.getAttribute('data-base-weight') || '500g');
+    modalCurrentQty = parseInt(card.querySelector('.card-qty-val')?.textContent.trim()) || 1;
 
     document.getElementById('qvProductName').textContent = name;
     document.getElementById('qvProductIcon').textContent = icon;
+    document.getElementById('qvProductDesc').textContent = desc;
     document.getElementById('qvOriginTag').textContent = `Origin: ${origin}`;
-    document.getElementById('qvRatingBar').textContent = `⭐ ${rating} · ${reviewsCount} Verified Customer Ratings`;
-    document.getElementById('qvPriceDisplay').textContent = `₹${totalPrice.toLocaleString('en-IN')}.00 (${selectedWeight} × ${qty})`;
+    document.getElementById('qvRatingBar').textContent = `⭐ ${rating} · ${reviewsCount} Verified Ratings`;
+    document.getElementById('modalQtyVal').textContent = modalCurrentQty;
+
+    // Populate dynamic weight selector chips inside Studio Modal
+    const chipsContainer = document.getElementById('qvWeightChipsContainer');
+    const cardChips = card.querySelectorAll('.weight-chip');
+    if (cardChips.length > 0) {
+      chipsContainer.innerHTML = Array.from(cardChips).map(c => {
+        const wText = c.textContent.trim();
+        const isActive = wText === modalCurrentWeight ? 'active' : '';
+        return `<button class="studio-weight-chip ${isActive}" onclick="selectModalWeight(this, '${wText}')">${wText}</button>`;
+      }).join('');
+    }
+
+    updateStudioPriceDisplay();
 
     document.getElementById('addReviewForm').style.display = 'none';
     document.getElementById('toggleReviewFormBtn').textContent = '✍️ Write Review';
@@ -181,12 +201,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('qvAddToCartBtn').onclick = () => {
       closeProductQuickView();
-      handleAddToCart(card);
+      handleAddToCart(card, modalCurrentWeight, modalCurrentQty);
     };
 
     document.getElementById('qvBuyNowBtn').onclick = () => {
       closeProductQuickView();
-      openCustomerDetails(card.querySelector('.buy-btn'));
+      openCustomerDetails(null, card, modalCurrentWeight, modalCurrentQty);
     };
 
     productModal.classList.add('active');
@@ -195,6 +215,33 @@ document.addEventListener('DOMContentLoaded', () => {
   window.closeProductQuickView = function() {
     productModal.classList.remove('active');
   };
+
+  window.toggleStudioFavorite = function() {
+    const btn = document.getElementById('modalFavBtn');
+    btn.classList.toggle('favorited');
+    const isFav = btn.classList.contains('favorited');
+    showToast(isFav ? 'Added to Wishlist' : 'Removed', isFav ? 'Saved to your personal favorites.' : 'Item removed from favorites.', '❤️');
+  };
+
+  window.selectModalWeight = function(btn, weightVal) {
+    modalCurrentWeight = weightVal;
+    document.querySelectorAll('.studio-weight-chip').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    updateStudioPriceDisplay();
+  };
+
+  window.stepModalQty = function(step) {
+    modalCurrentQty = Math.max(1, Math.min(20, modalCurrentQty + step));
+    document.getElementById('modalQtyVal').textContent = modalCurrentQty;
+    updateStudioPriceDisplay();
+  };
+
+  function updateStudioPriceDisplay() {
+    if (!activeQuickViewCard) return;
+    const { totalPrice } = computeCardPrice(activeQuickViewCard, modalCurrentWeight, modalCurrentQty);
+    document.getElementById('qvPriceDisplay').textContent = `₹${totalPrice.toLocaleString('en-IN')}`;
+    document.getElementById('qvBuyBtnLabel').textContent = `Buy for ₹${totalPrice.toLocaleString('en-IN')}`;
+  }
 
   // Review Form Functions
   window.toggleReviewForm = function() {
@@ -238,7 +285,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   async function loadCloudflareReviews(prodId) {
     const listContainer = document.getElementById('modalReviewsList');
-    listContainer.innerHTML = `<div style="text-align:center; padding:10px; color:#64748b; font-size:0.75rem;">Loading verified reviews...</div>`;
+    listContainer.innerHTML = `<div style="text-align:center; padding:10px; color:#586e64; font-size:0.75rem;">Loading verified reviews...</div>`;
 
     try {
       const res = await fetch(`${CLOUDFLARE_WORKER_URL}reviews?product_id=${prodId}`);
@@ -262,13 +309,13 @@ document.addEventListener('DOMContentLoaded', () => {
               <span class="rev-author">Dr. Ananya Rao</span>
               <span class="rev-stars">⭐⭐⭐⭐⭐</span>
             </div>
-            <p class="rev-body">"Incredible crunch and zero bitter nuts. The vacuum seal keeps freshness locked in perfectly!"</p>
+            <p class="rev-body">"Incredible crunch and zero bitter nuts. The aroma seal keeps freshness locked in perfectly!"</p>
             <span class="rev-date">Verified Purchase · 2 days ago</span>
           </div>
         `;
       }
     } catch (e) {
-      listContainer.innerHTML = `<div style="color:#64748b; font-size:0.75rem; text-align:center;">Verified customer feedback active.</div>`;
+      listContainer.innerHTML = `<div style="color:#586e64; font-size:0.75rem; text-align:center;">Verified customer feedback active.</div>`;
     }
   }
 
@@ -317,7 +364,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   // Add to Cart & Drawer Management
-  window.handleAddToCart = function(card) {
+  window.handleAddToCart = function(card, customWeight = null, customQty = null) {
     const isAuth = localStorage.getItem('royal_auth') === 'true';
     if (!isAuth) {
       showCustomAlert({
@@ -335,7 +382,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const name = card.getAttribute('data-name');
     const icon = card.getAttribute('data-icon');
-    const { totalPrice, selectedWeight, qty } = computeCardPrice(card);
+    const { totalPrice, selectedWeight, qty } = computeCardPrice(card, customWeight, customQty);
 
     cartItems.push({
       id: Date.now(),
@@ -347,7 +394,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     updateCartUI();
-    showToast('Added to Cart', `${name} (${selectedWeight} × ${qty}) added to your cart.`, '🛒');
+    showToast('Added to Bag', `${name} (${selectedWeight} × ${qty}) added to your bag.`, '🛒');
   };
 
   function updateCartUI() {
@@ -610,7 +657,7 @@ document.addEventListener('DOMContentLoaded', () => {
     canvas.height = window.innerHeight;
 
     const pieces = [];
-    const colors = ['#f59e0b', '#10b981', '#6366f1', '#ec4899', '#ffffff', '#fbbf24'];
+    const colors = ['#174d34', '#2e8b57', '#d97706', '#ffffff', '#22c55e', '#3b82f6'];
 
     for (let i = 0; i < 90; i++) {
       pieces.push({
@@ -747,7 +794,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   // Protected Order Checkout Flow
-  window.openCustomerDetails = function(buttonElement) {
+  window.openCustomerDetails = function(buttonElement = null, targetCard = null, customWeight = null, customQty = null) {
     const isAuth = localStorage.getItem('royal_auth') === 'true';
     
     if (!isAuth) {
@@ -765,10 +812,12 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    const card = buttonElement.closest('.product-card');
+    const card = targetCard || (buttonElement ? buttonElement.closest('.product-card') : null);
+    if (!card) return;
+
     const name = card.getAttribute('data-name');
     const icon = card.getAttribute('data-icon');
-    const { totalPrice, selectedWeight, qty } = computeCardPrice(card);
+    const { totalPrice, selectedWeight, qty } = computeCardPrice(card, customWeight, customQty);
 
     activeProduct = {
       name,
@@ -1069,12 +1118,11 @@ document.addEventListener('DOMContentLoaded', () => {
     receipt.classList.remove('print-out');
   };
 
-  // --- Direct Clean PDF Invoice Generation (Corporate A4 Tax Invoice Layout) ---
+  // Direct Clean PDF Invoice Generation (Corporate A4 Tax Invoice Layout)
   downloadBtn.addEventListener('click', async () => {
     downloadBtn.textContent = 'Generating PDF...';
     downloadBtn.disabled = true;
 
-    // 1. Create a structured corporate A4 tax invoice container in the DOM
     const printWrapper = document.createElement('div');
     printWrapper.style.position = 'fixed';
     printWrapper.style.left = '0';
@@ -1105,8 +1153,7 @@ document.addEventListener('DOMContentLoaded', () => {
       : '';
 
     printWrapper.innerHTML = `
-      <!-- Invoice Header & Brand Info -->
-      <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #059669; padding-bottom: 24px; margin-bottom: 24px;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #174d34; padding-bottom: 24px; margin-bottom: 24px;">
         <div>
           <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
             <span style="font-size: 26px;">🌰</span>
@@ -1127,7 +1174,6 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
       </div>
 
-      <!-- Bill To & Shipping Address Grid -->
       <div style="display: flex; justify-content: space-between; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px 20px; margin-bottom: 24px; font-size: 12px;">
         <div style="flex: 1; padding-right: 16px;">
           <h4 style="font-size: 11px; text-transform: uppercase; color: #64748b; margin-bottom: 6px; letter-spacing: 0.5px;">Billed & Shipped To:</h4>
@@ -1148,7 +1194,6 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
       </div>
 
-      <!-- Ordered Items Breakdown Table -->
       <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px; font-size: 12.5px;">
         <thead>
           <tr style="background: #0f172a; color: #ffffff;">
@@ -1178,7 +1223,6 @@ document.addEventListener('DOMContentLoaded', () => {
         </tbody>
       </table>
 
-      <!-- Calculations & Total Summary -->
       <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px;">
         <div style="width: 55%; font-size: 11px; color: #6b7280; line-height: 1.5; background: #fdfdfd; border: 1px dashed #cbd5e1; padding: 12px; border-radius: 8px;">
           <strong style="color: #374151;">Return & Refund Terms:</strong><br>
@@ -1198,21 +1242,20 @@ document.addEventListener('DOMContentLoaded', () => {
             <span>Delivery & Packaging:</span>
             <span style="color: #059669; font-weight: 700;">FREE</span>
           </div>
-          <div style="display: flex; justify-content: space-between; padding: 10px 0 6px; border-top: 2px solid #0f172a; margin-top: 6px; font-size: 16px; font-weight: 800; color: #059669;">
+          <div style="display: flex; justify-content: space-between; padding: 10px 0 6px; border-top: 2px solid #0f172a; margin-top: 6px; font-size: 16px; font-weight: 800; color: #174d34;">
             <span>Total Paid (INR):</span>
             <span>₹${activeProduct.finalPrice.toFixed(2)}</span>
           </div>
         </div>
       </div>
 
-      <!-- Footer & Signature Verification Stamp -->
       <div style="display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px solid #e5e7eb; padding-top: 18px;">
         <div>
           <div style="font-size: 11px; color: #4b5563;">This is a computer-generated official tax invoice.</div>
           <div style="font-size: 10.5px; color: #9ca3af; margin-top: 2px;">Order Verification Token: ${currentOrderId} | Royal Dry Fruits</div>
         </div>
-        <div style="text-align: center; border: 1.5px solid #059669; padding: 6px 14px; border-radius: 8px; background: #f0fdf4;">
-          <div style="font-size: 11px; font-weight: 800; color: #059669; letter-spacing: 0.5px;">ROYAL DRY FRUITS</div>
+        <div style="text-align: center; border: 1.5px solid #174d34; padding: 6px 14px; border-radius: 8px; background: #f0fdf4;">
+          <div style="font-size: 11px; font-weight: 800; color: #174d34; letter-spacing: 0.5px;">ROYAL DRY FRUITS</div>
           <div style="font-size: 9px; color: #047857; text-transform: uppercase;">Digitally Verified & Authorized</div>
         </div>
       </div>
@@ -1221,7 +1264,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.appendChild(printWrapper);
 
     try {
-      // 2. Render high-resolution raster canvas
       const canvas = await html2canvas(printWrapper, {
         scale: 2.2,
         useCORS: true,
@@ -1229,7 +1271,6 @@ document.addEventListener('DOMContentLoaded', () => {
         logging: false
       });
 
-      // 3. Export directly into a crisp A4 PDF document
       const imgData = canvas.toDataURL('image/jpeg', 0.98);
       const { jsPDF } = window.jspdf;
       
