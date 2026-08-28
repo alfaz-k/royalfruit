@@ -121,6 +121,17 @@ document.addEventListener('DOMContentLoaded', () => {
     'HEALTH10': { type: 'percent', value: 10, desc: '10% OFF' }
   };
 
+  // Intersection Observer for Smooth Scroll Fade-In
+  const scrollObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.fade-in-scroll').forEach(el => scrollObserver.observe(el));
+
   // Mobile Drawer Triggers
   window.openMobileMenu = function() {
     mobileDrawerBackdrop.classList.add('active');
@@ -136,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function computeCardPrice(card, customWeight = null, customQty = null) {
     const activeChip = card.querySelector('.weight-chip.active');
     const selectedWeight = customWeight || (activeChip ? activeChip.textContent.trim() : (card.getAttribute('data-base-weight') || '500g'));
-    const qty = customQty !== null ? customQty : (parseInt(card.querySelector('.card-qty-val')?.textContent.trim()) || 1);
+    const qty = customQty !== null ? customQty : 1;
     
     let unitPrice = parseFloat(card.getAttribute('data-base-price'));
     if (selectedWeight === '250g' && card.hasAttribute('data-price-250g')) {
@@ -158,24 +169,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const totalPrice = unitPrice * qty;
+
+    const livePriceEl = card.querySelector('.card-live-price');
+    if (livePriceEl) {
+      livePriceEl.textContent = `₹${totalPrice.toLocaleString('en-IN')}`;
+    }
+
     return { unitPrice, totalPrice, selectedWeight, qty };
   }
-
-  window.selectCardWeight = function(chipBtn, weightVal) {
-    const card = chipBtn.closest('.product-card');
-    card.querySelectorAll('.weight-chip').forEach(c => c.classList.remove('active'));
-    chipBtn.classList.add('active');
-    computeCardPrice(card);
-  };
-
-  window.stepCardQty = function(btn, step) {
-    const card = btn.closest('.product-card');
-    const qtySpan = card.querySelector('.card-qty-val');
-    let currentVal = parseInt(qtySpan.textContent) || 1;
-    currentVal = Math.max(1, Math.min(20, currentVal + step));
-    qtySpan.textContent = currentVal;
-    computeCardPrice(card);
-  };
 
   // Product Studio Detail Quick View Modal
   window.openProductQuickView = async function(card) {
@@ -188,9 +189,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const origin = card.getAttribute('data-origin') || 'India / Global';
     const desc = card.getAttribute('data-desc') || 'Premium farm-fresh harvest guaranteed.';
 
-    const activeCardChip = card.querySelector('.weight-chip.active');
-    modalCurrentWeight = activeCardChip ? activeCardChip.textContent.trim() : (card.getAttribute('data-base-weight') || '500g');
-    modalCurrentQty = parseInt(card.querySelector('.card-qty-val')?.textContent.trim()) || 1;
+    modalCurrentWeight = card.getAttribute('data-base-weight') || '500g';
+    modalCurrentQty = 1;
 
     document.getElementById('qvProductName').textContent = name;
     document.getElementById('qvProductIcon').textContent = icon;
@@ -200,14 +200,12 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('modalQtyVal').textContent = modalCurrentQty;
 
     const chipsContainer = document.getElementById('qvWeightChipsContainer');
-    const cardChips = card.querySelectorAll('.weight-chip');
-    if (cardChips.length > 0) {
-      chipsContainer.innerHTML = Array.from(cardChips).map(c => {
-        const wText = c.textContent.trim();
-        const isActive = wText === modalCurrentWeight ? 'active' : '';
-        return `<button class="studio-weight-chip ${isActive}" onclick="selectModalWeight(this, '${wText}')">${wText}</button>`;
-      }).join('');
-    }
+    const weightsList = prodId === '8' ? ['1g', '2g', '5g'] : (prodId === '10' || prodId === '20' ? ['1kg', '1.5kg', '2.5kg'] : ['250g', '500g', '1kg']);
+    
+    chipsContainer.innerHTML = weightsList.map(wText => {
+      const isActive = wText === modalCurrentWeight ? 'active' : '';
+      return `<button class="studio-weight-chip ${isActive}" onclick="selectModalWeight(this, '${wText}')">${wText}</button>`;
+    }).join('');
 
     updateStudioPriceDisplay();
 
@@ -788,7 +786,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const cards = document.querySelectorAll('.product-card');
     cards.forEach(card => {
       if (category === 'all' || card.getAttribute('data-category') === category) {
-        card.style.display = 'block';
+        card.style.display = 'flex';
       } else {
         card.style.display = 'none';
       }
@@ -807,7 +805,7 @@ document.addEventListener('DOMContentLoaded', () => {
     productCards.forEach(card => {
       const name = card.getAttribute('data-name').toLowerCase();
       if (name.includes(query)) {
-        card.style.display = 'block';
+        card.style.display = 'flex';
         visibleCount++;
       } else {
         card.style.display = 'none';
