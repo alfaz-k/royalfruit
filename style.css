@@ -9,11 +9,11 @@
 
 :root {
   --bg-main: #edf3ef;
-  --surface-glass: rgba(255, 255, 255, 0.82);
-  --surface-glass-card: rgba(255, 255, 255, 0.92);
+  --surface-glass: rgba(255, 255, 255, 0.85);
+  --surface-glass-card: rgba(255, 255, 255, 0.95);
   --surface-elevated: #ffffff;
   --border-subtle: rgba(18, 53, 36, 0.08);
-  --border-glass: rgba(255, 255, 255, 0.85);
+  --border-glass: rgba(255, 255, 255, 0.9);
   --text-primary: #14241d;
   --text-secondary: #586e64;
   --text-muted: #839b90;
@@ -37,10 +37,9 @@ body {
   color: var(--text-primary);
   overflow-x: hidden;
   position: relative;
-  contain: paint;
 }
 
-/* Ambient Subtle Mist - GPU Accelerated */
+/* Ambient Mist */
 .ambient-glow {
   position: fixed;
   border-radius: 50%;
@@ -48,8 +47,6 @@ body {
   z-index: 0;
   pointer-events: none;
   opacity: 0.4;
-  transform: translateZ(0);
-  will-change: transform;
 }
 .glow-1 {
   width: 380px;
@@ -73,7 +70,7 @@ body {
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: 9999;
+  z-index: 99999;
 }
 
 /* Floating Toast */
@@ -81,11 +78,11 @@ body {
   position: fixed;
   top: 20px;
   right: 20px;
-  z-index: 10000;
+  z-index: 100000;
   display: flex;
   align-items: center;
   gap: 12px;
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.96);
   border: 1px solid var(--border-glass);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -113,15 +110,13 @@ body {
 .alert-popup-card {
   width: 100%;
   max-width: 380px;
-  background: rgba(255, 255, 255, 0.96);
+  background: #ffffff;
   border: 1px solid var(--border-glass);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   border-radius: 26px;
   padding: 26px 20px;
   text-align: center;
   box-shadow: var(--shadow-floating);
-  animation: popupScaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: popupScaleIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   margin: auto;
 }
 
@@ -180,13 +175,12 @@ body {
   max-width: 1220px;
   margin: 0 auto;
   padding: 0.75rem 1.4rem;
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.88);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
   border: 1px solid var(--border-glass);
   border-radius: 24px;
   box-shadow: var(--shadow-soft);
-  transform: translateZ(0);
 }
 
 .nav-brand {
@@ -720,12 +714,11 @@ body {
 .clear-search-btn { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: #edf3ef; border: none; width: 20px; height: 20px; border-radius: 50%; color: var(--text-secondary); display: none; place-items: center; cursor: pointer; }
 .no-results { text-align: center; padding: 3rem 1rem; color: var(--text-secondary); background: #ffffff; border-radius: 20px; }
 
-/* Grid & Cards - Clean Performance */
+/* Grid & Cards */
 .product-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 1.4rem;
-  contain: layout style;
 }
 
 .product-card {
@@ -738,7 +731,6 @@ body {
   justify-content: space-between;
   box-shadow: var(--shadow-card);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  transform: translateZ(0);
 }
 .product-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-floating); }
 
@@ -755,7 +747,6 @@ body {
 }
 .product-emoji { font-size: 3.6rem; }
 .stock-tag { position: absolute; top: 8px; right: 8px; background: #ffffff; color: var(--brand-primary); font-size: 0.65rem; font-weight: 800; padding: 3px 8px; border-radius: 999px; }
-.quick-view-badge { display: none; }
 
 .rating-stars { font-size: 0.74rem; color: #d97706; font-weight: 800; margin-bottom: 3px; cursor: pointer; }
 .product-details h3 { font-size: 0.98rem; font-weight: 800; margin-bottom: 0.2rem; color: var(--text-primary); cursor: pointer; }
@@ -793,8 +784,31 @@ body {
 .add-to-cart-btn { background: #ffffff; border: 1px solid var(--border-subtle); color: var(--text-primary); font-weight: 800; padding: 8px 10px; border-radius: 12px; cursor: pointer; font-size: 0.78rem; }
 .buy-btn { background: var(--pill-dark); color: #ffffff; border: none; font-weight: 800; padding: 8px 12px; border-radius: 12px; cursor: pointer; font-size: 0.8rem; }
 
-/* Studio Detail Modal */
-.studio-modal-backdrop { align-items: center; padding: 14px; }
+/* =========================================================
+   FIXED MODAL LAYERING & VISIBILITY
+   ========================================================= */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(14, 30, 22, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 10000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 14px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  overflow-y: auto;
+}
+
+.modal-backdrop.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
 .studio-detail-card {
   width: 100%;
   max-width: 420px;
@@ -802,18 +816,13 @@ body {
   max-height: 800px;
   background: linear-gradient(180deg, #d3e8dc 0%, #c4decb 45%, #b5d5bf 100%);
   border-radius: 36px;
-  box-shadow: 0 25px 60px -15px rgba(20, 45, 32, 0.3);
+  box-shadow: 0 25px 60px -15px rgba(20, 45, 32, 0.4);
   display: flex;
   flex-direction: column;
   position: relative;
+  z-index: 10001;
   overflow: hidden;
-  animation: studioCardSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  transform: translateZ(0);
-}
-
-@keyframes studioCardSlideIn {
-  from { opacity: 0; transform: scale(0.94) translateY(18px); }
-  to { opacity: 1; transform: scale(1) translateY(0); }
+  opacity: 1;
 }
 
 .studio-top-controls {
@@ -922,53 +931,9 @@ body {
 .rev-body { font-size: 0.72rem; color: var(--text-secondary); line-height: 1.3; margin-bottom: 2px; }
 .rev-date { font-size: 0.62rem; color: var(--text-muted); }
 
-/* About */
-.about-section { position: relative; z-index: 10; background: #ffffff; border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle); padding: 3.5rem 1.25rem; }
-.about-container { max-width: 1100px; margin: 0 auto; }
-.about-header { text-align: center; max-width: 700px; margin: 0 auto 2.5rem; }
-.about-header h2 { font-size: 2rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.5rem; }
-.about-header p { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5; }
-.about-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.4rem; }
-.about-card { background: #f9fbf9; border: 1px solid var(--border-subtle); border-radius: 20px; padding: 1.6rem; }
-.about-icon { font-size: 2.2rem; margin-bottom: 0.8rem; }
-.about-card h3 { font-size: 1.05rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.3rem; }
-.about-card p { color: var(--text-secondary); font-size: 0.82rem; line-height: 1.45; }
-
-/* Modals */
-.modal-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(20, 36, 29, 0.45);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  z-index: 1000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 14px;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.25s ease;
-  overflow-y: auto;
-}
-.modal-backdrop.active { opacity: 1; pointer-events: auto; }
-.checkout-wrapper { position: relative; width: 100%; max-width: 420px; margin: auto; display: flex; flex-direction: column; align-items: center; }
-
-.terminal-card {
-  position: relative;
-  z-index: 20;
-  width: 100%;
-  background: #ffffff;
-  border-radius: 24px;
-  padding: 20px 18px;
-  box-shadow: var(--shadow-floating);
-  animation: cardScaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-@keyframes cardScaleIn {
-  from { opacity: 0; transform: scale(0.95) translateY(10px); }
-  to { opacity: 1; transform: scale(1) translateY(0); }
-}
+/* Other Checkout Modals */
+.checkout-wrapper { position: relative; width: 100%; max-width: 420px; margin: auto; display: flex; flex-direction: column; align-items: center; z-index: 10001; }
+.terminal-card { position: relative; z-index: 10002; width: 100%; background: #ffffff; border-radius: 24px; padding: 20px 18px; box-shadow: var(--shadow-floating); }
 
 .modal-title-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
 .modal-title-row h3 { font-size: 1.1rem; font-weight: 800; color: var(--text-primary); }
