@@ -40,6 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const navUserName = document.getElementById('navUserName');
   const navUserAvatar = document.getElementById('navUserAvatar');
   const cartItemCount = document.getElementById('cartItemCount');
+  const dockCartItemCount = document.getElementById('dockCartItemCount');
 
   // Customer Form Elements
   const custNameInput = document.getElementById('custName');
@@ -128,9 +129,33 @@ document.addEventListener('DOMContentLoaded', () => {
         entry.target.classList.add('visible');
       }
     });
-  }, { threshold: 0.12 });
+  }, { threshold: 0.1 });
 
   document.querySelectorAll('.fade-in-scroll').forEach(el => scrollObserver.observe(el));
+
+  // Focus Search helper
+  window.focusSearch = function() {
+    const input = document.getElementById('productSearch');
+    input.focus();
+    input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
+
+  // Card bottom favorite button
+  window.toggleCardFav = function(btn) {
+    btn.classList.toggle('active');
+    const isSaved = btn.classList.contains('active');
+    btn.textContent = isSaved ? '♥' : '♡';
+    showToast(isSaved ? 'Added to Wishlist' : 'Removed', isSaved ? 'Saved to your personal collection.' : 'Removed from collection.', '❤️');
+  };
+
+  window.openProfileOrAuth = function() {
+    const isAuth = localStorage.getItem('royal_auth') === 'true';
+    if (isAuth) {
+      openProfileModal();
+    } else {
+      window.location.href = 'auth.html';
+    }
+  };
 
   // Mobile Drawer Triggers
   window.openMobileMenu = function() {
@@ -416,8 +441,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function updateCartUI() {
     cartItemCount.textContent = cartItems.length;
+    if (dockCartItemCount) dockCartItemCount.textContent = cartItems.length;
+
     const container = document.getElementById('cartItemsContainer');
-    
     if (cartItems.length === 0) {
       container.innerHTML = `<p class="empty-cart-msg">Your fresh cart is empty.<br>Select any dry fruit to add.</p>`;
       document.getElementById('cartSubtotalVal').textContent = '₹0.00';
@@ -523,7 +549,7 @@ document.addEventListener('DOMContentLoaded', () => {
     floatingToast.classList.add('active');
     toastTimer = setTimeout(() => {
       floatingToast.classList.remove('active');
-    }, 3200);
+    }, 3000);
   };
 
   // Custom Prompt Modal
@@ -755,32 +781,9 @@ document.addEventListener('DOMContentLoaded', () => {
     countdownInterval = setInterval(updateDisplay, 1000);
   }
 
-  // Slider & Filters
-  let currentSlide = 0;
-  const track = document.getElementById('offersTrack');
-  const dots = document.querySelectorAll('.dot');
-  const totalSlides = dots.length;
-
-  window.goToSlide = function(slideIndex) {
-    currentSlide = slideIndex;
-    track.style.transform = `translateX(-${currentSlide * 100}%)`;
-    dots.forEach((dot, idx) => {
-      dot.classList.toggle('active', idx === currentSlide);
-    });
-  };
-
-  setInterval(() => {
-    currentSlide = (currentSlide + 1) % totalSlides;
-    window.goToSlide(currentSlide);
-  }, 4500);
-
-  window.copyOfferCode = function(code) {
-    navigator.clipboard.writeText(code);
-    showToast('Promo Code Copied!', `Coupon "${code}" copied to clipboard. Apply it at checkout.`, '🎁');
-  };
-
+  // Filter Categories
   window.filterCategory = function(category, btn) {
-    document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.catalog-pill').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
 
     const cards = document.querySelectorAll('.product-card');
@@ -793,14 +796,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
+  // Search input handler
   window.handleSearch = function() {
     const query = document.getElementById('productSearch').value.toLowerCase().trim();
-    const clearBtn = document.getElementById('clearSearchBtn');
     const productCards = document.querySelectorAll('.product-card');
     const noResults = document.getElementById('noResults');
     let visibleCount = 0;
-
-    clearBtn.style.display = query.length > 0 ? 'grid' : 'none';
 
     productCards.forEach(card => {
       const name = card.getAttribute('data-name').toLowerCase();
@@ -813,13 +814,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     noResults.style.display = visibleCount === 0 ? 'block' : 'none';
-  };
-
-  window.clearSearch = function() {
-    const searchInput = document.getElementById('productSearch');
-    searchInput.value = '';
-    window.handleSearch();
-    searchInput.focus();
   };
 
   // Protected Order Checkout Flow
