@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>ROYAL NUTS & DRY FRUITS — Premium Gourmet Store</title>
+  <title>Catalog — ROYAL NUTS & DRY FRUITS</title>
   
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌰</text></svg>">
   <meta name="theme-color" content="#edf3ef">
@@ -70,8 +70,8 @@
     </div>
 
     <div class="mobile-drawer-links">
-      <a href="#home" class="mobile-drawer-link active" onclick="closeMobileMenu()">🏠 Home</a>
-      <a href="#products" class="mobile-drawer-link" onclick="closeMobileMenu()">🌰 Products (20)</a>
+      <a href="#home" class="mobile-drawer-link active" onclick="closeMobileMenu()">🏠 Home Catalog</a>
+      <a href="#products" class="mobile-drawer-link" onclick="closeMobileMenu()">🌰 All Dry Fruits (20)</a>
       <a href="#about" class="mobile-drawer-link" onclick="closeMobileMenu()">🌟 About Heritage</a>
       <a href="#contact" class="mobile-drawer-link" onclick="closeMobileMenu()">📞 Contact Support</a>
 
@@ -90,7 +90,7 @@
     </div>
   </aside>
 
-  <!-- Sticky Navbar Wrapper -->
+  <!-- Desktop Sticky Header Bar -->
   <header class="navbar-sticky-wrapper">
     <nav class="navbar">
       <a href="#home" class="nav-brand">
@@ -101,23 +101,19 @@
         </div>
       </a>
 
-      <!-- Desktop Nav Links -->
       <div class="nav-links">
-        <a href="#home" class="nav-link active">Home</a>
+        <a href="#home" class="nav-link active">Catalog</a>
         <a href="#products" class="nav-link">Products</a>
         <a href="#about" class="nav-link">About</a>
         <a href="#contact" class="nav-link">Contact</a>
       </div>
 
-      <!-- Action Controls -->
       <div class="nav-controls-right">
-        <!-- Unauthenticated Account Button -->
         <a href="auth.html" class="nav-link auth-nav-link" id="navAccountBtn">
           <span class="auth-icon">👤</span>
           <span class="auth-btn-label">Account</span>
         </a>
 
-        <!-- Authenticated User Profile & Logout (Desktop) -->
         <div class="user-profile-menu" id="navUserMenu" style="display: none;">
           <button class="profile-trigger-btn" onclick="openProfileModal()" title="View & Edit Profile">
             <img id="navUserAvatar" src="" alt="Profile" class="nav-avatar-img" />
@@ -133,13 +129,11 @@
           </button>
         </div>
 
-        <!-- Cart Pill -->
         <div class="cart-pill clickable-cart" id="navbarCartPill" onclick="openCartDrawer()" title="View Cart">
           <span class="cart-icon-symbol">🛒</span>
           <span class="cart-count-badge" id="cartItemCount">0</span>
         </div>
 
-        <!-- Mobile Hamburger Button -->
         <button class="mobile-menu-trigger" onclick="openMobileMenu()" title="Open Navigation">☰</button>
       </div>
     </nav>
@@ -163,582 +157,349 @@
   </div>
 
   <!-- Main Content -->
-  <main>
-    <!-- Hero Section -->
-    <section id="home" class="hero-section fade-in-scroll">
-      <div class="hero-text">
-        <span class="hero-tag">🌟 Farm Fresh Quality Guaranteed</span>
-        <h2>Handpicked Premium Dry Fruits</h2>
-        <p>Gourmet quality nuts, exotic dried fruits, and authentic Kashmiri saffron delivered straight to your door.</p>
+  <main id="home">
+    
+    <!-- Top Catalog Header (Matching Reference Image) -->
+    <div class="catalog-top-header">
+      <div class="catalog-title-wrap">
+        <h1 class="catalog-main-title">Catalog</h1>
       </div>
+      <button class="catalog-notif-btn" onclick="openCartDrawer()" title="Cart Notifications">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+        </svg>
+        <span class="notif-badge-dot"></span>
+      </button>
+    </div>
 
-      <!-- Pinned 50% OFF Banner -->
-      <div class="pinned-welcome-banner">
-        <div class="pinned-welcome-content">
-          <div class="pinned-tag">🔥 EXCLUSIVE NEW USER OFFER</div>
-          <h3>Flat 50% OFF On Your 1st Order!</h3>
-          <p>Sign up and unlock 50% instant savings across all 20 premium dry fruits & hampers.</p>
-        </div>
-        <div class="pinned-welcome-action">
-          <span class="pinned-coupon-code" onclick="copyOfferCode('WELCOME50')" title="Click to copy">
-            Use Code: <strong>WELCOME50</strong>
-          </span>
-          <span class="pinned-subtext">✨ Valid only once per new user account</span>
-        </div>
-      </div>
-
-      <!-- Offers Carousel -->
-      <div class="offers-carousel-wrapper">
-        <div class="offers-track" id="offersTrack">
-          <div class="offer-card offer-pinned-hero">
-            <div class="offer-badge pulse-badge">⭐ FIRST ORDER SPECIAL</div>
-            <div class="offer-content">
-              <h3>Flat 50% OFF</h3>
-              <p>Exclusive for new users on their very first order across all products</p>
-              <span class="offer-code" onclick="copyOfferCode('WELCOME50')">Code: <strong>WELCOME50</strong></span>
-            </div>
-            <div class="offer-icon">🏷️</div>
-          </div>
-
-          <div class="offer-card offer-gold">
-            <div class="offer-badge">FESTIVE DEAL</div>
-            <div class="offer-content">
-              <h3>Flat 25% OFF</h3>
-              <p>On all Royal Dry Fruit orders across the store</p>
-              <span class="offer-code" onclick="copyOfferCode('ROYAL25')">Code: <strong>ROYAL25</strong></span>
-            </div>
-            <div class="offer-icon">🎁</div>
-          </div>
-
-          <div class="offer-card offer-emerald">
-            <div class="offer-badge">ORGANIC SPECIAL</div>
-            <div class="offer-content">
-              <h3>Flat ₹100 OFF</h3>
-              <p>Instant savings on high-grade nuts & saffron packs</p>
-              <span class="offer-code" onclick="copyOfferCode('ORGANIC100')">Code: <strong>ORGANIC100</strong></span>
-            </div>
-            <div class="offer-icon">🌸</div>
-          </div>
-
-          <div class="offer-card offer-purple">
-            <div class="offer-badge">HEALTH SAVINGS</div>
-            <div class="offer-content">
-              <h3>Flat 10% OFF</h3>
-              <p>Extra discount on whole almonds, walnuts & seed mixes</p>
-              <span class="offer-code" onclick="copyOfferCode('HEALTH10')">Code: <strong>HEALTH10</strong></span>
-            </div>
-            <div class="offer-icon">🥜</div>
-          </div>
-        </div>
-
-        <div class="carousel-dots">
-          <button class="dot active" onclick="goToSlide(0)"></button>
-          <button class="dot" onclick="goToSlide(1)"></button>
-          <button class="dot" onclick="goToSlide(2)"></button>
-          <button class="dot" onclick="goToSlide(3)"></button>
-        </div>
-      </div>
-    </section>
-
-    <!-- Products Section -->
-    <section id="products" class="store-container fade-in-scroll">
-      <div class="section-header">
-        <div>
-          <h2>Explore Collection</h2>
-          <p>Click any product to check verified reviews, return guarantee & quick order</p>
-        </div>
-
-        <div class="search-bar-wrapper">
-          <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="11" cy="11" r="8"></circle>
-            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+    <!-- Search Input Bar with Filter Toggle (Matching Reference Image) -->
+    <div class="catalog-search-container">
+      <div class="catalog-search-bar">
+        <svg class="search-icon-left" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" id="productSearch" placeholder="Search almonds, cashews, berries..." oninput="handleSearch()">
+        <button class="search-filter-icon-btn" onclick="focusSearch()" title="Filters">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <line x1="4" y1="21" x2="4" y2="14"></line>
+            <line x1="4" y1="10" x2="4" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12" y2="3"></line>
+            <line x1="20" y1="21" x2="20" y2="16"></line>
+            <line x1="20" y1="12" x2="20" y2="3"></line>
+            <line x1="1" y1="14" x2="7" y2="14"></line>
+            <line x1="9" y1="8" x2="15" y2="8"></line>
+            <line x1="17" y1="16" x2="23" y2="16"></line>
           </svg>
-          <input type="text" id="productSearch" placeholder="Search almonds, cashews, berries..." oninput="handleSearch()">
-          <button class="clear-search-btn" id="clearSearchBtn" onclick="clearSearch()">&times;</button>
-        </div>
+        </button>
       </div>
+    </div>
 
-      <!-- Category Filter Pills -->
-      <div class="category-filters">
-        <button class="filter-pill active" onclick="filterCategory('all', this)">All Items (20)</button>
-        <button class="filter-pill" onclick="filterCategory('nuts', this)">Premium Nuts</button>
-        <button class="filter-pill" onclick="filterCategory('dried', this)">Dates & Figs</button>
-        <button class="filter-pill" onclick="filterCategory('berries', this)">Berries & Fruits</button>
-        <button class="filter-pill" onclick="filterCategory('exotic', this)">Exotic & Seeds</button>
-        <button class="filter-pill" onclick="filterCategory('hampers', this)">Gift Boxes</button>
-      </div>
+    <!-- Category Pill Filter Row (Matching Reference Image) -->
+    <div class="catalog-pills-row">
+      <button class="catalog-pill active" onclick="filterCategory('all', this)">All Items (20)</button>
+      <button class="catalog-pill" onclick="filterCategory('nuts', this)">Premium Nuts</button>
+      <button class="catalog-pill" onclick="filterCategory('dried', this)">Dates & Figs</button>
+      <button class="catalog-pill" onclick="filterCategory('berries', this)">Berries</button>
+      <button class="catalog-pill" onclick="filterCategory('exotic', this)">Exotic Seeds</button>
+      <button class="catalog-pill" onclick="filterCategory('hampers', this)">Gift Boxes</button>
+    </div>
 
+    <!-- 2-Column Luxury Product Grid (Matching Reference Image) -->
+    <section id="products" class="store-container">
+      
       <div class="no-results" id="noResults" style="display: none;">
         <p>🔍 No dry fruits found matching your search.</p>
       </div>
 
-      <!-- Prominent 2-Column Product Grid (Image 2 style) -->
       <div class="product-grid" id="productGrid">
         
         <!-- 1 -->
         <div class="product-card fade-in-scroll" data-id="1" data-category="nuts" data-name="California Jumbo Almonds (Badam)" data-base-price="450" data-base-weight="500g" data-price-250g="240" data-price-500g="450" data-price-1kg="860" data-rating="4.9" data-reviews-count="142" data-origin="California, USA" data-icon="🥜" data-desc="Crunchy, nutrient-rich premium handpicked almonds loaded with Vitamin E and healthy fats." onclick="openProductQuickView(this)">
           <div class="product-visual">
-            <span class="stock-tag">Best Seller</span>
-            <div class="card-fav-btn">♡</div>
+            <span class="stock-tag-left">Best Seller</span>
+            <span class="card-discount-tag">-15%</span>
             <span class="product-emoji">🥜</span>
           </div>
           <div class="product-details">
-            <div class="brand-verified-line">🛡️ Royal Assured</div>
-            <h3>California Almonds (Badam)</h3>
-            <p>Crunchy, nutrient-rich premium handpicked almonds</p>
-            <div class="price-rating-cluster">
-              <div class="price-discount-wrap">
-                <span class="card-live-price">₹450</span>
-                <span class="card-original-strike">₹530</span>
-                <span class="card-discount-badge">-15%</span>
-              </div>
-              <span class="rating-stars">⭐ 4.9</span>
-            </div>
-            <button class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
+            <h3>California Almonds</h3>
+            <div class="card-live-price">₹450</div>
           </div>
+          <button class="card-bottom-fav-pill" onclick="event.stopPropagation(); toggleCardFav(this)" title="Save to Favorites">♡</button>
         </div>
 
         <!-- 2 -->
         <div class="product-card fade-in-scroll" data-id="2" data-category="nuts" data-name="Kashmiri Walnut Kernels (Akhrot)" data-base-price="620" data-base-weight="500g" data-price-250g="330" data-price-500g="620" data-price-1kg="1190" data-rating="4.8" data-reviews-count="98" data-origin="Kashmir Valley, India" data-icon="🧠" data-desc="100% natural snow-white Kashmiri walnut halves rich in Omega-3 essential brain fatty acids." onclick="openProductQuickView(this)">
           <div class="product-visual">
-            <span class="stock-tag">Rich Omega-3</span>
-            <div class="card-fav-btn">♡</div>
+            <span class="stock-tag-left">Omega-3</span>
+            <span class="card-discount-tag">-14%</span>
             <span class="product-emoji">🧠</span>
           </div>
           <div class="product-details">
-            <div class="brand-verified-line">🛡️ Royal Assured</div>
-            <h3>Kashmiri Walnuts (Akhrot)</h3>
-            <p>100% natural, vacuum packed snow-white kernels</p>
-            <div class="price-rating-cluster">
-              <div class="price-discount-wrap">
-                <span class="card-live-price">₹620</span>
-                <span class="card-original-strike">₹720</span>
-                <span class="card-discount-badge">-14%</span>
-              </div>
-              <span class="rating-stars">⭐ 4.8</span>
-            </div>
-            <button class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
+            <h3>Kashmiri Walnuts</h3>
+            <div class="card-live-price">₹620</div>
           </div>
+          <button class="card-bottom-fav-pill" onclick="event.stopPropagation(); toggleCardFav(this)" title="Save to Favorites">♡</button>
         </div>
 
         <!-- 3 -->
         <div class="product-card fade-in-scroll" data-id="3" data-category="nuts" data-name="King Size Whole Cashews (Kaju)" data-base-price="490" data-base-weight="500g" data-price-250g="260" data-price-500g="490" data-price-1kg="940" data-rating="4.9" data-reviews-count="165" data-origin="Goa / Mangalore" data-icon="✨" data-desc="Grade W240 king cashews with smooth texture, buttery crunch and zero bitter bites." onclick="openProductQuickView(this)">
           <div class="product-visual">
-            <span class="stock-tag">W240 Grade</span>
-            <div class="card-fav-btn">♡</div>
+            <span class="stock-tag-left">W240 Grade</span>
+            <span class="card-discount-tag">-15%</span>
             <span class="product-emoji">✨</span>
           </div>
           <div class="product-details">
-            <div class="brand-verified-line">🛡️ Royal Assured</div>
-            <h3>Whole Cashews (Kaju)</h3>
-            <p>Rich, creamy and whole roasted grade cashew nuts</p>
-            <div class="price-rating-cluster">
-              <div class="price-discount-wrap">
-                <span class="card-live-price">₹490</span>
-                <span class="card-original-strike">₹580</span>
-                <span class="card-discount-badge">-15%</span>
-              </div>
-              <span class="rating-stars">⭐ 4.9</span>
-            </div>
-            <button class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
+            <h3>Whole Cashews</h3>
+            <div class="card-live-price">₹490</div>
           </div>
+          <button class="card-bottom-fav-pill" onclick="event.stopPropagation(); toggleCardFav(this)" title="Save to Favorites">♡</button>
         </div>
 
         <!-- 4 -->
         <div class="product-card fade-in-scroll" data-id="4" data-category="nuts" data-name="Roasted Salted Pistachios (Pista)" data-base-price="580" data-base-weight="500g" data-price-250g="310" data-price-500g="580" data-price-1kg="1100" data-rating="4.8" data-reviews-count="112" data-origin="Iran" data-icon="🌿" data-desc="Naturally split Iranian pistachios gently roasted with Himalayan pink salt for ultimate crispiness." onclick="openProductQuickView(this)">
           <div class="product-visual">
-            <span class="stock-tag">Crispy</span>
-            <div class="card-fav-btn">♡</div>
+            <span class="stock-tag-left">Crispy</span>
+            <span class="card-discount-tag">-15%</span>
             <span class="product-emoji">🌿</span>
           </div>
           <div class="product-details">
-            <div class="brand-verified-line">🛡️ Royal Assured</div>
-            <h3>Roasted Pistachios (Pista)</h3>
-            <p>Lightly salted, open-shell roasted Iranian pistachios</p>
-            <div class="price-rating-cluster">
-              <div class="price-discount-wrap">
-                <span class="card-live-price">₹580</span>
-                <span class="card-original-strike">₹680</span>
-                <span class="card-discount-badge">-15%</span>
-              </div>
-              <span class="rating-stars">⭐ 4.8</span>
-            </div>
-            <button class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
+            <h3>Roasted Pistachios</h3>
+            <div class="card-live-price">₹580</div>
           </div>
+          <button class="card-bottom-fav-pill" onclick="event.stopPropagation(); toggleCardFav(this)" title="Save to Favorites">♡</button>
         </div>
 
         <!-- 5 -->
         <div class="product-card fade-in-scroll" data-id="5" data-category="dried" data-name="Arabian Medjool Dates (Khajoor)" data-base-price="390" data-base-weight="500g" data-price-250g="210" data-price-500g="390" data-price-1kg="740" data-rating="4.9" data-reviews-count="178" data-origin="Medina, Saudi Arabia" data-icon="🌴" data-desc="Soft, luscious caramel-sweet authentic Arabian Medjool dates with high natural energy minerals." onclick="openProductQuickView(this)">
           <div class="product-visual">
-            <span class="stock-tag">Natural Sweet</span>
-            <div class="card-fav-btn">♡</div>
+            <span class="stock-tag-left">Natural Sweet</span>
+            <span class="card-discount-tag">-13%</span>
             <span class="product-emoji">🌴</span>
           </div>
           <div class="product-details">
-            <div class="brand-verified-line">🛡️ Royal Assured</div>
-            <h3>Medjool Dates (Khajoor)</h3>
-            <p>Soft, luscious caramel-sweet authentic Arabian dates</p>
-            <div class="price-rating-cluster">
-              <div class="price-discount-wrap">
-                <span class="card-live-price">₹390</span>
-                <span class="card-original-strike">₹450</span>
-                <span class="card-discount-badge">-13%</span>
-              </div>
-              <span class="rating-stars">⭐ 4.9</span>
-            </div>
-            <button class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
+            <h3>Medjool Dates</h3>
+            <div class="card-live-price">₹390</div>
           </div>
+          <button class="card-bottom-fav-pill" onclick="event.stopPropagation(); toggleCardFav(this)" title="Save to Favorites">♡</button>
         </div>
 
         <!-- 6 -->
         <div class="product-card fade-in-scroll" data-id="6" data-category="dried" data-name="Afghani Green Raisins (Kismis)" data-base-price="260" data-base-weight="500g" data-price-250g="140" data-price-500g="260" data-price-1kg="490" data-rating="4.7" data-reviews-count="84" data-origin="Kandahar, Afghanistan" data-icon="🍇" data-desc="Naturally dried seedless long green raisins harvested from traditional mountain vineyards." onclick="openProductQuickView(this)">
           <div class="product-visual">
-            <span class="stock-tag">Seedless</span>
-            <div class="card-fav-btn">♡</div>
+            <span class="stock-tag-left">Seedless</span>
+            <span class="card-discount-tag">-16%</span>
             <span class="product-emoji">🍇</span>
           </div>
           <div class="product-details">
-            <div class="brand-verified-line">🛡️ Royal Assured</div>
-            <h3>Green Raisins (Kismis)</h3>
-            <p>Long green seedless naturally dried sun-kissed raisins</p>
-            <div class="price-rating-cluster">
-              <div class="price-discount-wrap">
-                <span class="card-live-price">₹260</span>
-                <span class="card-original-strike">₹310</span>
-                <span class="card-discount-badge">-16%</span>
-              </div>
-              <span class="rating-stars">⭐ 4.7</span>
-            </div>
-            <button class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
+            <h3>Green Raisins</h3>
+            <div class="card-live-price">₹260</div>
           </div>
+          <button class="card-bottom-fav-pill" onclick="event.stopPropagation(); toggleCardFav(this)" title="Save to Favorites">♡</button>
         </div>
 
         <!-- 7 -->
         <div class="product-card fade-in-scroll" data-id="7" data-category="dried" data-name="Turkish Dried Figs (Anjeer)" data-base-price="750" data-base-weight="500g" data-price-250g="390" data-price-500g="750" data-price-1kg="1420" data-rating="4.9" data-reviews-count="131" data-origin="Izmir, Turkey" data-icon="🍯" data-desc="Plump garland figs packed with dietary fiber, calcium and antioxidant vitamins." onclick="openProductQuickView(this)">
           <div class="product-visual">
-            <span class="stock-tag">High Fiber</span>
-            <div class="card-fav-btn">♡</div>
+            <span class="stock-tag-left">High Fiber</span>
+            <span class="card-discount-tag">-15%</span>
             <span class="product-emoji">🍯</span>
           </div>
           <div class="product-details">
-            <div class="brand-verified-line">🛡️ Royal Assured</div>
-            <h3>Turkish Figs (Anjeer)</h3>
-            <p>Plump, chewy and sweet dried garland figs</p>
-            <div class="price-rating-cluster">
-              <div class="price-discount-wrap">
-                <span class="card-live-price">₹750</span>
-                <span class="card-original-strike">₹890</span>
-                <span class="card-discount-badge">-15%</span>
-              </div>
-              <span class="rating-stars">⭐ 4.9</span>
-            </div>
-            <button class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
+            <h3>Turkish Figs</h3>
+            <div class="card-live-price">₹750</div>
           </div>
+          <button class="card-bottom-fav-pill" onclick="event.stopPropagation(); toggleCardFav(this)" title="Save to Favorites">♡</button>
         </div>
 
         <!-- 8 -->
         <div class="product-card fade-in-scroll" data-id="8" data-category="exotic" data-name="Kashmir Mogra Saffron (Kesar)" data-base-price="550" data-base-weight="2g" data-price-250g="300" data-price-500g="550" data-price-1kg="1050" data-unit-type="grams" data-rating="5.0" data-reviews-count="210" data-origin="Pampore, Kashmir" data-icon="🌸" data-desc="Pure Grade A1 authentic Mogra saffron threads from the purple saffron fields of Pampore." onclick="openProductQuickView(this)">
           <div class="product-visual">
-            <span class="stock-tag">Pure Grade A1</span>
-            <div class="card-fav-btn">♡</div>
+            <span class="stock-tag-left">Grade A1</span>
+            <span class="card-discount-tag">-15%</span>
             <span class="product-emoji">🌸</span>
           </div>
           <div class="product-details">
-            <div class="brand-verified-line">🛡️ Royal Assured</div>
-            <h3>Kashmiri Saffron (Kesar)</h3>
-            <p>Original high aroma crimson threads of Kashmiri Mogra</p>
-            <div class="price-rating-cluster">
-              <div class="price-discount-wrap">
-                <span class="card-live-price">₹550</span>
-                <span class="card-original-strike">₹650</span>
-                <span class="card-discount-badge">-15%</span>
-              </div>
-              <span class="rating-stars">⭐ 5.0</span>
-            </div>
-            <button class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
+            <h3>Kashmiri Saffron</h3>
+            <div class="card-live-price">₹550</div>
           </div>
+          <button class="card-bottom-fav-pill" onclick="event.stopPropagation(); toggleCardFav(this)" title="Save to Favorites">♡</button>
         </div>
 
         <!-- 9 -->
         <div class="product-card fade-in-scroll" data-id="9" data-category="exotic" data-name="Dried Chia & Pumpkin Seeds Mix" data-base-price="340" data-base-weight="500g" data-price-250g="190" data-price-500g="340" data-price-1kg="640" data-rating="4.8" data-reviews-count="76" data-origin="Organic India Farms" data-icon="🌻" data-desc="Superfood roasted blend of chia, pumpkin, flax, sunflower and watermelon seeds." onclick="openProductQuickView(this)">
           <div class="product-visual">
-            <span class="stock-tag">Superfood</span>
-            <div class="card-fav-btn">♡</div>
+            <span class="stock-tag-left">Superfood</span>
+            <span class="card-discount-tag">-15%</span>
             <span class="product-emoji">🌻</span>
           </div>
           <div class="product-details">
-            <div class="brand-verified-line">🛡️ Royal Assured</div>
-            <h3>7-in-1 Healthy Seed Mix</h3>
-            <p>Chia, flax, pumpkin, sunflower, watermelon seeds mix</p>
-            <div class="price-rating-cluster">
-              <div class="price-discount-wrap">
-                <span class="card-live-price">₹340</span>
-                <span class="card-original-strike">₹400</span>
-                <span class="card-discount-badge">-15%</span>
-              </div>
-              <span class="rating-stars">⭐ 4.8</span>
-            </div>
-            <button class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
+            <h3>7-in-1 Seed Mix</h3>
+            <div class="card-live-price">₹340</div>
           </div>
+          <button class="card-bottom-fav-pill" onclick="event.stopPropagation(); toggleCardFav(this)" title="Save to Favorites">♡</button>
         </div>
 
         <!-- 10 -->
         <div class="product-card fade-in-scroll" data-id="10" data-category="hampers" data-name="Royal Gourmet Dry Fruit Hamper" data-base-price="1299" data-base-weight="1kg" data-price-250g="699" data-price-500g="999" data-price-1kg="1299" data-rating="4.9" data-reviews-count="194" data-origin="Royal Custom Packaging" data-icon="🎁" data-desc="Exquisite gold-embossed gift hamper box containing selected supreme grade nuts and dried fruits." onclick="openProductQuickView(this)">
           <div class="product-visual">
-            <span class="stock-tag">Gift Box</span>
-            <div class="card-fav-btn">♡</div>
+            <span class="stock-tag-left">Gift Box</span>
+            <span class="card-discount-tag">-18%</span>
             <span class="product-emoji">🎁</span>
           </div>
           <div class="product-details">
-            <div class="brand-verified-line">🛡️ Royal Assured</div>
-            <h3>Royal Gourmet Gift Hamper</h3>
-            <p>Assorted premium box: Badam, Kaju, Pista & Akhrot</p>
-            <div class="price-rating-cluster">
-              <div class="price-discount-wrap">
-                <span class="card-live-price">₹1,299</span>
-                <span class="card-original-strike">₹1,599</span>
-                <span class="card-discount-badge">-18%</span>
-              </div>
-              <span class="rating-stars">⭐ 4.9</span>
-            </div>
-            <button class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
+            <h3>Gourmet Gift Hamper</h3>
+            <div class="card-live-price">₹1,299</div>
           </div>
+          <button class="card-bottom-fav-pill" onclick="event.stopPropagation(); toggleCardFav(this)" title="Save to Favorites">♡</button>
         </div>
 
         <!-- 11 -->
         <div class="product-card fade-in-scroll" data-id="11" data-category="nuts" data-name="Raw Turkish Hazelnuts" data-base-price="590" data-base-weight="500g" data-price-250g="320" data-price-500g="590" data-price-1kg="1120" data-rating="4.8" data-reviews-count="67" data-origin="Trabzon, Turkey" data-icon="🌰" data-desc="Crunchy, buttery, unroasted premium Turkish whole filberts rich in folate and vitamin E." onclick="openProductQuickView(this)">
           <div class="product-visual">
-            <span class="stock-tag">Imported</span>
-            <div class="card-fav-btn">♡</div>
+            <span class="stock-tag-left">Imported</span>
+            <span class="card-discount-tag">-14%</span>
             <span class="product-emoji">🌰</span>
           </div>
           <div class="product-details">
-            <div class="brand-verified-line">🛡️ Royal Assured</div>
             <h3>Turkish Hazelnuts</h3>
-            <p>Crunchy, buttery, unroasted premium Turkish whole filberts</p>
-            <div class="price-rating-cluster">
-              <div class="price-discount-wrap">
-                <span class="card-live-price">₹590</span>
-                <span class="card-original-strike">₹690</span>
-                <span class="card-discount-badge">-14%</span>
-              </div>
-              <span class="rating-stars">⭐ 4.8</span>
-            </div>
-            <button class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
+            <div class="card-live-price">₹590</div>
           </div>
+          <button class="card-bottom-fav-pill" onclick="event.stopPropagation(); toggleCardFav(this)" title="Save to Favorites">♡</button>
         </div>
 
         <!-- 12 -->
         <div class="product-card fade-in-scroll" data-id="12" data-category="nuts" data-name="Australian Macadamia Nuts" data-base-price="890" data-base-weight="500g" data-price-250g="480" data-price-500g="890" data-price-1kg="1690" data-rating="5.0" data-reviews-count="53" data-origin="Queensland, Australia" data-icon="🥥" data-desc="Ultra creamy whole roasted Australian macadamias with delicate buttery texture." onclick="openProductQuickView(this)">
           <div class="product-visual">
-            <span class="stock-tag">Royal Luxury</span>
-            <div class="card-fav-btn">♡</div>
+            <span class="stock-tag-left">Royal Luxury</span>
+            <span class="card-discount-tag">-15%</span>
             <span class="product-emoji">🥥</span>
           </div>
           <div class="product-details">
-            <div class="brand-verified-line">🛡️ Royal Assured</div>
             <h3>Australian Macadamias</h3>
-            <p>Rich, ultra-creamy, lightly roasted premium whole macadamias</p>
-            <div class="price-rating-cluster">
-              <div class="price-discount-wrap">
-                <span class="card-live-price">₹890</span>
-                <span class="card-original-strike">₹1,050</span>
-                <span class="card-discount-badge">-15%</span>
-              </div>
-              <span class="rating-stars">⭐ 5.0</span>
-            </div>
-            <button class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
+            <div class="card-live-price">₹890</div>
           </div>
+          <button class="card-bottom-fav-pill" onclick="event.stopPropagation(); toggleCardFav(this)" title="Save to Favorites">♡</button>
         </div>
 
         <!-- 13 -->
         <div class="product-card fade-in-scroll" data-id="13" data-category="nuts" data-name="American Pecan Nut Halves" data-base-price="780" data-base-weight="500g" data-price-250g="410" data-price-500g="780" data-price-1kg="1480" data-rating="4.8" data-reviews-count="47" data-origin="Georgia, USA" data-icon="🍂" data-desc="Sweet, rich and buttery natural pecan nut halves perfect for low-carb keto lifestyles." onclick="openProductQuickView(this)">
           <div class="product-visual">
-            <span class="stock-tag">Keto Friendly</span>
-            <div class="card-fav-btn">♡</div>
+            <span class="stock-tag-left">Keto Friendly</span>
+            <span class="card-discount-tag">-15%</span>
             <span class="product-emoji">🍂</span>
           </div>
           <div class="product-details">
-            <div class="brand-verified-line">🛡️ Royal Assured</div>
             <h3>American Pecan Halves</h3>
-            <p>Sweet, buttery, raw natural pecan nut halves from Georgia</p>
-            <div class="price-rating-cluster">
-              <div class="price-discount-wrap">
-                <span class="card-live-price">₹780</span>
-                <span class="card-original-strike">₹920</span>
-                <span class="card-discount-badge">-15%</span>
-              </div>
-              <span class="rating-stars">⭐ 4.8</span>
-            </div>
-            <button class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
+            <div class="card-live-price">₹780</div>
           </div>
+          <button class="card-bottom-fav-pill" onclick="event.stopPropagation(); toggleCardFav(this)" title="Save to Favorites">♡</button>
         </div>
 
         <!-- 14 -->
         <div class="product-card fade-in-scroll" data-id="14" data-category="berries" data-name="Dried Whole Cranberries" data-base-price="380" data-base-weight="500g" data-price-250g="210" data-price-500g="380" data-price-1kg="720" data-rating="4.8" data-reviews-count="94" data-origin="Wisconsin, USA" data-icon="🍒" data-desc="Tangy, sweet and sun-dried whole cranberries packed with proanthocyanidins and vitamin C." onclick="openProductQuickView(this)">
           <div class="product-visual">
-            <span class="stock-tag">Antioxidant</span>
-            <div class="card-fav-btn">♡</div>
+            <span class="stock-tag-left">Antioxidant</span>
+            <span class="card-discount-tag">-15%</span>
             <span class="product-emoji">🍒</span>
           </div>
           <div class="product-details">
-            <div class="brand-verified-line">🛡️ Royal Assured</div>
-            <h3>Dried Whole Cranberries</h3>
-            <p>Sweet and tangy, sun-dried juicy cranberries for daily wellness</p>
-            <div class="price-rating-cluster">
-              <div class="price-discount-wrap">
-                <span class="card-live-price">₹380</span>
-                <span class="card-original-strike">₹450</span>
-                <span class="card-discount-badge">-15%</span>
-              </div>
-              <span class="rating-stars">⭐ 4.8</span>
-            </div>
-            <button class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
+            <h3>Dried Cranberries</h3>
+            <div class="card-live-price">₹380</div>
           </div>
+          <button class="card-bottom-fav-pill" onclick="event.stopPropagation(); toggleCardFav(this)" title="Save to Favorites">♡</button>
         </div>
 
         <!-- 15 -->
         <div class="product-card fade-in-scroll" data-id="15" data-category="berries" data-name="Dried Wild Blueberries" data-base-price="540" data-base-weight="500g" data-price-250g="290" data-price-500g="540" data-price-1kg="1020" data-rating="4.9" data-reviews-count="118" data-origin="Nova Scotia, Canada" data-icon="🫐" data-desc="Naturally dried wild blueberries packed with concentrated anthocyanins and memory antioxidants." onclick="openProductQuickView(this)">
           <div class="product-visual">
-            <span class="stock-tag">Brain Food</span>
-            <div class="card-fav-btn">♡</div>
+            <span class="stock-tag-left">Brain Food</span>
+            <span class="card-discount-tag">-14%</span>
             <span class="product-emoji">🫐</span>
           </div>
           <div class="product-details">
-            <div class="brand-verified-line">🛡️ Royal Assured</div>
             <h3>Wild Blueberries</h3>
-            <p>Naturally sweetened dried Canadian blueberries packed with minerals</p>
-            <div class="price-rating-cluster">
-              <div class="price-discount-wrap">
-                <span class="card-live-price">₹540</span>
-                <span class="card-original-strike">₹630</span>
-                <span class="card-discount-badge">-14%</span>
-              </div>
-              <span class="rating-stars">⭐ 4.9</span>
-            </div>
-            <button class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
+            <div class="card-live-price">₹540</div>
           </div>
+          <button class="card-bottom-fav-pill" onclick="event.stopPropagation(); toggleCardFav(this)" title="Save to Favorites">♡</button>
         </div>
 
         <!-- 16 -->
         <div class="product-card fade-in-scroll" data-id="16" data-category="dried" data-name="Turkish Dried Apricots (Jardalu)" data-base-price="360" data-base-weight="500g" data-price-250g="195" data-price-500g="360" data-price-1kg="680" data-rating="4.8" data-reviews-count="79" data-origin="Malatya, Turkey" data-icon="🍑" data-desc="Golden, soft, naturally sweet and fiber-rich Turkish dried apricots with zero added sugar." onclick="openProductQuickView(this)">
           <div class="product-visual">
-            <span class="stock-tag">Vitamin A</span>
-            <div class="card-fav-btn">♡</div>
+            <span class="stock-tag-left">Vitamin A</span>
+            <span class="card-discount-tag">-14%</span>
             <span class="product-emoji">🍑</span>
           </div>
           <div class="product-details">
-            <div class="brand-verified-line">🛡️ Royal Assured</div>
-            <h3>Dried Apricots (Jardalu)</h3>
-            <p>Golden, soft, naturally sweet and fiber-rich Turkish apricots</p>
-            <div class="price-rating-cluster">
-              <div class="price-discount-wrap">
-                <span class="card-live-price">₹360</span>
-                <span class="card-original-strike">₹420</span>
-                <span class="card-discount-badge">-14%</span>
-              </div>
-              <span class="rating-stars">⭐ 4.8</span>
-            </div>
-            <button class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
+            <h3>Dried Apricots</h3>
+            <div class="card-live-price">₹360</div>
           </div>
+          <button class="card-bottom-fav-pill" onclick="event.stopPropagation(); toggleCardFav(this)" title="Save to Favorites">♡</button>
         </div>
 
         <!-- 17 -->
         <div class="product-card fade-in-scroll" data-id="17" data-category="dried" data-name="Seedless Dried Prunes (Aloo Bukhara)" data-base-price="390" data-base-weight="500g" data-price-250g="210" data-price-500g="390" data-price-1kg="740" data-rating="4.7" data-reviews-count="61" data-origin="Yuba City, USA" data-icon="🍇" data-desc="Plump, pitted California dried plums rich in sorbitol and potassium for digestive balance." onclick="openProductQuickView(this)">
           <div class="product-visual">
-            <span class="stock-tag">Digestion Care</span>
-            <div class="card-fav-btn">♡</div>
+            <span class="stock-tag-left">Digestion Care</span>
+            <span class="card-discount-tag">-15%</span>
             <span class="product-emoji">🍇</span>
           </div>
           <div class="product-details">
-            <div class="brand-verified-line">🛡️ Royal Assured</div>
-            <h3>Dried Prunes (Aloo Bukhara)</h3>
-            <p>Plump, soft pitted California dried plums for bone and gut health</p>
-            <div class="price-rating-cluster">
-              <div class="price-discount-wrap">
-                <span class="card-live-price">₹390</span>
-                <span class="card-original-strike">₹460</span>
-                <span class="card-discount-badge">-15%</span>
-              </div>
-              <span class="rating-stars">⭐ 4.7</span>
-            </div>
-            <button class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
+            <h3>Dried Prunes</h3>
+            <div class="card-live-price">₹390</div>
           </div>
+          <button class="card-bottom-fav-pill" onclick="event.stopPropagation(); toggleCardFav(this)" title="Save to Favorites">♡</button>
         </div>
 
         <!-- 18 -->
         <div class="product-card fade-in-scroll" data-id="18" data-category="nuts" data-name="Pine Nuts without Shell (Chilgoza)" data-base-price="1450" data-base-weight="250g" data-price-250g="1450" data-price-500g="2800" data-price-1kg="5400" data-rating="5.0" data-reviews-count="89" data-origin="Kinnaur, Himachal Pradesh" data-icon="🌲" data-desc="Wild Himalayan pine nuts harvested at high altitudes with an exceptionally rich pinolenic acid profile." onclick="openProductQuickView(this)">
           <div class="product-visual">
-            <span class="stock-tag">Ultra Premium</span>
-            <div class="card-fav-btn">♡</div>
+            <span class="stock-tag-left">Ultra Premium</span>
+            <span class="card-discount-tag">-15%</span>
             <span class="product-emoji">🌲</span>
           </div>
           <div class="product-details">
-            <div class="brand-verified-line">🛡️ Royal Assured</div>
             <h3>Pine Nuts (Chilgoza)</h3>
-            <p>Himalayan hand-harvested pure shelled creamy pine nuts</p>
-            <div class="price-rating-cluster">
-              <div class="price-discount-wrap">
-                <span class="card-live-price">₹1,450</span>
-                <span class="card-original-strike">₹1,700</span>
-                <span class="card-discount-badge">-15%</span>
-              </div>
-              <span class="rating-stars">⭐ 5.0</span>
-            </div>
-            <button class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
+            <div class="card-live-price">₹1,450</div>
           </div>
+          <button class="card-bottom-fav-pill" onclick="event.stopPropagation(); toggleCardFav(this)" title="Save to Favorites">♡</button>
         </div>
 
         <!-- 19 -->
         <div class="product-card fade-in-scroll" data-id="19" data-category="berries" data-name="Himalayan Goji Berries" data-base-price="420" data-base-weight="500g" data-price-250g="230" data-price-500g="420" data-price-1kg="790" data-rating="4.8" data-reviews-count="56" data-origin="Tibetan Plateau" data-icon="🍎" data-desc="Sun-dried ruby red Tibetan goji berries rich in zeaxanthin, beta-carotene and essential amino acids." onclick="openProductQuickView(this)">
           <div class="product-visual">
-            <span class="stock-tag">Immunity Booster</span>
-            <div class="card-fav-btn">♡</div>
+            <span class="stock-tag-left">Immunity</span>
+            <span class="card-discount-tag">-14%</span>
             <span class="product-emoji">🍎</span>
           </div>
           <div class="product-details">
-            <div class="brand-verified-line">🛡️ Royal Assured</div>
             <h3>Himalayan Goji Berries</h3>
-            <p>Sun-dried ruby red super-berries rich in carotenoids & vitality</p>
-            <div class="price-rating-cluster">
-              <div class="price-discount-wrap">
-                <span class="card-live-price">₹420</span>
-                <span class="card-original-strike">₹490</span>
-                <span class="card-discount-badge">-14%</span>
-              </div>
-              <span class="rating-stars">⭐ 4.8</span>
-            </div>
-            <button class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
+            <div class="card-live-price">₹420</div>
           </div>
+          <button class="card-bottom-fav-pill" onclick="event.stopPropagation(); toggleCardFav(this)" title="Save to Favorites">♡</button>
         </div>
 
         <!-- 20 -->
         <div class="product-card fade-in-scroll" data-id="20" data-category="hampers" data-name="Imperial Grand Celebration Box" data-base-price="1999" data-base-weight="1.5kg" data-price-250g="1199" data-price-500g="1599" data-price-1kg="1999" data-rating="5.0" data-reviews-count="240" data-origin="Royal Master Collection" data-icon="👑" data-desc="Master artisanal chest holding whole cashews, almonds, pistachios, walnuts, figs and Arabian dates." onclick="openProductQuickView(this)">
           <div class="product-visual">
-            <span class="stock-tag">Luxury Wood Box</span>
-            <div class="card-fav-btn">♡</div>
+            <span class="stock-tag-left">Luxury Wood</span>
+            <span class="card-discount-tag">-20%</span>
             <span class="product-emoji">👑</span>
           </div>
           <div class="product-details">
-            <div class="brand-verified-line">🛡️ Royal Assured</div>
-            <h3>Imperial Celebration Hamper</h3>
-            <p>6-in-1 Royal Wooden Chest: Badam, Kaju, Pista, Akhrot, Anjeer & Dates</p>
-            <div class="price-rating-cluster">
-              <div class="price-discount-wrap">
-                <span class="card-live-price">₹1,999</span>
-                <span class="card-original-strike">₹2,499</span>
-                <span class="card-discount-badge">-20%</span>
-              </div>
-              <span class="rating-stars">⭐ 5.0</span>
-            </div>
-            <button class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
+            <h3>Imperial Celebration Box</h3>
+            <div class="card-live-price">₹1,999</div>
           </div>
+          <button class="card-bottom-fav-pill" onclick="event.stopPropagation(); toggleCardFav(this)" title="Save to Favorites">♡</button>
         </div>
 
       </div>
     </section>
 
-    <!-- Fixed About Section with Structured Cards & Scroll Fade-In -->
+    <!-- Structured About Section with Cards & Scroll Fade-In -->
     <section id="about" class="about-section fade-in-scroll">
       <div class="about-container">
         <div class="about-header">
@@ -770,7 +531,7 @@
     </section>
   </main>
 
-  <!-- Studio Detail Sheet Modal -->
+  <!-- Studio Detail Sheet Modal (from reference sheet) -->
   <div class="modal-backdrop studio-modal-backdrop" id="productModal">
     <div class="studio-detail-card" id="studioDetailCard">
       
@@ -1288,9 +1049,9 @@
       <div class="footer-col">
         <h4>Quick Navigation</h4>
         <ul>
-          <li><a href="#home">Home</a></li>
+          <li><a href="#home">Catalog</a></li>
           <li><a href="#products">All Products</a></li>
-          <li><a href="#about">About Our Heritage</a></li>
+          <li><a href="#about">About Heritage</a></li>
           <li><a href="#contact">Contact Support</a></li>
           <li><a href="auth.html">Member Portal</a></li>
         </ul>
@@ -1311,6 +1072,37 @@
       <p>© 2026 ROYAL DRY FRUITS & NUTS. All Rights Reserved. | Designed & Developed by <a href="https://alfaz81.vercel.app/" target="_blank" rel="noopener noreferrer" class="designer-link">ALFAZ KALADAGI</a></p>
     </div>
   </footer>
+
+  <!-- Floating Glassmorphic Bottom Dock (Matching Reference Image) -->
+  <nav class="floating-bottom-dock">
+    <button class="dock-item-btn primary-dock" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" title="Catalog Store">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+        <rect x="3" y="3" width="7" height="7"></rect>
+        <rect x="14" y="3" width="7" height="7"></rect>
+        <rect x="14" y="14" width="7" height="7"></rect>
+        <rect x="3" y="14" width="7" height="7"></rect>
+      </svg>
+    </button>
+    <button class="dock-item-btn" onclick="showToast('Wishlist', 'You have saved items in your catalog.', '❤️')" title="Favorites">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+      </svg>
+    </button>
+    <button class="dock-item-btn" onclick="openCartDrawer()" title="View Cart Bag">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <path d="M16 10a4 4 0 0 1-8 0"></path>
+      </svg>
+      <span class="dock-cart-badge" id="dockCartItemCount">0</span>
+    </button>
+    <button class="dock-item-btn" onclick="openProfileOrAuth()" title="Profile & Settings">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+        <circle cx="12" cy="12" r="3"></circle>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+      </svg>
+    </button>
+  </nav>
 
   <script src="script.js"></script>
 </body>
