@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>ROYAL NUTS & DRY FRUITS — Premium Gourmet Store</title>
   
-  <!-- HD Browser Tab Favicon -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌰</text></svg>">
   <meta name="theme-color" content="#edf3ef">
 
@@ -23,7 +22,7 @@
   <div class="ambient-glow glow-1"></div>
   <div class="ambient-glow glow-2"></div>
 
-  <!-- Confetti Canvas Container -->
+  <!-- Confetti Canvas -->
   <canvas id="confettiCanvas"></canvas>
 
   <!-- Global Floating Toast Notification Container -->
@@ -50,7 +49,48 @@
     </div>
   </div>
 
-  <!-- Responsive Mobile-Adaptive Navigation Bar -->
+  <!-- Responsive Mobile Navigation Drawer -->
+  <div class="mobile-drawer-backdrop" id="mobileDrawerBackdrop" onclick="closeMobileMenu()"></div>
+  <aside class="mobile-nav-drawer" id="mobileNavDrawer">
+    <div class="mobile-drawer-header">
+      <div class="nav-brand">
+        <div class="brand-badge">🌰</div>
+        <span class="brand-title">ROYAL STORE</span>
+      </div>
+      <button class="drawer-close-btn" onclick="closeMobileMenu()">&times;</button>
+    </div>
+
+    <!-- Authenticated Mobile User Header -->
+    <div class="mobile-drawer-user" id="mobileUserCard" style="display: none;">
+      <img id="mobileUserAvatar" src="" alt="Profile" class="mobile-user-avatar" />
+      <div class="mobile-user-info">
+        <h4 id="mobileUserName">Member Profile</h4>
+        <p>Royal Verified Member</p>
+      </div>
+    </div>
+
+    <div class="mobile-drawer-links">
+      <a href="#home" class="mobile-drawer-link active" onclick="closeMobileMenu()">🏠 Home</a>
+      <a href="#products" class="mobile-drawer-link" onclick="closeMobileMenu()">🌰 Products (20)</a>
+      <a href="#about" class="mobile-drawer-link" onclick="closeMobileMenu()">🌟 About Heritage</a>
+      <a href="#contact" class="mobile-drawer-link" onclick="closeMobileMenu()">📞 Contact Support</a>
+
+      <hr style="border: 0; border-top: 1px solid var(--border-subtle); margin: 8px 0;">
+
+      <!-- Unauthenticated Menu Option -->
+      <a href="auth.html" class="mobile-drawer-link" id="mobileAuthLink">👤 Sign In / Create Account</a>
+
+      <!-- Authenticated Mobile Menu Options -->
+      <button class="mobile-drawer-link" id="mobileProfileBtn" onclick="openProfileModal(); closeMobileMenu();" style="display: none;">
+        ⚙️ Manage Address & Profile
+      </button>
+      <button class="mobile-drawer-link logout-link" id="mobileLogoutBtn" onclick="confirmLogout(); closeMobileMenu();" style="display: none;">
+        🚪 Log Out Account
+      </button>
+    </div>
+  </aside>
+
+  <!-- Responsive Navigation Bar -->
   <nav class="navbar">
     <a href="#home" class="nav-brand">
       <div class="brand-badge">🌰</div>
@@ -68,7 +108,7 @@
       <a href="#contact" class="nav-link">Contact</a>
     </div>
 
-    <!-- Responsive Action Controls Wrapper -->
+    <!-- Action Controls -->
     <div class="nav-controls-right">
       <!-- Unauthenticated Account Button -->
       <a href="auth.html" class="nav-link auth-nav-link" id="navAccountBtn">
@@ -76,7 +116,7 @@
         <span class="auth-btn-label">Account</span>
       </a>
 
-      <!-- Authenticated User Profile & Logout -->
+      <!-- Authenticated User Profile & Logout (Desktop) -->
       <div class="user-profile-menu" id="navUserMenu" style="display: none;">
         <button class="profile-trigger-btn" onclick="openProfileModal()" title="View & Edit Profile">
           <img id="navUserAvatar" src="" alt="Profile" class="nav-avatar-img" />
@@ -92,11 +132,14 @@
         </button>
       </div>
 
-      <!-- Compact Clickable Cart Pill -->
+      <!-- Cart Pill -->
       <div class="cart-pill clickable-cart" id="navbarCartPill" onclick="openCartDrawer()" title="View Cart">
         <span class="cart-icon-symbol">🛒</span>
         <span class="cart-count-badge" id="cartItemCount">0</span>
       </div>
+
+      <!-- Mobile Hamburger Button -->
+      <button class="mobile-menu-trigger" onclick="openMobileMenu()" title="Open Navigation">☰</button>
     </div>
   </nav>
 
@@ -107,9 +150,7 @@
       <h3>Your Fresh Cart 🛒</h3>
       <button class="drawer-close-btn" onclick="closeCartDrawer()">&times;</button>
     </div>
-    <div class="cart-items-container" id="cartItemsContainer">
-      <!-- Injected Cart Items via script.js -->
-    </div>
+    <div class="cart-items-container" id="cartItemsContainer"></div>
     <div class="cart-drawer-footer" id="cartDrawerFooter">
       <div class="cart-summary-line">
         <span>Subtotal:</span>
@@ -129,7 +170,7 @@
         <p>Gourmet quality nuts, exotic dried fruits, and authentic Kashmiri saffron delivered straight to your door.</p>
       </div>
 
-      <!-- Pinned 50% OFF Banner for 1st Order New Users -->
+      <!-- Pinned 50% OFF Banner -->
       <div class="pinned-welcome-banner">
         <div class="pinned-welcome-content">
           <div class="pinned-tag">🔥 EXCLUSIVE NEW USER OFFER</div>
@@ -147,7 +188,6 @@
       <!-- Offers Carousel -->
       <div class="offers-carousel-wrapper">
         <div class="offers-track" id="offersTrack">
-          <!-- Slide 1: Welcome50 Pinned Spotlight -->
           <div class="offer-card offer-pinned-hero">
             <div class="offer-badge pulse-badge">⭐ FIRST ORDER SPECIAL</div>
             <div class="offer-content">
@@ -158,7 +198,6 @@
             <div class="offer-icon">🏷️</div>
           </div>
 
-          <!-- Slide 2 -->
           <div class="offer-card offer-gold">
             <div class="offer-badge">FESTIVE DEAL</div>
             <div class="offer-content">
@@ -169,7 +208,6 @@
             <div class="offer-icon">🎁</div>
           </div>
 
-          <!-- Slide 3 -->
           <div class="offer-card offer-emerald">
             <div class="offer-badge">ORGANIC SPECIAL</div>
             <div class="offer-content">
@@ -180,7 +218,6 @@
             <div class="offer-icon">🌸</div>
           </div>
 
-          <!-- Slide 4 -->
           <div class="offer-card offer-purple">
             <div class="offer-badge">HEALTH SAVINGS</div>
             <div class="offer-content">
@@ -209,7 +246,6 @@
           <p>Click any product to check verified reviews, return guarantee & quick order</p>
         </div>
 
-        <!-- Search Bar -->
         <div class="search-bar-wrapper">
           <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="11" cy="11" r="8"></circle>
@@ -242,7 +278,6 @@
           <div class="product-visual" onclick="openProductQuickView(this.closest('.product-card'))">
             <span class="product-emoji">🥜</span>
             <span class="stock-tag">Best Seller</span>
-            <span class="quick-view-badge">🔍 View & Review</span>
           </div>
           <div class="product-details">
             <div class="rating-stars" onclick="openProductQuickView(this.closest('.product-card'))">⭐ 4.9 (142 reviews)</div>
@@ -273,7 +308,6 @@
           <div class="product-visual" onclick="openProductQuickView(this.closest('.product-card'))">
             <span class="product-emoji">🧠</span>
             <span class="stock-tag">Rich Omega-3</span>
-            <span class="quick-view-badge">🔍 View & Review</span>
           </div>
           <div class="product-details">
             <div class="rating-stars" onclick="openProductQuickView(this.closest('.product-card'))">⭐ 4.8 (98 reviews)</div>
@@ -304,7 +338,6 @@
           <div class="product-visual" onclick="openProductQuickView(this.closest('.product-card'))">
             <span class="product-emoji">✨</span>
             <span class="stock-tag">W240 Grade</span>
-            <span class="quick-view-badge">🔍 View & Review</span>
           </div>
           <div class="product-details">
             <div class="rating-stars" onclick="openProductQuickView(this.closest('.product-card'))">⭐ 4.9 (165 reviews)</div>
@@ -335,7 +368,6 @@
           <div class="product-visual" onclick="openProductQuickView(this.closest('.product-card'))">
             <span class="product-emoji">🌿</span>
             <span class="stock-tag">Crispy</span>
-            <span class="quick-view-badge">🔍 View & Review</span>
           </div>
           <div class="product-details">
             <div class="rating-stars" onclick="openProductQuickView(this.closest('.product-card'))">⭐ 4.8 (112 reviews)</div>
@@ -366,7 +398,6 @@
           <div class="product-visual" onclick="openProductQuickView(this.closest('.product-card'))">
             <span class="product-emoji">🌴</span>
             <span class="stock-tag">Natural Sweet</span>
-            <span class="quick-view-badge">🔍 View & Review</span>
           </div>
           <div class="product-details">
             <div class="rating-stars" onclick="openProductQuickView(this.closest('.product-card'))">⭐ 4.9 (178 reviews)</div>
@@ -397,7 +428,6 @@
           <div class="product-visual" onclick="openProductQuickView(this.closest('.product-card'))">
             <span class="product-emoji">🍇</span>
             <span class="stock-tag">Seedless</span>
-            <span class="quick-view-badge">🔍 View & Review</span>
           </div>
           <div class="product-details">
             <div class="rating-stars" onclick="openProductQuickView(this.closest('.product-card'))">⭐ 4.7 (84 reviews)</div>
@@ -428,7 +458,6 @@
           <div class="product-visual" onclick="openProductQuickView(this.closest('.product-card'))">
             <span class="product-emoji">🍯</span>
             <span class="stock-tag">High Fiber</span>
-            <span class="quick-view-badge">🔍 View & Review</span>
           </div>
           <div class="product-details">
             <div class="rating-stars" onclick="openProductQuickView(this.closest('.product-card'))">⭐ 4.9 (131 reviews)</div>
@@ -459,7 +488,6 @@
           <div class="product-visual" onclick="openProductQuickView(this.closest('.product-card'))">
             <span class="product-emoji">🌸</span>
             <span class="stock-tag">Pure Grade A1</span>
-            <span class="quick-view-badge">🔍 View & Review</span>
           </div>
           <div class="product-details">
             <div class="rating-stars" onclick="openProductQuickView(this.closest('.product-card'))">⭐ 5.0 (210 reviews)</div>
@@ -490,7 +518,6 @@
           <div class="product-visual" onclick="openProductQuickView(this.closest('.product-card'))">
             <span class="product-emoji">🌻</span>
             <span class="stock-tag">Superfood</span>
-            <span class="quick-view-badge">🔍 View & Review</span>
           </div>
           <div class="product-details">
             <div class="rating-stars" onclick="openProductQuickView(this.closest('.product-card'))">⭐ 4.8 (76 reviews)</div>
@@ -521,7 +548,6 @@
           <div class="product-visual" onclick="openProductQuickView(this.closest('.product-card'))">
             <span class="product-emoji">🎁</span>
             <span class="stock-tag">Gift Box</span>
-            <span class="quick-view-badge">🔍 View & Review</span>
           </div>
           <div class="product-details">
             <div class="rating-stars" onclick="openProductQuickView(this.closest('.product-card'))">⭐ 4.9 (194 reviews)</div>
@@ -552,7 +578,6 @@
           <div class="product-visual" onclick="openProductQuickView(this.closest('.product-card'))">
             <span class="product-emoji">🌰</span>
             <span class="stock-tag">Imported</span>
-            <span class="quick-view-badge">🔍 View & Review</span>
           </div>
           <div class="product-details">
             <div class="rating-stars" onclick="openProductQuickView(this.closest('.product-card'))">⭐ 4.8 (67 reviews)</div>
@@ -583,7 +608,6 @@
           <div class="product-visual" onclick="openProductQuickView(this.closest('.product-card'))">
             <span class="product-emoji">🥥</span>
             <span class="stock-tag">Royal Luxury</span>
-            <span class="quick-view-badge">🔍 View & Review</span>
           </div>
           <div class="product-details">
             <div class="rating-stars" onclick="openProductQuickView(this.closest('.product-card'))">⭐ 5.0 (53 reviews)</div>
@@ -614,7 +638,6 @@
           <div class="product-visual" onclick="openProductQuickView(this.closest('.product-card'))">
             <span class="product-emoji">🍂</span>
             <span class="stock-tag">Keto Friendly</span>
-            <span class="quick-view-badge">🔍 View & Review</span>
           </div>
           <div class="product-details">
             <div class="rating-stars" onclick="openProductQuickView(this.closest('.product-card'))">⭐ 4.8 (47 reviews)</div>
@@ -645,7 +668,6 @@
           <div class="product-visual" onclick="openProductQuickView(this.closest('.product-card'))">
             <span class="product-emoji">🍒</span>
             <span class="stock-tag">Antioxidant</span>
-            <span class="quick-view-badge">🔍 View & Review</span>
           </div>
           <div class="product-details">
             <div class="rating-stars" onclick="openProductQuickView(this.closest('.product-card'))">⭐ 4.8 (94 reviews)</div>
@@ -676,7 +698,6 @@
           <div class="product-visual" onclick="openProductQuickView(this.closest('.product-card'))">
             <span class="product-emoji">🫐</span>
             <span class="stock-tag">Brain Food</span>
-            <span class="quick-view-badge">🔍 View & Review</span>
           </div>
           <div class="product-details">
             <div class="rating-stars" onclick="openProductQuickView(this.closest('.product-card'))">⭐ 4.9 (118 reviews)</div>
@@ -707,7 +728,6 @@
           <div class="product-visual" onclick="openProductQuickView(this.closest('.product-card'))">
             <span class="product-emoji">🍑</span>
             <span class="stock-tag">Vitamin A</span>
-            <span class="quick-view-badge">🔍 View & Review</span>
           </div>
           <div class="product-details">
             <div class="rating-stars" onclick="openProductQuickView(this.closest('.product-card'))">⭐ 4.8 (79 reviews)</div>
@@ -738,7 +758,6 @@
           <div class="product-visual" onclick="openProductQuickView(this.closest('.product-card'))">
             <span class="product-emoji">🍇</span>
             <span class="stock-tag">Digestion Care</span>
-            <span class="quick-view-badge">🔍 View & Review</span>
           </div>
           <div class="product-details">
             <div class="rating-stars" onclick="openProductQuickView(this.closest('.product-card'))">⭐ 4.7 (61 reviews)</div>
@@ -769,7 +788,6 @@
           <div class="product-visual" onclick="openProductQuickView(this.closest('.product-card'))">
             <span class="product-emoji">🌲</span>
             <span class="stock-tag">Ultra Premium</span>
-            <span class="quick-view-badge">🔍 View & Review</span>
           </div>
           <div class="product-details">
             <div class="rating-stars" onclick="openProductQuickView(this.closest('.product-card'))">⭐ 5.0 (89 reviews)</div>
@@ -800,7 +818,6 @@
           <div class="product-visual" onclick="openProductQuickView(this.closest('.product-card'))">
             <span class="product-emoji">🍎</span>
             <span class="stock-tag">Immunity Booster</span>
-            <span class="quick-view-badge">🔍 View & Review</span>
           </div>
           <div class="product-details">
             <div class="rating-stars" onclick="openProductQuickView(this.closest('.product-card'))">⭐ 4.8 (56 reviews)</div>
@@ -831,7 +848,6 @@
           <div class="product-visual" onclick="openProductQuickView(this.closest('.product-card'))">
             <span class="product-emoji">👑</span>
             <span class="stock-tag">Luxury Wood Box</span>
-            <span class="quick-view-badge">🔍 View & Review</span>
           </div>
           <div class="product-details">
             <div class="rating-stars" onclick="openProductQuickView(this.closest('.product-card'))">⭐ 5.0 (240 reviews)</div>
@@ -892,14 +908,13 @@
     </section>
   </main>
 
-  <!-- LUXURY STUDIO DETAIL SHEET MODAL (Matching Reference Image) -->
+  <!-- Studio Detail Sheet Modal -->
   <div class="modal-backdrop studio-modal-backdrop" id="productModal">
     <div class="studio-detail-card" id="studioDetailCard">
       
-      <!-- Top Floating Navigation Buttons -->
       <div class="studio-top-controls">
         <button class="studio-circle-btn" onclick="closeProductQuickView()" title="Back to Collection">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <polyline points="15 18 9 12 15 6"></polyline>
           </svg>
         </button>
@@ -911,13 +926,12 @@
         </div>
 
         <button class="studio-circle-btn favorite-btn" id="modalFavBtn" onclick="toggleStudioFavorite()" title="Add to Wishlist">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
           </svg>
         </button>
       </div>
 
-      <!-- Centered 3D Product Visual Stage -->
       <div class="studio-stage-hero">
         <div class="studio-ring-orbit">
           <span class="studio-orbit-dot"></span>
@@ -926,27 +940,18 @@
         <div class="studio-pedestal-shadow"></div>
       </div>
 
-      <!-- Studio Scrollable Information Sheet -->
       <div class="studio-sheet-content">
-        
-        <!-- Main Product Header -->
         <div class="studio-header-meta">
           <span class="studio-origin-pill" id="qvOriginTag">Origin: California, USA</span>
           <h2 id="qvProductName">California Almonds (Badam)</h2>
-          <p id="qvProductDesc">Crunchy, nutrient-rich premium handpicked almonds loaded with Vitamin E and natural energy.</p>
+          <p id="qvProductDesc">Crunchy, nutrient-rich premium handpicked almonds loaded with Vitamin E.</p>
         </div>
 
-        <!-- Weight Variant Selector -->
         <div class="studio-weight-row">
           <label>Select Pack Weight:</label>
-          <div class="studio-weights-chips" id="qvWeightChipsContainer">
-            <button class="studio-weight-chip" onclick="selectModalWeight(this, '250g')">250g</button>
-            <button class="studio-weight-chip active" onclick="selectModalWeight(this, '500g')">500g</button>
-            <button class="studio-weight-chip" onclick="selectModalWeight(this, '1kg')">1kg</button>
-          </div>
+          <div class="studio-weights-chips" id="qvWeightChipsContainer"></div>
         </div>
 
-        <!-- Price, Discount Pill & Stepper Bar -->
         <div class="studio-price-stepper-row">
           <div class="studio-price-box">
             <span class="studio-price-tag" id="qvPriceDisplay">₹450</span>
@@ -960,13 +965,12 @@
           </div>
         </div>
 
-        <!-- Floating Action Order Row (Inside Sheet) -->
         <div class="studio-action-row">
           <button class="studio-buy-main-btn" id="qvBuyNowBtn">
             <span id="qvBuyBtnLabel">Buy for ₹450</span>
           </button>
           <button class="studio-bag-icon-btn" id="qvAddToCartBtn" title="Add to Bag">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
               <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
               <line x1="3" y1="6" x2="21" y2="6"></line>
               <path d="M16 10a4 4 0 0 1-8 0"></path>
@@ -974,10 +978,10 @@
           </button>
         </div>
 
-        <!-- Scroll Section 1: Official Return Policy Guarantee -->
+        <!-- Official Return Policy Guarantee -->
         <div class="return-policy-guarantee-box studio-box-spacing">
           <div class="policy-header">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5">
               <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
             </svg>
             <h4>Official Return & Replacement Policy</h4>
@@ -993,7 +997,7 @@
           <span class="policy-footer-note">48-hour video unboxing evidence window required for instant refund/dispatch.</span>
         </div>
 
-        <!-- Scroll Section 2: Verified Customer Reviews & Add Review -->
+        <!-- Customer Reviews & Review Submission -->
         <div class="customer-reviews-section studio-box-spacing">
           <div class="reviews-section-header">
             <div>
@@ -1003,7 +1007,6 @@
             <button class="write-review-toggle-btn" id="toggleReviewFormBtn" onclick="toggleReviewForm()">✍️ Write Review</button>
           </div>
 
-          <!-- Add Review Form -->
           <form class="add-review-form" id="addReviewForm" style="display: none;" onsubmit="handleReviewSubmit(event)">
             <div class="star-rating-selector">
               <span>Your Rating:</span>
@@ -1015,13 +1018,11 @@
                 <span class="star-select active" onclick="setRatingStar(5)">⭐</span>
               </div>
             </div>
-            <textarea id="reviewTextInput" rows="2" placeholder="Share your experience about freshness, crunch and packaging..." required maxlength="280"></textarea>
+            <textarea id="reviewTextInput" rows="2" placeholder="Share your experience about freshness and quality..." required maxlength="280"></textarea>
             <button type="submit" class="submit-review-btn" id="submitReviewBtn">Submit Review</button>
           </form>
 
-          <div class="reviews-list" id="modalReviewsList">
-            <!-- Dynamically populated from Cloudflare KV -->
-          </div>
+          <div class="reviews-list" id="modalReviewsList"></div>
         </div>
 
       </div>
@@ -1033,7 +1034,7 @@
     <div class="checkout-wrapper">
       <div class="terminal-card profile-card">
         <div class="modal-title-row">
-          <h3>Member Profile</h3>
+          <h3>Member Profile & Address</h3>
           <button class="modal-close-icon" onclick="closeProfileModal()">&times;</button>
         </div>
 
@@ -1043,7 +1044,7 @@
             <label for="avatarFileInput" class="avatar-edit-badge" title="Change Photo">📷</label>
             <input type="file" id="avatarFileInput" accept="image/*" style="display: none;" onchange="handleAvatarChange(event)" />
           </div>
-          <span class="avatar-note">Click the camera to upload a custom profile picture</span>
+          <span class="avatar-note">Tap camera icon to customize avatar</span>
         </div>
 
         <form id="profileForm" onsubmit="saveProfileDetails(event)">
@@ -1051,21 +1052,23 @@
             <label>Full Name</label>
             <input type="text" id="profNameInput" required />
           </div>
-          <div class="input-group">
-            <label>Primary Phone Number</label>
-            <input type="tel" id="profPhoneInput" pattern="[0-9]{10}" required />
+          <div class="form-row-2col">
+            <div class="input-group">
+              <label>Primary Phone</label>
+              <input type="tel" id="profPhoneInput" pattern="[0-9]{10}" required />
+            </div>
+            <div class="input-group">
+              <label>Alt Phone (Optional)</label>
+              <input type="tel" id="profAltPhoneInput" pattern="[0-9]{10}" />
+            </div>
           </div>
           <div class="input-group">
-            <label>Alternative Phone Number</label>
-            <input type="tel" id="profAltPhoneInput" pattern="[0-9]{10}" placeholder="Optional (e.g. 9876543210)" />
-          </div>
-          <div class="input-group">
-            <label>House / Flat / Building & Street</label>
-            <input type="text" id="profStreetInput" placeholder="House no, Flat, Street address" required />
+            <label>House / Flat / Street</label>
+            <input type="text" id="profStreetInput" placeholder="House no, Building, Street" required />
           </div>
           <div class="form-row-2col">
             <div class="input-group">
-              <label>Area / Landmark</label>
+              <label>Landmark</label>
               <input type="text" id="profLandmarkInput" placeholder="Near Temple / Park" required />
             </div>
             <div class="input-group">
@@ -1076,14 +1079,14 @@
           <div class="form-row-2col">
             <div class="input-group">
               <label>City</label>
-              <input type="text" id="profCityInput" placeholder="e.g. Bengaluru" required />
+              <input type="text" id="profCityInput" placeholder="City" required />
             </div>
             <div class="input-group">
               <label>State</label>
-              <input type="text" id="profStateInput" placeholder="e.g. Karnataka" required />
+              <input type="text" id="profStateInput" placeholder="State" required />
             </div>
           </div>
-          <button type="submit" class="submit-proceed-btn">Save Address</button>
+          <button type="submit" class="submit-proceed-btn">Save Address Details</button>
         </form>
       </div>
     </div>
@@ -1161,7 +1164,7 @@
             </div>
           </div>
 
-          <!-- Coupon Code Input Box with Animated Badges -->
+          <!-- Coupon Code Input Box -->
           <div class="input-group coupon-group" id="couponGroup">
             <label>Have a Promo / Discount Coupon?</label>
             <div class="coupon-input-wrapper">
@@ -1169,7 +1172,6 @@
               <button type="button" class="apply-coupon-btn" id="applyCouponBtn" onclick="applyCoupon()">Apply</button>
             </div>
             
-            <!-- Animated Feedback Container -->
             <div class="coupon-feedback" id="couponFeedback" style="display: none;">
               <div class="feedback-icon-wrap success-wrap" id="feedbackSuccess" style="display: none;">
                 <svg class="animated-check" viewBox="0 0 52 52">
@@ -1194,14 +1196,13 @@
         </form>
       </div>
 
-      <!-- STEP 2: UPI QR Payment with 6-Minute Countdown Timer & Mobile Deep Links -->
+      <!-- STEP 2: UPI QR Payment -->
       <div class="terminal-card" id="stepPayment" style="display: none;">
         <div class="modal-title-row">
           <h3>UPI Payment</h3>
           <button class="modal-close-icon" onclick="closeAllModals()">&times;</button>
         </div>
 
-        <!-- 6-Minute Countdown Timer -->
         <div class="payment-timer-wrapper">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
             <circle cx="12" cy="12" r="10"></circle>
@@ -1216,7 +1217,6 @@
           <span class="savings-tag" id="qrSavingsTag" style="display: none;">🎉 You saved ₹0.00</span>
         </div>
 
-        <!-- Direct UPI App Launcher for Mobile Devices -->
         <a href="" id="mobileUpiDirectLink" class="mobile-upi-btn" target="_blank">
           <span>Pay Directly via Any UPI App</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -1237,7 +1237,6 @@
           <p class="upi-note">Scan QR code or click pay above on mobile</p>
         </div>
 
-        <!-- Dynamic Payment Confirm Button -->
         <button class="payment-confirm-btn" id="confirmPaymentBtn" onclick="processPaymentAndPrint()">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <polyline points="20 6 9 17 4 12"></polyline>
@@ -1262,18 +1261,16 @@
           </div>
         </div>
 
-        <!-- Dynamic Status Bar -->
         <div class="status-box" id="statusBox">
           <div class="status-indicator">
             <span class="spinner" id="spinner"></span>
-            <svg class="check-icon" id="checkIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <svg class="check-icon" id="checkIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5">
               <polyline points="20 6 9 17 4 12"></polyline>
             </svg>
           </div>
           <span class="status-text" id="statusText">Verifying UPI payment & syncing order...</span>
         </div>
 
-        <!-- Post-Print Actions -->
         <div class="receipt-actions" id="receiptActions">
           <button class="action-btn download-btn" id="downloadBtn">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1292,7 +1289,6 @@
         <div class="receipt" id="receipt">
           <div class="zigzag-edge top"></div>
 
-          <!-- Printable Area -->
           <div class="receipt-content" id="printableReceipt">
             <div class="receipt-header">
               <div class="receipt-logo">🌰</div>
@@ -1338,7 +1334,6 @@
               <span id="rcptSubtotal">₹427.50</span>
             </div>
             
-            <!-- Dynamic Coupon Line -->
             <div class="receipt-line discount" id="rcptDiscountRow" style="display: none;">
               <span id="rcptCouponLabel">Coupon Applied:</span>
               <span id="rcptDiscountAmount">-₹112.50</span>
@@ -1375,7 +1370,6 @@
               </div>
             </div>
 
-            <!-- Crisp SVG Vector Barcode -->
             <div class="barcode">
               <svg class="barcode-svg" id="receiptBarcodeSvg" viewBox="0 0 200 40" preserveAspectRatio="none">
                 <rect x="0" y="0" width="4" height="40" fill="#000000"/>
