@@ -49,7 +49,7 @@
     </div>
   </div>
 
-  <!-- Responsive Mobile Navigation Drawer (Hidden Off-Screen by Default) -->
+  <!-- Responsive Mobile Navigation Drawer (Strictly Hidden Off-Screen by Default) -->
   <div class="mobile-drawer-backdrop" id="mobileDrawerBackdrop" onclick="closeMobileMenu()"></div>
   <aside class="mobile-nav-drawer" id="mobileNavDrawer">
     <div class="mobile-drawer-header">
@@ -276,10 +276,10 @@
       <div class="product-grid" id="productGrid">
         
         <!-- 1 -->
-        <div class="product-card fade-in-scroll" data-id="1" data-category="nuts" data-name="California Jumbo Almonds (Badam)" data-base-price="450" data-base-weight="500g" data-price-250g="240" data-price-500g="450" data-price-1kg="860" data-rating="4.9" data-reviews-count="142" data-origin="California, USA" data-icon="🥜" data-desc="Crunchy, nutrient-rich premium handpicked almonds loaded with Vitamin E and healthy fats." onclick="openProductQuickView(this)">
+        <div class="product-card" data-id="1" data-category="nuts" data-name="California Jumbo Almonds (Badam)" data-base-price="450" data-base-weight="500g" data-price-250g="240" data-price-500g="450" data-price-1kg="860" data-rating="4.9" data-reviews-count="142" data-origin="California, USA" data-icon="🥜" data-desc="Crunchy, nutrient-rich premium handpicked almonds loaded with Vitamin E and healthy fats." onclick="openProductQuickView(this)">
           <div class="product-visual">
             <span class="stock-tag">Best Seller</span>
-            <div class="card-fav-btn">♡</div>
+            <button type="button" class="card-fav-btn" onclick="event.stopPropagation(); toggleCardFav(this)" title="Wishlist">♡</button>
             <span class="product-emoji">🥜</span>
           </div>
           <div class="product-details">
@@ -294,15 +294,15 @@
               </div>
               <span class="rating-stars">⭐ 4.9</span>
             </div>
-            <button class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
+            <button type="button" class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
           </div>
         </div>
 
         <!-- 2 -->
-        <div class="product-card fade-in-scroll" data-id="2" data-category="nuts" data-name="Kashmiri Walnut Kernels (Akhrot)" data-base-price="620" data-base-weight="500g" data-price-250g="330" data-price-500g="620" data-price-1kg="1190" data-rating="4.8" data-reviews-count="98" data-origin="Kashmir Valley, India" data-icon="🧠" data-desc="100% natural snow-white Kashmiri walnut halves rich in Omega-3 essential brain fatty acids." onclick="openProductQuickView(this)">
+        <div class="product-card" data-id="2" data-category="nuts" data-name="Kashmiri Walnut Kernels (Akhrot)" data-base-price="620" data-base-weight="500g" data-price-250g="330" data-price-500g="620" data-price-1kg="1190" data-rating="4.8" data-reviews-count="98" data-origin="Kashmir Valley, India" data-icon="🧠" data-desc="100% natural snow-white Kashmiri walnut halves rich in Omega-3 essential brain fatty acids." onclick="openProductQuickView(this)">
           <div class="product-visual">
             <span class="stock-tag">Omega-3</span>
-            <div class="card-fav-btn">♡</div>
+            <button type="button" class="card-fav-btn" onclick="event.stopPropagation(); toggleCardFav(this)" title="Wishlist">♡</button>
             <span class="product-emoji">🧠</span>
           </div>
           <div class="product-details">
@@ -317,15 +317,15 @@
               </div>
               <span class="rating-stars">⭐ 4.8</span>
             </div>
-            <button class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
+            <button type="button" class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
           </div>
         </div>
 
         <!-- 3 -->
-        <div class="product-card fade-in-scroll" data-id="3" data-category="nuts" data-name="King Size Whole Cashews (Kaju)" data-base-price="490" data-base-weight="500g" data-price-250g="260" data-price-500g="490" data-price-1kg="940" data-rating="4.9" data-reviews-count="165" data-origin="Goa / Mangalore" data-icon="✨" data-desc="Grade W240 king cashews with smooth texture, buttery crunch and zero bitter bites." onclick="openProductQuickView(this)">
+        <div class="product-card" data-id="3" data-category="nuts" data-name="King Size Whole Cashews (Kaju)" data-base-price="490" data-base-weight="500g" data-price-250g="260" data-price-500g="490" data-price-1kg="940" data-rating="4.9" data-reviews-count="165" data-origin="Goa / Mangalore" data-icon="✨" data-desc="Grade W240 king cashews with smooth texture, buttery crunch and zero bitter bites." onclick="openProductQuickView(this)">
           <div class="product-visual">
             <span class="stock-tag">W240 Grade</span>
-            <div class="card-fav-btn">♡</div>
+            <button type="button" class="card-fav-btn" onclick="event.stopPropagation(); toggleCardFav(this)" title="Wishlist">♡</button>
             <span class="product-emoji">✨</span>
           </div>
           <div class="product-details">
@@ -340,15 +340,15 @@
               </div>
               <span class="rating-stars">⭐ 4.9</span>
             </div>
-            <button class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
+            <button type="button" class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
           </div>
         </div>
 
         <!-- 4 -->
-        <div class="product-card fade-in-scroll" data-id="4" data-category="nuts" data-name="Roasted Salted Pistachios (Pista)" data-base-price="580" data-base-weight="500g" data-price-250g="310" data-price-500g="580" data-price-1kg="1100" data-rating="4.8" data-reviews-count="112" data-origin="Iran" data-icon="🌿" data-desc="Naturally split Iranian pistachios gently roasted with Himalayan pink salt for ultimate crispiness." onclick="openProductQuickView(this)">
+        <div class="product-card" data-id="4" data-category="nuts" data-name="Roasted Salted Pistachios (Pista)" data-base-price="580" data-base-weight="500g" data-price-250g="310" data-price-500g="580" data-price-1kg="1100" data-rating="4.8" data-reviews-count="112" data-origin="Iran" data-icon="🌿" data-desc="Naturally split Iranian pistachios gently roasted with Himalayan pink salt for ultimate crispiness." onclick="openProductQuickView(this)">
           <div class="product-visual">
             <span class="stock-tag">Crispy</span>
-            <div class="card-fav-btn">♡</div>
+            <button type="button" class="card-fav-btn" onclick="event.stopPropagation(); toggleCardFav(this)" title="Wishlist">♡</button>
             <span class="product-emoji">🌿</span>
           </div>
           <div class="product-details">
@@ -363,15 +363,15 @@
               </div>
               <span class="rating-stars">⭐ 4.8</span>
             </div>
-            <button class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
+            <button type="button" class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
           </div>
         </div>
 
         <!-- 5 -->
-        <div class="product-card fade-in-scroll" data-id="5" data-category="dried" data-name="Arabian Medjool Dates (Khajoor)" data-base-price="390" data-base-weight="500g" data-price-250g="210" data-price-500g="390" data-price-1kg="740" data-rating="4.9" data-reviews-count="178" data-origin="Medina, Saudi Arabia" data-icon="🌴" data-desc="Soft, luscious caramel-sweet authentic Arabian Medjool dates with high natural energy minerals." onclick="openProductQuickView(this)">
+        <div class="product-card" data-id="5" data-category="dried" data-name="Arabian Medjool Dates (Khajoor)" data-base-price="390" data-base-weight="500g" data-price-250g="210" data-price-500g="390" data-price-1kg="740" data-rating="4.9" data-reviews-count="178" data-origin="Medina, Saudi Arabia" data-icon="🌴" data-desc="Soft, luscious caramel-sweet authentic Arabian Medjool dates with high natural energy minerals." onclick="openProductQuickView(this)">
           <div class="product-visual">
             <span class="stock-tag">Natural Sweet</span>
-            <div class="card-fav-btn">♡</div>
+            <button type="button" class="card-fav-btn" onclick="event.stopPropagation(); toggleCardFav(this)" title="Wishlist">♡</button>
             <span class="product-emoji">🌴</span>
           </div>
           <div class="product-details">
@@ -386,15 +386,15 @@
               </div>
               <span class="rating-stars">⭐ 4.9</span>
             </div>
-            <button class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
+            <button type="button" class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
           </div>
         </div>
 
         <!-- 6 -->
-        <div class="product-card fade-in-scroll" data-id="6" data-category="dried" data-name="Afghani Green Raisins (Kismis)" data-base-price="260" data-base-weight="500g" data-price-250g="140" data-price-500g="260" data-price-1kg="490" data-rating="4.7" data-reviews-count="84" data-origin="Kandahar, Afghanistan" data-icon="🍇" data-desc="Naturally dried seedless long green raisins harvested from traditional mountain vineyards." onclick="openProductQuickView(this)">
+        <div class="product-card" data-id="6" data-category="dried" data-name="Afghani Green Raisins (Kismis)" data-base-price="260" data-base-weight="500g" data-price-250g="140" data-price-500g="260" data-price-1kg="490" data-rating="4.7" data-reviews-count="84" data-origin="Kandahar, Afghanistan" data-icon="🍇" data-desc="Naturally dried seedless long green raisins harvested from traditional mountain vineyards." onclick="openProductQuickView(this)">
           <div class="product-visual">
             <span class="stock-tag">Seedless</span>
-            <div class="card-fav-btn">♡</div>
+            <button type="button" class="card-fav-btn" onclick="event.stopPropagation(); toggleCardFav(this)" title="Wishlist">♡</button>
             <span class="product-emoji">🍇</span>
           </div>
           <div class="product-details">
@@ -409,15 +409,15 @@
               </div>
               <span class="rating-stars">⭐ 4.7</span>
             </div>
-            <button class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
+            <button type="button" class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
           </div>
         </div>
 
         <!-- 7 -->
-        <div class="product-card fade-in-scroll" data-id="7" data-category="dried" data-name="Turkish Dried Figs (Anjeer)" data-base-price="750" data-base-weight="500g" data-price-250g="390" data-price-500g="750" data-price-1kg="1420" data-rating="4.9" data-reviews-count="131" data-origin="Izmir, Turkey" data-icon="🍯" data-desc="Plump garland figs packed with dietary fiber, calcium and antioxidant vitamins." onclick="openProductQuickView(this)">
+        <div class="product-card" data-id="7" data-category="dried" data-name="Turkish Dried Figs (Anjeer)" data-base-price="750" data-base-weight="500g" data-price-250g="390" data-price-500g="750" data-price-1kg="1420" data-rating="4.9" data-reviews-count="131" data-origin="Izmir, Turkey" data-icon="🍯" data-desc="Plump garland figs packed with dietary fiber, calcium and antioxidant vitamins." onclick="openProductQuickView(this)">
           <div class="product-visual">
             <span class="stock-tag">High Fiber</span>
-            <div class="card-fav-btn">♡</div>
+            <button type="button" class="card-fav-btn" onclick="event.stopPropagation(); toggleCardFav(this)" title="Wishlist">♡</button>
             <span class="product-emoji">🍯</span>
           </div>
           <div class="product-details">
@@ -432,15 +432,15 @@
               </div>
               <span class="rating-stars">⭐ 4.9</span>
             </div>
-            <button class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
+            <button type="button" class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
           </div>
         </div>
 
         <!-- 8 -->
-        <div class="product-card fade-in-scroll" data-id="8" data-category="exotic" data-name="Kashmir Mogra Saffron (Kesar)" data-base-price="550" data-base-weight="2g" data-price-250g="300" data-price-500g="550" data-price-1kg="1050" data-unit-type="grams" data-rating="5.0" data-reviews-count="210" data-origin="Pampore, Kashmir" data-icon="🌸" data-desc="Pure Grade A1 authentic Mogra saffron threads from the purple saffron fields of Pampore." onclick="openProductQuickView(this)">
+        <div class="product-card" data-id="8" data-category="exotic" data-name="Kashmir Mogra Saffron (Kesar)" data-base-price="550" data-base-weight="2g" data-price-250g="300" data-price-500g="550" data-price-1kg="1050" data-unit-type="grams" data-rating="5.0" data-reviews-count="210" data-origin="Pampore, Kashmir" data-icon="🌸" data-desc="Pure Grade A1 authentic Mogra saffron threads from the purple saffron fields of Pampore." onclick="openProductQuickView(this)">
           <div class="product-visual">
             <span class="stock-tag">Grade A1</span>
-            <div class="card-fav-btn">♡</div>
+            <button type="button" class="card-fav-btn" onclick="event.stopPropagation(); toggleCardFav(this)" title="Wishlist">♡</button>
             <span class="product-emoji">🌸</span>
           </div>
           <div class="product-details">
@@ -455,15 +455,15 @@
               </div>
               <span class="rating-stars">⭐ 5.0</span>
             </div>
-            <button class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
+            <button type="button" class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
           </div>
         </div>
 
         <!-- 9 -->
-        <div class="product-card fade-in-scroll" data-id="9" data-category="exotic" data-name="Dried Chia & Pumpkin Seeds Mix" data-base-price="340" data-base-weight="500g" data-price-250g="190" data-price-500g="340" data-price-1kg="640" data-rating="4.8" data-reviews-count="76" data-origin="Organic India Farms" data-icon="🌻" data-desc="Superfood roasted blend of chia, pumpkin, flax, sunflower and watermelon seeds." onclick="openProductQuickView(this)">
+        <div class="product-card" data-id="9" data-category="exotic" data-name="Dried Chia & Pumpkin Seeds Mix" data-base-price="340" data-base-weight="500g" data-price-250g="190" data-price-500g="340" data-price-1kg="640" data-rating="4.8" data-reviews-count="76" data-origin="Organic India Farms" data-icon="🌻" data-desc="Superfood roasted blend of chia, pumpkin, flax, sunflower and watermelon seeds." onclick="openProductQuickView(this)">
           <div class="product-visual">
             <span class="stock-tag">Superfood</span>
-            <div class="card-fav-btn">♡</div>
+            <button type="button" class="card-fav-btn" onclick="event.stopPropagation(); toggleCardFav(this)" title="Wishlist">♡</button>
             <span class="product-emoji">🌻</span>
           </div>
           <div class="product-details">
@@ -478,15 +478,15 @@
               </div>
               <span class="rating-stars">⭐ 4.8</span>
             </div>
-            <button class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
+            <button type="button" class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
           </div>
         </div>
 
         <!-- 10 -->
-        <div class="product-card fade-in-scroll" data-id="10" data-category="hampers" data-name="Royal Gourmet Dry Fruit Hamper" data-base-price="1299" data-base-weight="1kg" data-price-250g="699" data-price-500g="999" data-price-1kg="1299" data-rating="4.9" data-reviews-count="194" data-origin="Royal Custom Packaging" data-icon="🎁" data-desc="Exquisite gold-embossed gift hamper box containing selected supreme grade nuts and dried fruits." onclick="openProductQuickView(this)">
+        <div class="product-card" data-id="10" data-category="hampers" data-name="Royal Gourmet Dry Fruit Hamper" data-base-price="1299" data-base-weight="1kg" data-price-250g="699" data-price-500g="999" data-price-1kg="1299" data-rating="4.9" data-reviews-count="194" data-origin="Royal Custom Packaging" data-icon="🎁" data-desc="Exquisite gold-embossed gift hamper box containing selected supreme grade nuts and dried fruits." onclick="openProductQuickView(this)">
           <div class="product-visual">
             <span class="stock-tag">Gift Box</span>
-            <div class="card-fav-btn">♡</div>
+            <button type="button" class="card-fav-btn" onclick="event.stopPropagation(); toggleCardFav(this)" title="Wishlist">♡</button>
             <span class="product-emoji">🎁</span>
           </div>
           <div class="product-details">
@@ -501,15 +501,15 @@
               </div>
               <span class="rating-stars">⭐ 4.9</span>
             </div>
-            <button class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
+            <button type="button" class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
           </div>
         </div>
 
         <!-- 11 -->
-        <div class="product-card fade-in-scroll" data-id="11" data-category="nuts" data-name="Raw Turkish Hazelnuts" data-base-price="590" data-base-weight="500g" data-price-250g="320" data-price-500g="590" data-price-1kg="1120" data-rating="4.8" data-reviews-count="67" data-origin="Trabzon, Turkey" data-icon="🌰" data-desc="Crunchy, buttery, unroasted premium Turkish whole filberts rich in folate and vitamin E." onclick="openProductQuickView(this)">
+        <div class="product-card" data-id="11" data-category="nuts" data-name="Raw Turkish Hazelnuts" data-base-price="590" data-base-weight="500g" data-price-250g="320" data-price-500g="590" data-price-1kg="1120" data-rating="4.8" data-reviews-count="67" data-origin="Trabzon, Turkey" data-icon="🌰" data-desc="Crunchy, buttery, unroasted premium Turkish whole filberts rich in folate and vitamin E." onclick="openProductQuickView(this)">
           <div class="product-visual">
             <span class="stock-tag">Imported</span>
-            <div class="card-fav-btn">♡</div>
+            <button type="button" class="card-fav-btn" onclick="event.stopPropagation(); toggleCardFav(this)" title="Wishlist">♡</button>
             <span class="product-emoji">🌰</span>
           </div>
           <div class="product-details">
@@ -524,15 +524,15 @@
               </div>
               <span class="rating-stars">⭐ 4.8</span>
             </div>
-            <button class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
+            <button type="button" class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
           </div>
         </div>
 
         <!-- 12 -->
-        <div class="product-card fade-in-scroll" data-id="12" data-category="nuts" data-name="Australian Macadamia Nuts" data-base-price="890" data-base-weight="500g" data-price-250g="480" data-price-500g="890" data-price-1kg="1690" data-rating="5.0" data-reviews-count="53" data-origin="Queensland, Australia" data-icon="🥥" data-desc="Ultra creamy whole roasted Australian macadamias with delicate buttery texture." onclick="openProductQuickView(this)">
+        <div class="product-card" data-id="12" data-category="nuts" data-name="Australian Macadamia Nuts" data-base-price="890" data-base-weight="500g" data-price-250g="480" data-price-500g="890" data-price-1kg="1690" data-rating="5.0" data-reviews-count="53" data-origin="Queensland, Australia" data-icon="🥥" data-desc="Ultra creamy whole roasted Australian macadamias with delicate buttery texture." onclick="openProductQuickView(this)">
           <div class="product-visual">
             <span class="stock-tag">Luxury</span>
-            <div class="card-fav-btn">♡</div>
+            <button type="button" class="card-fav-btn" onclick="event.stopPropagation(); toggleCardFav(this)" title="Wishlist">♡</button>
             <span class="product-emoji">🥥</span>
           </div>
           <div class="product-details">
@@ -547,15 +547,15 @@
               </div>
               <span class="rating-stars">⭐ 5.0</span>
             </div>
-            <button class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
+            <button type="button" class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
           </div>
         </div>
 
         <!-- 13 -->
-        <div class="product-card fade-in-scroll" data-id="13" data-category="nuts" data-name="American Pecan Nut Halves" data-base-price="780" data-base-weight="500g" data-price-250g="410" data-price-500g="780" data-price-1kg="1480" data-rating="4.8" data-reviews-count="47" data-origin="Georgia, USA" data-icon="🍂" data-desc="Sweet, rich and buttery natural pecan nut halves perfect for low-carb keto lifestyles." onclick="openProductQuickView(this)">
+        <div class="product-card" data-id="13" data-category="nuts" data-name="American Pecan Nut Halves" data-base-price="780" data-base-weight="500g" data-price-250g="410" data-price-500g="780" data-price-1kg="1480" data-rating="4.8" data-reviews-count="47" data-origin="Georgia, USA" data-icon="🍂" data-desc="Sweet, rich and buttery natural pecan nut halves perfect for low-carb keto lifestyles." onclick="openProductQuickView(this)">
           <div class="product-visual">
             <span class="stock-tag">Keto Friendly</span>
-            <div class="card-fav-btn">♡</div>
+            <button type="button" class="card-fav-btn" onclick="event.stopPropagation(); toggleCardFav(this)" title="Wishlist">♡</button>
             <span class="product-emoji">🍂</span>
           </div>
           <div class="product-details">
@@ -570,15 +570,15 @@
               </div>
               <span class="rating-stars">⭐ 4.8</span>
             </div>
-            <button class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
+            <button type="button" class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
           </div>
         </div>
 
         <!-- 14 -->
-        <div class="product-card fade-in-scroll" data-id="14" data-category="berries" data-name="Dried Whole Cranberries" data-base-price="380" data-base-weight="500g" data-price-250g="210" data-price-500g="380" data-price-1kg="720" data-rating="4.8" data-reviews-count="94" data-origin="Wisconsin, USA" data-icon="🍒" data-desc="Tangy, sweet and sun-dried whole cranberries packed with proanthocyanidins and vitamin C." onclick="openProductQuickView(this)">
+        <div class="product-card" data-id="14" data-category="berries" data-name="Dried Whole Cranberries" data-base-price="380" data-base-weight="500g" data-price-250g="210" data-price-500g="380" data-price-1kg="720" data-rating="4.8" data-reviews-count="94" data-origin="Wisconsin, USA" data-icon="🍒" data-desc="Tangy, sweet and sun-dried whole cranberries packed with proanthocyanidins and vitamin C." onclick="openProductQuickView(this)">
           <div class="product-visual">
             <span class="stock-tag">Antioxidant</span>
-            <div class="card-fav-btn">♡</div>
+            <button type="button" class="card-fav-btn" onclick="event.stopPropagation(); toggleCardFav(this)" title="Wishlist">♡</button>
             <span class="product-emoji">🍒</span>
           </div>
           <div class="product-details">
@@ -593,15 +593,15 @@
               </div>
               <span class="rating-stars">⭐ 4.8</span>
             </div>
-            <button class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
+            <button type="button" class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
           </div>
         </div>
 
         <!-- 15 -->
-        <div class="product-card fade-in-scroll" data-id="15" data-category="berries" data-name="Dried Wild Blueberries" data-base-price="540" data-base-weight="500g" data-price-250g="290" data-price-500g="540" data-price-1kg="1020" data-rating="4.9" data-reviews-count="118" data-origin="Nova Scotia, Canada" data-icon="🫐" data-desc="Naturally dried wild blueberries packed with concentrated anthocyanins and memory antioxidants." onclick="openProductQuickView(this)">
+        <div class="product-card" data-id="15" data-category="berries" data-name="Dried Wild Blueberries" data-base-price="540" data-base-weight="500g" data-price-250g="290" data-price-500g="540" data-price-1kg="1020" data-rating="4.9" data-reviews-count="118" data-origin="Nova Scotia, Canada" data-icon="🫐" data-desc="Naturally dried wild blueberries packed with concentrated anthocyanins and memory antioxidants." onclick="openProductQuickView(this)">
           <div class="product-visual">
             <span class="stock-tag">Brain Food</span>
-            <div class="card-fav-btn">♡</div>
+            <button type="button" class="card-fav-btn" onclick="event.stopPropagation(); toggleCardFav(this)" title="Wishlist">♡</button>
             <span class="product-emoji">🫐</span>
           </div>
           <div class="product-details">
@@ -616,15 +616,15 @@
               </div>
               <span class="rating-stars">⭐ 4.9</span>
             </div>
-            <button class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
+            <button type="button" class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
           </div>
         </div>
 
         <!-- 16 -->
-        <div class="product-card fade-in-scroll" data-id="16" data-category="dried" data-name="Turkish Dried Apricots (Jardalu)" data-base-price="360" data-base-weight="500g" data-price-250g="195" data-price-500g="360" data-price-1kg="680" data-rating="4.8" data-reviews-count="79" data-origin="Malatya, Turkey" data-icon="🍑" data-desc="Golden, soft, naturally sweet and fiber-rich Turkish dried apricots with zero added sugar." onclick="openProductQuickView(this)">
+        <div class="product-card" data-id="16" data-category="dried" data-name="Turkish Dried Apricots (Jardalu)" data-base-price="360" data-base-weight="500g" data-price-250g="195" data-price-500g="360" data-price-1kg="680" data-rating="4.8" data-reviews-count="79" data-origin="Malatya, Turkey" data-icon="🍑" data-desc="Golden, soft, naturally sweet and fiber-rich Turkish dried apricots with zero added sugar." onclick="openProductQuickView(this)">
           <div class="product-visual">
             <span class="stock-tag">Vitamin A</span>
-            <div class="card-fav-btn">♡</div>
+            <button type="button" class="card-fav-btn" onclick="event.stopPropagation(); toggleCardFav(this)" title="Wishlist">♡</button>
             <span class="product-emoji">🍑</span>
           </div>
           <div class="product-details">
@@ -639,15 +639,15 @@
               </div>
               <span class="rating-stars">⭐ 4.8</span>
             </div>
-            <button class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
+            <button type="button" class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
           </div>
         </div>
 
         <!-- 17 -->
-        <div class="product-card fade-in-scroll" data-id="17" data-category="dried" data-name="Seedless Dried Prunes (Aloo Bukhara)" data-base-price="390" data-base-weight="500g" data-price-250g="210" data-price-500g="390" data-price-1kg="740" data-rating="4.7" data-reviews-count="61" data-origin="Yuba City, USA" data-icon="🍇" data-desc="Plump, pitted California dried plums rich in sorbitol and potassium for digestive balance." onclick="openProductQuickView(this)">
+        <div class="product-card" data-id="17" data-category="dried" data-name="Seedless Dried Prunes (Aloo Bukhara)" data-base-price="390" data-base-weight="500g" data-price-250g="210" data-price-500g="390" data-price-1kg="740" data-rating="4.7" data-reviews-count="61" data-origin="Yuba City, USA" data-icon="🍇" data-desc="Plump, pitted California dried plums rich in sorbitol and potassium for digestive balance." onclick="openProductQuickView(this)">
           <div class="product-visual">
             <span class="stock-tag">Digestion</span>
-            <div class="card-fav-btn">♡</div>
+            <button type="button" class="card-fav-btn" onclick="event.stopPropagation(); toggleCardFav(this)" title="Wishlist">♡</button>
             <span class="product-emoji">🍇</span>
           </div>
           <div class="product-details">
@@ -662,15 +662,15 @@
               </div>
               <span class="rating-stars">⭐ 4.7</span>
             </div>
-            <button class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
+            <button type="button" class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
           </div>
         </div>
 
         <!-- 18 -->
-        <div class="product-card fade-in-scroll" data-id="18" data-category="nuts" data-name="Pine Nuts without Shell (Chilgoza)" data-base-price="1450" data-base-weight="250g" data-price-250g="1450" data-price-500g="2800" data-price-1kg="5400" data-rating="5.0" data-reviews-count="89" data-origin="Kinnaur, Himachal Pradesh" data-icon="🌲" data-desc="Wild Himalayan pine nuts harvested at high altitudes with an exceptionally rich pinolenic acid profile." onclick="openProductQuickView(this)">
+        <div class="product-card" data-id="18" data-category="nuts" data-name="Pine Nuts without Shell (Chilgoza)" data-base-price="1450" data-base-weight="250g" data-price-250g="1450" data-price-500g="2800" data-price-1kg="5400" data-rating="5.0" data-reviews-count="89" data-origin="Kinnaur, Himachal Pradesh" data-icon="🌲" data-desc="Wild Himalayan pine nuts harvested at high altitudes with an exceptionally rich pinolenic acid profile." onclick="openProductQuickView(this)">
           <div class="product-visual">
             <span class="stock-tag">Premium</span>
-            <div class="card-fav-btn">♡</div>
+            <button type="button" class="card-fav-btn" onclick="event.stopPropagation(); toggleCardFav(this)" title="Wishlist">♡</button>
             <span class="product-emoji">🌲</span>
           </div>
           <div class="product-details">
@@ -685,15 +685,15 @@
               </div>
               <span class="rating-stars">⭐ 5.0</span>
             </div>
-            <button class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
+            <button type="button" class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
           </div>
         </div>
 
         <!-- 19 -->
-        <div class="product-card fade-in-scroll" data-id="19" data-category="berries" data-name="Himalayan Goji Berries" data-base-price="420" data-base-weight="500g" data-price-250g="230" data-price-500g="420" data-price-1kg="790" data-rating="4.8" data-reviews-count="56" data-origin="Tibetan Plateau" data-icon="🍎" data-desc="Sun-dried ruby red Tibetan goji berries rich in zeaxanthin, beta-carotene and essential amino acids." onclick="openProductQuickView(this)">
+        <div class="product-card" data-id="19" data-category="berries" data-name="Himalayan Goji Berries" data-base-price="420" data-base-weight="500g" data-price-250g="230" data-price-500g="420" data-price-1kg="790" data-rating="4.8" data-reviews-count="56" data-origin="Tibetan Plateau" data-icon="🍎" data-desc="Sun-dried ruby red Tibetan goji berries rich in zeaxanthin, beta-carotene and essential amino acids." onclick="openProductQuickView(this)">
           <div class="product-visual">
             <span class="stock-tag">Immunity</span>
-            <div class="card-fav-btn">♡</div>
+            <button type="button" class="card-fav-btn" onclick="event.stopPropagation(); toggleCardFav(this)" title="Wishlist">♡</button>
             <span class="product-emoji">🍎</span>
           </div>
           <div class="product-details">
@@ -708,15 +708,15 @@
               </div>
               <span class="rating-stars">⭐ 4.8</span>
             </div>
-            <button class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
+            <button type="button" class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
           </div>
         </div>
 
         <!-- 20 -->
-        <div class="product-card fade-in-scroll" data-id="20" data-category="hampers" data-name="Imperial Grand Celebration Box" data-base-price="1999" data-base-weight="1.5kg" data-price-250g="1199" data-price-500g="1599" data-price-1kg="1999" data-rating="5.0" data-reviews-count="240" data-origin="Royal Master Collection" data-icon="👑" data-desc="Master artisanal chest holding whole cashews, almonds, pistachios, walnuts, figs and Arabian dates." onclick="openProductQuickView(this)">
+        <div class="product-card" data-id="20" data-category="hampers" data-name="Imperial Grand Celebration Box" data-base-price="1999" data-base-weight="1.5kg" data-price-250g="1199" data-price-500g="1599" data-price-1kg="1999" data-rating="5.0" data-reviews-count="240" data-origin="Royal Master Collection" data-icon="👑" data-desc="Master artisanal chest holding whole cashews, almonds, pistachios, walnuts, figs and Arabian dates." onclick="openProductQuickView(this)">
           <div class="product-visual">
             <span class="stock-tag">Luxury Box</span>
-            <div class="card-fav-btn">♡</div>
+            <button type="button" class="card-fav-btn" onclick="event.stopPropagation(); toggleCardFav(this)" title="Wishlist">♡</button>
             <span class="product-emoji">👑</span>
           </div>
           <div class="product-details">
@@ -731,7 +731,7 @@
               </div>
               <span class="rating-stars">⭐ 5.0</span>
             </div>
-            <button class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
+            <button type="button" class="quick-card-action-btn" onclick="event.stopPropagation(); openProductQuickView(this.closest('.product-card'))">View & Order →</button>
           </div>
         </div>
 
