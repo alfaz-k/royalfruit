@@ -754,40 +754,11 @@ body {
 .clear-search-btn { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: #edf3ef; border: none; width: 20px; height: 20px; border-radius: 50%; color: var(--text-secondary); display: none; place-items: center; cursor: pointer; }
 .no-results { text-align: center; padding: 3rem 1rem; color: var(--text-secondary); background: #ffffff; border-radius: 20px; }
 
-/* Spotlight Hero Single Card (Big Image Look) */
-.spotlight-single-card {
-  display: none; /* Desktop hidden, mobile enabled */
-  background: #ffffff;
-  border: 1px solid var(--border-subtle);
-  border-radius: 28px;
-  padding: 1.2rem;
-  box-shadow: var(--shadow-card);
-  margin-bottom: 1.5rem;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-.spotlight-single-card:active {
-  transform: scale(0.98);
-}
-.spotlight-visual {
-  position: relative;
-  height: 220px;
-  background: linear-gradient(180deg, #f4f8f5 0%, #e6efe8 100%);
-  border-radius: 22px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 1rem;
-}
-.spotlight-visual .product-emoji {
-  font-size: 5.5rem;
-}
-
-/* Product Grid */
+/* Desktop Grid */
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 1.2rem;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.4rem;
   align-items: stretch;
 }
 
@@ -795,7 +766,7 @@ body {
   background: #ffffff;
   border: 1px solid var(--border-subtle);
   border-radius: 24px;
-  padding: 1rem;
+  padding: 1.2rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -811,7 +782,7 @@ body {
 
 .product-visual {
   position: relative;
-  height: 150px;
+  height: 160px;
   background: linear-gradient(180deg, #f4f8f5 0%, #e6efe8 100%);
   border-radius: 20px;
   display: flex;
@@ -823,7 +794,7 @@ body {
 }
 
 .product-emoji {
-  font-size: 4.4rem;
+  font-size: 4.8rem;
   filter: drop-shadow(0 12px 18px rgba(20, 45, 32, 0.16));
   transition: transform 0.25s ease;
 }
@@ -837,9 +808,9 @@ body {
   left: 10px;
   background: #ffffff;
   color: var(--brand-primary);
-  font-size: 0.65rem;
+  font-size: 0.68rem;
   font-weight: 800;
-  padding: 3px 8px;
+  padding: 3px 9px;
   border-radius: 999px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.06);
 }
@@ -848,15 +819,15 @@ body {
   position: absolute;
   top: 10px;
   right: 10px;
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   background: #ffffff;
   border: 1px solid var(--border-subtle);
   display: grid;
   place-items: center;
   color: var(--text-secondary);
-  font-size: 0.82rem;
+  font-size: 0.88rem;
   cursor: pointer;
   box-shadow: 0 3px 8px rgba(0,0,0,0.05);
 }
@@ -872,36 +843,34 @@ body {
   display: flex;
   align-items: center;
   gap: 4px;
-  font-size: 0.65rem;
+  font-size: 0.68rem;
   font-weight: 800;
   color: var(--brand-secondary);
   text-transform: uppercase;
   letter-spacing: 0.4px;
-  margin-bottom: 2px;
+  margin-bottom: 3px;
 }
 
 .product-details h3 {
-  font-size: 0.95rem;
+  font-size: 1rem;
   font-weight: 800;
   color: var(--text-primary);
-  line-height: 1.25;
-  min-height: 2.5rem;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  line-height: 1.3;
   margin-bottom: 4px;
 }
 
 .product-details p {
-  display: none;
+  font-size: 0.76rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  margin-bottom: 8px;
 }
 
 .price-rating-cluster {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   margin-top: auto;
 }
 
@@ -912,28 +881,28 @@ body {
 }
 
 .card-live-price {
-  font-size: 1.15rem;
+  font-size: 1.25rem;
   font-weight: 800;
   color: var(--text-primary);
 }
 
 .card-original-strike {
-  font-size: 0.76rem;
+  font-size: 0.8rem;
   color: var(--text-muted);
   text-decoration: line-through;
 }
 
 .card-discount-badge {
-  font-size: 0.68rem;
+  font-size: 0.7rem;
   font-weight: 800;
   color: #15803d;
   background: #dcfce7;
-  padding: 1px 6px;
+  padding: 2px 7px;
   border-radius: 6px;
 }
 
 .rating-stars {
-  font-size: 0.74rem;
+  font-size: 0.78rem;
   color: #d97706;
   font-weight: 800;
 }
@@ -944,9 +913,9 @@ body {
   color: #ffffff;
   border: none;
   font-weight: 800;
-  padding: 10px;
+  padding: 11px;
   border-radius: 14px;
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(20, 36, 29, 0.15);
   transition: all 0.2s ease;
@@ -1415,7 +1384,7 @@ body {
 
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* Mobile Responsive Adjustments */
+/* Mobile Responsive - Strict Single Column List Layout */
 @media (max-width: 768px) {
   .navbar-sticky-wrapper { padding: 6px 8px; }
   .navbar { padding: 0.55rem 0.9rem; border-radius: 18px; }
@@ -1439,51 +1408,58 @@ body {
     margin-right: -10px;
   }
 
-  /* Single Spotlight Big Hero Card on Mobile */
-  .spotlight-single-card {
-    display: block;
-  }
-
-  /* 2-Column Mobile Product Grid with Equal Card Heights */
+  /* FULL-WIDTH 1 PRODUCT PER LINE (Single Column Mobile View) */
   .product-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.75rem;
-    align-items: stretch;
+    grid-template-columns: 1fr !important;
+    gap: 1.1rem;
+    padding: 0 4px;
   }
   .product-card {
-    padding: 0.75rem;
-    border-radius: 20px;
+    width: 100%;
+    padding: 1.1rem;
+    border-radius: 26px;
   }
   .product-visual {
-    height: 140px;
-    border-radius: 16px;
-    margin-bottom: 0.6rem;
+    height: 190px;
+    border-radius: 20px;
+    margin-bottom: 0.85rem;
   }
   .product-emoji {
-    font-size: 3.8rem;
+    font-size: 5rem;
   }
   .brand-verified-line {
-    font-size: 0.6rem;
+    font-size: 0.68rem;
   }
   .product-details h3 {
-    font-size: 0.84rem;
-    line-height: 1.25;
-    min-height: 2.2rem;
+    font-size: 1.08rem;
+    line-height: 1.3;
+    margin-bottom: 4px;
+    min-height: auto;
+  }
+  .product-details p {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    line-height: 1.4;
   }
   .card-live-price {
-    font-size: 1rem;
+    font-size: 1.3rem;
   }
   .card-original-strike {
-    font-size: 0.7rem;
+    font-size: 0.82rem;
   }
   .card-discount-badge {
-    font-size: 0.62rem;
-    padding: 1px 4px;
+    font-size: 0.72rem;
+    padding: 2px 7px;
+  }
+  .rating-stars {
+    font-size: 0.82rem;
   }
   .quick-card-action-btn {
-    padding: 8px 6px;
-    font-size: 0.76rem;
-    border-radius: 12px;
+    padding: 12px;
+    font-size: 0.9rem;
+    border-radius: 16px;
   }
   
   /* About Section on Mobile */
