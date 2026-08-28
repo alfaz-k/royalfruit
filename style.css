@@ -37,7 +37,7 @@ body {
   color: var(--text-primary);
   overflow-x: hidden;
   position: relative;
-  padding-bottom: 80px; /* Safe dock spacing */
+  padding-bottom: 85px;
 }
 
 /* Ambient Mist */
@@ -754,9 +754,36 @@ body {
 .clear-search-btn { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: #edf3ef; border: none; width: 20px; height: 20px; border-radius: 50%; color: var(--text-secondary); display: none; place-items: center; cursor: pointer; }
 .no-results { text-align: center; padding: 3rem 1rem; color: var(--text-secondary); background: #ffffff; border-radius: 20px; }
 
-/* =========================================================
-   PERFECTED 2-COLUMN PRODUCT GRID (No Alignment Bugs)
-   ========================================================= */
+/* Spotlight Hero Single Card (Big Image Look) */
+.spotlight-single-card {
+  display: none; /* Desktop hidden, mobile enabled */
+  background: #ffffff;
+  border: 1px solid var(--border-subtle);
+  border-radius: 28px;
+  padding: 1.2rem;
+  box-shadow: var(--shadow-card);
+  margin-bottom: 1.5rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.spotlight-single-card:active {
+  transform: scale(0.98);
+}
+.spotlight-visual {
+  position: relative;
+  height: 220px;
+  background: linear-gradient(180deg, #f4f8f5 0%, #e6efe8 100%);
+  border-radius: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+.spotlight-visual .product-emoji {
+  font-size: 5.5rem;
+}
+
+/* Product Grid */
 .product-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -1410,6 +1437,11 @@ body {
     padding: 4px 10px 10px;
     margin-left: -10px;
     margin-right: -10px;
+  }
+
+  /* Single Spotlight Big Hero Card on Mobile */
+  .spotlight-single-card {
+    display: block;
   }
 
   /* 2-Column Mobile Product Grid with Equal Card Heights */
