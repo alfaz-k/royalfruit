@@ -9,7 +9,7 @@
 
 :root {
   --bg-main: #edf3ef;
-  --surface-glass: rgba(255, 255, 255, 0.85);
+  --surface-glass: rgba(255, 255, 255, 0.88);
   --surface-glass-card: rgba(255, 255, 255, 0.95);
   --surface-elevated: #ffffff;
   --border-subtle: rgba(18, 53, 36, 0.08);
@@ -164,22 +164,29 @@ body {
   cursor: pointer;
 }
 
-/* Navbar */
-.navbar {
+/* Sticky Navbar Container */
+.navbar-sticky-wrapper {
   position: sticky;
-  top: 10px;
-  z-index: 50;
+  top: 0;
+  z-index: 60;
+  width: 100%;
+  background: rgba(237, 243, 239, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 8px 12px;
+  border-bottom: 1px solid rgba(18, 53, 36, 0.05);
+}
+
+.navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   max-width: 1220px;
   margin: 0 auto;
-  padding: 0.75rem 1.4rem;
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+  padding: 0.65rem 1.4rem;
+  background: rgba(255, 255, 255, 0.92);
   border: 1px solid var(--border-glass);
-  border-radius: 24px;
+  border-radius: 20px;
   box-shadow: var(--shadow-soft);
 }
 
@@ -307,7 +314,6 @@ body {
   font-weight: 800;
 }
 
-/* Mobile Menu Hamburger Button */
 .mobile-menu-trigger {
   display: none;
   width: 36px;
@@ -322,7 +328,7 @@ body {
   cursor: pointer;
 }
 
-/* Mobile Menu Drawer */
+/* Mobile Drawer */
 .mobile-drawer-backdrop {
   position: fixed;
   inset: 0;
@@ -516,7 +522,7 @@ body {
   z-index: 10;
   max-width: 1220px;
   margin: 0 auto;
-  padding: 2.5rem 1.25rem 1.5rem;
+  padding: 2rem 1.25rem 1.5rem;
   text-align: center;
 }
 
@@ -648,12 +654,14 @@ body {
 .dot { width: 8px; height: 8px; border-radius: 50%; border: none; background: #cbd8d1; cursor: pointer; transition: all 0.25s ease; }
 .dot.active { background: var(--brand-primary); width: 22px; border-radius: 999px; }
 
-/* Filter Pills */
+/* Filter Pills: Fix right-edge cutoff on mobile */
 .category-filters {
   display: flex;
   gap: 8px;
   overflow-x: auto;
-  padding-bottom: 8px;
+  padding: 4px 14px 12px;
+  margin-left: -14px;
+  margin-right: -14px;
   margin-bottom: 1.8rem;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
@@ -662,14 +670,15 @@ body {
 
 .filter-pill {
   white-space: nowrap;
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.9);
   border: 1px solid var(--border-glass);
   color: var(--text-secondary);
-  padding: 8px 16px;
+  padding: 9px 18px;
   border-radius: 999px;
   font-size: 0.82rem;
   font-weight: 700;
   cursor: pointer;
+  flex-shrink: 0;
   transition: all 0.15s ease;
 }
 .filter-pill.active, .filter-pill:hover {
@@ -714,7 +723,7 @@ body {
 .clear-search-btn { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: #edf3ef; border: none; width: 20px; height: 20px; border-radius: 50%; color: var(--text-secondary); display: none; place-items: center; cursor: pointer; }
 .no-results { text-align: center; padding: 3rem 1rem; color: var(--text-secondary); background: #ffffff; border-radius: 20px; }
 
-/* Grid & Cards */
+/* Grid & Cards with Live Price */
 .product-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -748,7 +757,16 @@ body {
 .product-emoji { font-size: 3.6rem; }
 .stock-tag { position: absolute; top: 8px; right: 8px; background: #ffffff; color: var(--brand-primary); font-size: 0.65rem; font-weight: 800; padding: 3px 8px; border-radius: 999px; }
 
-.rating-stars { font-size: 0.74rem; color: #d97706; font-weight: 800; margin-bottom: 3px; cursor: pointer; }
+.card-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.rating-stars { font-size: 0.74rem; color: #d97706; font-weight: 800; cursor: pointer; }
+.card-live-price { font-size: 0.98rem; font-weight: 800; color: var(--brand-primary); }
+
 .product-details h3 { font-size: 0.98rem; font-weight: 800; margin-bottom: 0.2rem; color: var(--text-primary); cursor: pointer; }
 .product-details p { font-size: 0.76rem; color: var(--text-secondary); margin-bottom: 0.8rem; line-height: 1.4; min-height: 30px; }
 
@@ -772,21 +790,32 @@ body {
   align-items: center;
   background: #f5f9f6;
   border-radius: 10px;
-  padding: 5px 10px;
+  padding: 5px 8px;
   margin-bottom: 0.8rem;
 }
 .qty-label { font-size: 0.7rem; color: var(--text-secondary); font-weight: 700; }
-.stepper-box { display: flex; align-items: center; gap: 8px; }
-.step-btn { width: 22px; height: 22px; border-radius: 6px; background: #ffffff; border: 1px solid var(--border-subtle); color: var(--text-primary); font-weight: 800; cursor: pointer; }
+.stepper-box { display: flex; align-items: center; gap: 6px; }
+.step-btn {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: #ffffff;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+}
 .card-qty-val { font-size: 0.82rem; font-weight: 800; color: var(--text-primary); min-width: 14px; text-align: center; }
 
 .product-actions-grid { display: grid; grid-template-columns: 1fr 1.3fr; gap: 8px; }
 .add-to-cart-btn { background: #ffffff; border: 1px solid var(--border-subtle); color: var(--text-primary); font-weight: 800; padding: 8px 10px; border-radius: 12px; cursor: pointer; font-size: 0.78rem; }
 .buy-btn { background: var(--pill-dark); color: #ffffff; border: none; font-weight: 800; padding: 8px 12px; border-radius: 12px; cursor: pointer; font-size: 0.8rem; }
 
-/* =========================================================
-   FIXED MODAL LAYERING & VISIBILITY
-   ========================================================= */
+/* Modal Backdrop & Studio Details Sheet */
 .modal-backdrop {
   position: fixed;
   inset: 0;
@@ -812,8 +841,8 @@ body {
 .studio-detail-card {
   width: 100%;
   max-width: 420px;
-  height: 88vh;
-  max-height: 800px;
+  height: 86vh;
+  max-height: 780px;
   background: linear-gradient(180deg, #d3e8dc 0%, #c4decb 45%, #b5d5bf 100%);
   border-radius: 36px;
   box-shadow: 0 25px 60px -15px rgba(20, 45, 32, 0.4);
@@ -826,7 +855,7 @@ body {
 }
 
 .studio-top-controls {
-  padding: 16px 18px 8px;
+  padding: 14px 16px 6px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -834,8 +863,8 @@ body {
   flex-shrink: 0;
 }
 .studio-circle-btn {
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   background: #ffffff;
   border: none;
@@ -854,25 +883,25 @@ body {
 
 .studio-stage-hero {
   position: relative;
-  height: 190px;
+  height: 170px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
 }
-.studio-ring-orbit { position: absolute; width: 220px; height: 45px; border-radius: 50%; border-bottom: 2px dashed rgba(255, 255, 255, 0.6); bottom: 30px; }
-.studio-orbit-dot { position: absolute; width: 20px; height: 20px; border-radius: 50%; background: #ffffff; bottom: -10px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; justify-content: center; }
-.studio-orbit-dot::after { content: '↔'; font-size: 9px; font-weight: 800; color: var(--text-secondary); }
-.studio-emoji-wrapper { font-size: 5rem; z-index: 2; filter: drop-shadow(0 15px 20px rgba(18, 48, 30, 0.22)); }
-.studio-pedestal-shadow { position: absolute; bottom: 22px; width: 120px; height: 16px; background: radial-gradient(ellipse at center, rgba(14, 43, 26, 0.2) 0%, transparent 70%); border-radius: 50%; }
+.studio-ring-orbit { position: absolute; width: 200px; height: 40px; border-radius: 50%; border-bottom: 2px dashed rgba(255, 255, 255, 0.6); bottom: 24px; }
+.studio-orbit-dot { position: absolute; width: 18px; height: 18px; border-radius: 50%; background: #ffffff; bottom: -9px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; justify-content: center; }
+.studio-orbit-dot::after { content: '↔'; font-size: 8px; font-weight: 800; color: var(--text-secondary); }
+.studio-emoji-wrapper { font-size: 4.5rem; z-index: 2; filter: drop-shadow(0 15px 20px rgba(18, 48, 30, 0.22)); }
+.studio-pedestal-shadow { position: absolute; bottom: 18px; width: 110px; height: 14px; background: radial-gradient(ellipse at center, rgba(14, 43, 26, 0.2) 0%, transparent 70%); border-radius: 50%; }
 
 .studio-sheet-content {
   flex: 1;
   background: #ffffff;
   border-top-left-radius: 32px;
   border-top-right-radius: 32px;
-  padding: 20px 18px 24px;
+  padding: 18px 16px 22px;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   position: relative;
@@ -893,7 +922,7 @@ body {
 .studio-price-box { display: flex; align-items: center; gap: 6px; }
 .studio-price-tag { font-size: 1.45rem; font-weight: 800; color: var(--text-primary); }
 .studio-discount-tag { background: #f1f6f3; color: var(--brand-primary); font-size: 0.7rem; font-weight: 800; padding: 2px 6px; border-radius: 999px; }
-.studio-stepper-pill { display: flex; align-items: center; gap: 10px; background: #f1f6f3; padding: 4px 10px; border-radius: 999px; }
+.studio-stepper-pill { display: flex; align-items: center; gap: 8px; background: #f1f6f3; padding: 4px 8px; border-radius: 999px; }
 .studio-step-btn { background: transparent; border: none; font-size: 1rem; font-weight: 800; color: var(--text-primary); cursor: pointer; }
 .studio-qty-num { font-size: 0.9rem; font-weight: 800; color: var(--text-primary); }
 
@@ -1057,7 +1086,8 @@ body {
 
 /* Mobile Optimizations */
 @media (max-width: 768px) {
-  .navbar { top: 8px; margin: 0 8px; padding: 0.65rem 0.9rem; border-radius: 18px; }
+  .navbar-sticky-wrapper { padding: 6px 8px; }
+  .navbar { padding: 0.55rem 0.9rem; border-radius: 18px; }
   .nav-links { display: none; }
   .brand-sub { display: none; }
   .brand-title { font-size: 0.9rem; }
@@ -1065,21 +1095,44 @@ body {
   .auth-nav-link { display: none !important; }
   .mobile-menu-trigger { display: flex; }
   
-  .hero-section { padding: 1.8rem 0.9rem 1.2rem; }
-  .hero-text h2 { font-size: 1.95rem; }
+  .hero-section { padding: 1.6rem 0.85rem 1.2rem; }
+  .hero-text h2 { font-size: 1.9rem; }
   .pinned-welcome-banner { flex-direction: column; text-align: center; padding: 1.2rem; border-radius: 20px; }
   .form-row-2col { grid-template-columns: 1fr; gap: 0; }
-  .product-grid { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
-  .product-card { padding: 0.85rem; border-radius: 18px; }
-  .product-visual { height: 110px; border-radius: 14px; margin-bottom: 0.5rem; }
-  .product-emoji { font-size: 2.8rem; }
-  .product-details h3 { font-size: 0.85rem; }
-  .product-details p { font-size: 0.68rem; min-height: 20px; margin-bottom: 0.4rem; }
-  .weight-chip { font-size: 0.65rem; padding: 3px 0; }
-  .product-actions-grid { grid-template-columns: 1fr; gap: 5px; }
+  
+  .category-filters {
+    padding: 4px 10px 10px;
+    margin-left: -10px;
+    margin-right: -10px;
+  }
+
+  .product-grid { grid-template-columns: repeat(2, 1fr); gap: 0.65rem; }
+  .product-card { padding: 0.75rem; border-radius: 18px; }
+  .product-visual { height: 105px; border-radius: 14px; margin-bottom: 0.45rem; }
+  .product-emoji { font-size: 2.6rem; }
+  .card-meta-row { margin-bottom: 2px; }
+  .rating-stars { font-size: 0.68rem; }
+  .card-live-price { font-size: 0.88rem; }
+  .product-details h3 { font-size: 0.82rem; line-height: 1.2; }
+  .product-details p { font-size: 0.65rem; min-height: 18px; margin-bottom: 0.35rem; }
+  .weight-chip { font-size: 0.62rem; padding: 3px 0; }
+  .qty-stepper-row { padding: 4px 6px; }
+  .qty-label { font-size: 0.65rem; }
+  .stepper-box { gap: 4px; }
+  .step-btn { width: 18px; height: 18px; font-size: 0.75rem; border-radius: 4px; }
+  .card-qty-val { font-size: 0.75rem; min-width: 10px; }
+  .product-actions-grid { grid-template-columns: 1fr; gap: 4px; }
+  .add-to-cart-btn { padding: 6px 8px; font-size: 0.72rem; }
+  .buy-btn { padding: 6px 8px; font-size: 0.74rem; }
+  
   .footer-container { grid-template-columns: 1fr; gap: 1.8rem; }
   
-  .studio-detail-card { height: 92vh; border-radius: 28px; }
-  .studio-stage-hero { height: 160px; }
-  .studio-emoji-wrapper { font-size: 4.2rem; }
+  .studio-modal-backdrop { padding: 10px; }
+  .studio-detail-card { height: 86vh; border-radius: 28px; }
+  .studio-stage-hero { height: 140px; }
+  .studio-emoji-wrapper { font-size: 3.8rem; }
+  .studio-ring-orbit { width: 160px; height: 32px; bottom: 18px; }
+  .studio-pedestal-shadow { width: 90px; height: 12px; bottom: 14px; }
+  .studio-sheet-content { padding: 14px 14px 20px; border-top-left-radius: 28px; border-top-right-radius: 28px; }
+  .studio-header-meta h2 { font-size: 1.15rem; }
 }
