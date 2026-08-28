@@ -1,7 +1,25 @@
-document.addEventListener('DOMContentLoaded', () => {
-  // Cloudflare Worker URL
-  const CLOUDFLARE_WORKER_URL = 'https://royal-auth.joblo-work-hr.workers.dev/';
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
+// Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyDzamlu_n4ZmAYG38fb90HfBdoZcGrjNss",
+  authDomain: "royaldryfruit-60bf9.firebaseapp.com",
+  projectId: "royaldryfruit-60bf9",
+  storageBucket: "royaldryfruit-60bf9.firebasestorage.app",
+  messagingSenderId: "1023921125029",
+  appId: "1:1023921125029:web:58bfdb76898807299d7f4c"
+};
+
+// Initialize Firebase & Auth Provider
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+
+// Cloudflare Worker URL
+const CLOUDFLARE_WORKER_URL = 'https://royal-auth.joblo-work-hr.workers.dev/';
+
+document.addEventListener('DOMContentLoaded', () => {
   const tabLogin = document.getElementById('tabLogin');
   const tabSignup = document.getElementById('tabSignup');
   const tabIndicator = document.getElementById('tabIndicator');
@@ -20,25 +38,27 @@ document.addEventListener('DOMContentLoaded', () => {
     showAlert('Password recovery link has been dispatched to your email.', 'success');
   };
 
-  // Google Sign-In JWT Decoder & Handler
-  window.handleGoogleCredentialResponse = async function(response) {
+  // Firebase Google Sign-In Handler
+  window.handleFirebaseGoogleSignIn = async function() {
+    const googleBtn = document.getElementById('firebaseGoogleBtn');
     try {
-      const base64Url = response.credential.split('.')[1];
-      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      const jsonPayload = decodeURIComponent(
-        atob(base64)
-          .split('')
-          .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
-          .join('')
-      );
-      const googleUser = JSON.parse(jsonPayload);
+      googleBtn.disabled = true;
+      googleBtn.style.opacity = '0.7';
+
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+
+      const email = user.email || '';
+      // Extract exact username from the part before '@' in the Gmail address
+      const gmailUsername = email.includes('@') ? email.split('@')[0] : (user.displayName || 'Royal Member');
+      const picture = user.photoURL || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80';
 
       const payload = {
         action: 'google_auth',
-        email: googleUser.email,
-        name: googleUser.name,
-        picture: googleUser.picture,
-        google_id: googleUser.sub
+        email: email,
+        name: gmailUsername,
+        picture: picture,
+        google_id: user.uid
       };
 
       try {
@@ -50,20 +70,23 @@ document.addEventListener('DOMContentLoaded', () => {
       } catch (e) {}
 
       localStorage.setItem('royal_user', JSON.stringify({
-        name: googleUser.name,
-        email: googleUser.email,
-        picture: googleUser.picture,
-        avatar: googleUser.picture
+        name: gmailUsername,
+        email: email,
+        picture: picture,
+        avatar: picture
       }));
       localStorage.setItem('royal_auth', 'true');
 
-      showAlert(`Welcome, ${googleUser.name}! Signed in via Google. Redirecting...`, 'success');
+      showAlert(`Welcome, ${gmailUsername}! Signed in via Google. Redirecting...`, 'success');
       setTimeout(() => {
         window.location.href = 'index.html';
       }, 1000);
 
     } catch (err) {
-      showAlert('Google authentication failed. Please try again.', 'error');
+      showAlert(err.message || 'Google authentication failed. Please try again.', 'error');
+    } finally {
+      googleBtn.disabled = false;
+      googleBtn.style.opacity = '1';
     }
   };
 
