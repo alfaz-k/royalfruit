@@ -11,6 +11,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const cartDrawer = document.getElementById('cartDrawer');
   const cartDrawerBackdrop = document.getElementById('cartDrawerBackdrop');
 
+  const mobileNavDrawer = document.getElementById('mobileNavDrawer');
+  const mobileDrawerBackdrop = document.getElementById('mobileDrawerBackdrop');
+  const mobileUserCard = document.getElementById('mobileUserCard');
+  const mobileUserName = document.getElementById('mobileUserName');
+  const mobileUserAvatar = document.getElementById('mobileUserAvatar');
+  const mobileAuthLink = document.getElementById('mobileAuthLink');
+  const mobileProfileBtn = document.getElementById('mobileProfileBtn');
+  const mobileLogoutBtn = document.getElementById('mobileLogoutBtn');
+
   const stepCustomer = document.getElementById('stepCustomer');
   const stepPayment = document.getElementById('stepPayment');
   const stepPrinting = document.getElementById('stepPrinting');
@@ -32,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const navUserAvatar = document.getElementById('navUserAvatar');
   const cartItemCount = document.getElementById('cartItemCount');
 
-  // Customer Form Elements (Detailed Address Breakdown)
+  // Customer Form Elements
   const custNameInput = document.getElementById('custName');
   const custPhoneInput = document.getElementById('custPhone');
   const custAltPhoneInput = document.getElementById('custAltPhone');
@@ -112,6 +121,17 @@ document.addEventListener('DOMContentLoaded', () => {
     'HEALTH10': { type: 'percent', value: 10, desc: '10% OFF' }
   };
 
+  // Mobile Drawer Triggers
+  window.openMobileMenu = function() {
+    mobileDrawerBackdrop.classList.add('active');
+    mobileNavDrawer.classList.add('active');
+  };
+
+  window.closeMobileMenu = function() {
+    mobileDrawerBackdrop.classList.remove('active');
+    mobileNavDrawer.classList.remove('active');
+  };
+
   // Dynamic Weight & Quantity Math
   function computeCardPrice(card, customWeight = null, customQty = null) {
     const activeChip = card.querySelector('.weight-chip.active');
@@ -179,7 +199,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('qvRatingBar').textContent = `⭐ ${rating} · ${reviewsCount} Verified Ratings`;
     document.getElementById('modalQtyVal').textContent = modalCurrentQty;
 
-    // Populate dynamic weight selector chips inside Studio Modal
     const chipsContainer = document.getElementById('qvWeightChipsContainer');
     const cardChips = card.querySelectorAll('.weight-chip');
     if (cardChips.length > 0) {
@@ -285,7 +304,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   async function loadCloudflareReviews(prodId) {
     const listContainer = document.getElementById('modalReviewsList');
-    listContainer.innerHTML = `<div style="text-align:center; padding:10px; color:#586e64; font-size:0.75rem;">Loading verified reviews...</div>`;
+    listContainer.innerHTML = `<div style="text-align:center; padding:8px; color:#586e64; font-size:0.75rem;">Loading verified reviews...</div>`;
 
     try {
       const res = await fetch(`${CLOUDFLARE_WORKER_URL}reviews?product_id=${prodId}`);
@@ -363,7 +382,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // Add to Cart & Drawer Management
+  // Add to Cart
   window.handleAddToCart = function(card, customWeight = null, customQty = null) {
     const isAuth = localStorage.getItem('royal_auth') === 'true';
     if (!isAuth) {
@@ -506,10 +525,10 @@ document.addEventListener('DOMContentLoaded', () => {
     floatingToast.classList.add('active');
     toastTimer = setTimeout(() => {
       floatingToast.classList.remove('active');
-    }, 3500);
+    }, 3200);
   };
 
-  // Custom Animated Modal Prompt
+  // Custom Prompt Modal
   window.showCustomAlert = function({ title, message, icon = '🔒', confirmText = 'OK', cancelText = 'Cancel', onConfirm, showCancel = true }) {
     document.getElementById('alertModalTitle').textContent = title;
     document.getElementById('alertModalMessage').textContent = message;
@@ -534,19 +553,35 @@ document.addEventListener('DOMContentLoaded', () => {
     customAlertModal.classList.remove('active');
   };
 
-  // Auth State Updates
+  // Auth State Updates for Desktop and Mobile Drawer
   function updateAuthNavbar() {
     const isAuth = localStorage.getItem('royal_auth') === 'true';
     const user = JSON.parse(localStorage.getItem('royal_user') || '{}');
 
     if (isAuth && user.name) {
+      // Desktop
       navAccountBtn.style.display = 'none';
       navUserMenu.style.display = 'flex';
       navUserName.textContent = user.name.split(' ')[0];
       navUserAvatar.src = user.avatar || user.picture || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80';
+
+      // Mobile Drawer
+      mobileUserCard.style.display = 'flex';
+      mobileUserName.textContent = user.name;
+      mobileUserAvatar.src = user.avatar || user.picture || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80';
+      mobileAuthLink.style.display = 'none';
+      mobileProfileBtn.style.display = 'flex';
+      mobileLogoutBtn.style.display = 'flex';
     } else {
+      // Desktop
       navAccountBtn.style.display = 'flex';
       navUserMenu.style.display = 'none';
+
+      // Mobile Drawer
+      mobileUserCard.style.display = 'none';
+      mobileAuthLink.style.display = 'flex';
+      mobileProfileBtn.style.display = 'none';
+      mobileLogoutBtn.style.display = 'none';
     }
   }
 
@@ -659,13 +694,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const pieces = [];
     const colors = ['#174d34', '#2e8b57', '#d97706', '#ffffff', '#22c55e', '#3b82f6'];
 
-    for (let i = 0; i < 90; i++) {
+    for (let i = 0; i < 80; i++) {
       pieces.push({
         x: canvas.width / 2,
         y: canvas.height / 2 + 50,
-        vx: (Math.random() - 0.5) * 14,
-        vy: (Math.random() - 0.7) * 16,
-        size: Math.random() * 8 + 4,
+        vx: (Math.random() - 0.5) * 12,
+        vy: (Math.random() - 0.7) * 14,
+        size: Math.random() * 7 + 4,
         color: colors[Math.floor(Math.random() * colors.length)],
         rotation: Math.random() * 360,
         rotSpeed: (Math.random() - 0.5) * 10
@@ -690,7 +725,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       frames++;
-      if (frames < 100) {
+      if (frames < 90) {
         requestAnimationFrame(animate);
       } else {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -771,7 +806,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const noResults = document.getElementById('noResults');
     let visibleCount = 0;
 
-    clearBtn.style.display = query.length > 0 ? 'block' : 'none';
+    clearBtn.style.display = query.length > 0 ? 'grid' : 'none';
 
     productCards.forEach(card => {
       const name = card.getAttribute('data-name').toLowerCase();
@@ -864,7 +899,7 @@ document.addEventListener('DOMContentLoaded', () => {
     modal.classList.add('active');
   };
 
-  // Verified Coupon Calculation with WELCOME50 First-Order Check
+  // Verified Coupon Calculation
   window.applyCoupon = function() {
     const enteredCode = couponInput.value.trim().toUpperCase();
 
@@ -959,7 +994,6 @@ document.addEventListener('DOMContentLoaded', () => {
       state: custStateInput.value.trim()
     };
 
-    // Save to user profile silently
     const user = JSON.parse(localStorage.getItem('royal_user') || '{}');
     user.name = activeCustomer.name;
     user.phone = activeCustomer.phone;
@@ -992,7 +1026,7 @@ document.addEventListener('DOMContentLoaded', () => {
     startPaymentCountdown();
   };
 
-  // Payment Confirmation & Animated Receipt Print
+  // Payment Confirmation
   window.processPaymentAndPrint = async function() {
     clearInterval(countdownInterval);
 
@@ -1001,13 +1035,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const upiRef = `UPI-${Math.floor(1000000000 + Math.random() * 9000000000)}`;
     const formattedDate = getIndianFormattedDate();
 
-    // Increment orders count to enforce 1st-order WELCOME50 check
     const currentOrders = parseInt(localStorage.getItem('royal_orders_placed') || '0');
     localStorage.setItem('royal_orders_placed', (currentOrders + 1).toString());
 
     const fullFormattedAddress = `${activeCustomer.street}, Landmark: ${activeCustomer.landmark}, ${activeCustomer.city}, ${activeCustomer.state} - PIN: ${activeCustomer.pincode}`;
 
-    // Web3Forms payload containing all customer and shipping data
     const emailPayload = {
       access_key: WEB3FORMS_ACCESS_KEY,
       subject: `🛒 New Order: ${currentOrderId} - ₹${activeProduct.finalPrice.toFixed(2)}`,
@@ -1038,10 +1070,7 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       fetch('https://api.web3forms.com/submit', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify(emailPayload)
       }).catch(() => {});
     } catch (err) {}
@@ -1109,7 +1138,7 @@ document.addEventListener('DOMContentLoaded', () => {
       launchConfetti();
       cartItems = [];
       updateCartUI();
-    }, 5000);
+    }, 4500);
   };
 
   window.closeAllModals = function() {
@@ -1118,7 +1147,7 @@ document.addEventListener('DOMContentLoaded', () => {
     receipt.classList.remove('print-out');
   };
 
-  // Direct Clean PDF Invoice Generation (Corporate A4 Tax Invoice Layout)
+  // Direct Clean PDF Invoice Generation
   downloadBtn.addEventListener('click', async () => {
     downloadBtn.textContent = 'Generating PDF...';
     downloadBtn.disabled = true;
